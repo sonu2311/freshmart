@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<link rel="stylesheet" href="main.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="load_store.js"></script>
+
+<style>
+	
+div.hsplit:after {
+content: "";
+clear: both;
+display: table;
+}
+
+div.hsplit > div {
+	float: left;
+}
+.sing_up_margin_top{
+    margin-top:50px;
+}
+
+
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+	<div ng-include='"header.html"' ></div>
+
+	<div class="login_main_div sing_up_margin_top">
+		<div class="login_header">Sign up</div>
+		<div class="login_header_down_div">
+			<div class="email_password_full_div">
+				<div class="email_password_name_div">Name</div>
+				<div>
+					<input class="email_password_input_div" type="text" name="name" ng-model="name">
+				</div>
+			</div>
+			<div class="email_password_full_div">
+				<div class="email_password_name_div">Email</div>
+				<div>
+					<input class="email_password_input_div" type="text" name="name" ng-model="email">
+				</div>
+			</div>
+			<div class="email_password_full_div">
+				<div class="email_password_name_div">Phone number</div>
+				<div>
+					<input class="email_password_input_div"type="text" name="name" ng-model="number">
+				</div>
+			</div>
+			<div class="email_password_full_div">
+				<div class="email_password_name_div">Password</div>
+				<div>
+					<input class="email_password_input_div"type="password" name="name" ng-model="password">
+				</div>
+			</div>
+		</div>
+		<div class="login_button_div" >
+			<button class="login_button" ng-click="sign_up()">Sign up</button>
+		</div>
+	</div>
+	<!-- </div> -->
+<script>
+
+var api = function(http, api_url, input, callback) {
+  input = input || {}
+  return http({
+    method: "POST",
+    url: api_url,
+    headers: {'Content-Type': 'application/json'},
+    data: input}).then(callback ? function(d) {
+  		callback(d.data)} : callback);
+}
+
+
+var app = angular.module('myApp', [])
+app.controller('myCtrl', function($scope,$http) {
+	s = $scope
+	$scope.name="sonu"
+	$scope.email="sonu2311saini@gmail.com"
+	$scope.number="789789"
+	$scope.password="123"
+
+	$scope.sign_up=function(){
+		api($http,'/sign_up', {"name":$scope.name, "email":$scope.email,"phone":$scope.number,"password":$scope.password},function(backend_output){
+			if("error" in backend_output) {
+				alert(backend_output.error)
+			}
+			else{
+				alert("Signup ho gya !")
+			}
+		})
+			
+			// alert($scope.name + " ka sign up yo gya.. Wow.. ")
+			// // window.location.href = "welcome.html"
+	}
+
+
+});
+</script>
+</body>
+</html>

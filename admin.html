@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<link rel="stylesheet" href="main.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="load_store.js"></script>
+
+<style>
+	
+div.hsplit:after {
+content: "";
+clear: both;
+display: table;
+}
+
+div.hsplit > div {
+	float: left;
+}
+.sing_up_margin_top{
+    margin-top:50px;
+}
+table, td, th {
+  border: 1px solid black;
+  text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+  width: 50%;
+}
+
+th, td{
+	padding: 5px;
+  
+}
+
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+	<div ng-include='"header.html"' ></div>
+	<div style="padding-left: 60px;">
+		<h1>Table</h1>
+		<table>
+			<thead>
+				<tr>
+					<th> id</th>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Phone</th>
+					<th>Password</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="x in l">
+					<td>{{x.id}}</td>
+					<td>{{x.name}}</td>
+					<td>{{x.email}}</td>
+					<td>{{x.phone}}</td>
+					<td>{{x.password}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>	
+	
+<script>
+
+var api = function(http, api_url, input, callback) {
+  input = input || {}
+  return http({
+    method: "POST",
+    url: api_url,
+    headers: {'Content-Type': 'application/json'},
+    data: input}).then(callback ? function(d) {
+  		callback(d.data)} : callback);
+}
+
+
+var app = angular.module('myApp', [])
+app.controller('myCtrl', function($scope,$http) {
+	s = $scope
+	$scope.l=[]
+	api($http,'/all_users', {},function(backend_output) {
+		$scope.l = backend_output
+	})
+
+});
+</script>
+</body>
+</html>

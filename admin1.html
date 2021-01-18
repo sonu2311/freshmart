@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<link rel="stylesheet" href="main.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="load_store.js"></script>
+<style>
+	
+div.hsplit:after {
+content: "";
+clear: both;
+display: table;
+}
+
+div.hsplit > div {
+	float: left;
+}
+.split_div{
+	width: 95%; margin:auto; margin-top:20px; margin-bottom:20px;
+}
+.card_div{
+	border:solid #CCC 1px;
+	border-radius: 3px;
+	box-shadow: 1px 2px 3px #ccc;
+	margin-bottom:20px; 
+	padding-top:5px;
+	box-sizing: border-box; 
+	padding-bottom:15px; 
+	padding-right:15px ; 
+	padding-left: 10px;
+	margin: 20px;
+}
+.input{
+	width:100%; 
+	outline: none;
+	border:solid #ccc 1px;border-radius: 3px;font-size: 14px;line-height: 1.42857143; width: 100%;box-sizing: border-box; padding: 5px 6px; 
+}
+.input:hover{
+	 box-shadow: 2px 3px 5px #ccc;
+}
+.after_card_div{
+	border-radius: 3px; margin-top: 5px; padding-bottom: 8px; 
+}
+.comman_hader_style{
+	background-color: #fff; color:#333; margin-top: 0px; 
+	/*border:solid red 1px; */
+	padding: 0px;margin-bottom: 15px;
+}
+.font_size-18{
+	font-size: 18px;
+}
+.margin-top-15{
+	margin:15px 0px;
+}
+.clear_icon{
+	float:right; margin-left: 10px; font-size: 20px;margin-top:10px;
+}
+.edit-icon{
+	float:right;font-size: 20px; margin-top:10px; 
+}
+.edit-icon:hover{
+	cursor: pointer;
+}
+.edit_div{
+	border-radius: 3px; margin-top: 5px; padding-bottom: 8px;"
+}
+.margin-top-5{
+	margin-top: 5px;
+}
+.button_color{
+	background-color: #333;
+}
+
+body {
+	overflow-y: scroll;
+}
+.margin-top-25{
+	margin-top: 25px;
+}
+.add_new_product_button{
+	margin-left: 50px; margin-top: 15px; background-color: #333; font-size: 16px;
+}
+
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+	<div ng-include='"header.html"' ></div>
+	<div class="margin-top-5">
+		<div class="login_header comman_hader_style margin-top-25">Product Manegment Page</div>
+		<div >
+			<button  class="login_button add_new_product_button"  ng-click="scroll('add')"> Add New Product</button>
+		</div>
+		<div class="hsplit split_div " style="">
+			<div class="col-xs-12 col-sm-6" ng-repeat="x in list" >
+				<div class=" card_div"  >
+					<div class="after_card_div" ng-if="!x.editing" >
+						<div>
+							<span class="material-icons clear_icon">
+								clear
+							</span>	
+							<span class="material-icons edit-icon" ng-click="edit(x)">
+							create
+							</span>
+						</div>
+						<div class="login_header comman_hader_style" style="">Product Detail
+						</div>
+						Product image=<br>
+						name={{x.name}}
+						<br>{{x.price}}<br>{{x.discount}}<br>{{x.image}}<br>{{x.description}}
+					</div>
+					<div class="edit_div" ng-if="x.editing">
+						<div>
+							<span class="material-icons clear_icon">
+								clear
+							</span>	
+							<span class="material-icons edit-icon"  ng-click="edit(x)">
+								undo
+							</span>
+						</div>
+						<div class="login_header comman_hader_style" >Edit</div>
+						
+						<div class="margin-top-15">
+							<div class="font_size-18">Product Name</div>
+							<div>
+								<input type="text" name="name" ng-model="x.name" class="input">
+							</div>
+						</div>
+						<div class="margin-top-15">
+							<div class="font_size-18">Price</div>
+							<div>
+								<input type="text" name="name" ng-model="x.price" class="input" >
+							</div>
+						</div>
+						<div class="margin-top-15">
+							<div class="font_size-18">Discount</div>
+							<div>
+								<input type="text" name="name" ng-model="x.discount" class="input">
+							</div>
+						</div>
+						<div class="margin-top-15">
+							<div class="font_size-18">Image</div>
+							<div>
+								<input type="text" name="name" ng-model="x.image" class="input">
+							</div>
+						</div>
+						<div class="margin-top-15">
+							<div class="font_size-18">Image description</div>
+							<div>
+								<input type="text" name="name" ng-model="x.description" class="input">
+							</div>
+						</div>
+						<div  class="login_button_div" >
+							<button class="login_button button_color" ng-click="update(x)">Update</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="hsplit" id="add"> 
+			<div class="col-sm-3" ></div>
+			<div class="col-xs-12 col-sm-6" >
+				<div class=" card_div"  >
+					<div class="edit_div" >
+						<div>
+							<span class="material-icons clear_icon">
+								clear
+							</span>	
+							<span class="material-icons edit-icon">
+								undo
+							</span>
+						</div>
+						<div class="login_header comman_hader_style" >Add Product</div>
+						
+						<div class="margin-top-15">
+							<div class="font_size-18"> Product Name</div>
+							<div>
+								<input type="text" name="name" ng-model="name" class="input">
+							</div>
+						</div>
+						<div class="margin-top-15">
+							<div class="font_size-18">Price</div>
+							<div>
+								<input type="text" name="name" ng-model="price" class="input" >
+							</div>
+						</div>
+						<div class="margin-top-15">
+							<div class="font_size-18">Discount</div>
+							<div>
+								<input type="text" name="name" ng-model="discount" class="input">
+							</div>
+						</div>
+						<div class="margin-top-15">
+							<div class="font_size-18">Image</div>
+							<div>
+								<input type="text" name="name" ng-model="image" class="input">
+							</div>
+						</div>
+						<div class="margin-top-15">
+							<div class="font_size-18">Description</div>
+							<div>
+								<input type="text" name="name" ng-model="description" class="input">
+							</div>
+						</div>
+						<div  class="login_button_div" >
+							<button class="login_button button_color" ng-click="save()" >Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<script>
+
+var api = function(http, api_url, input, callback) {
+  input = input || {}
+  return http({
+    method: "POST",
+    url: api_url,
+    headers: {'Content-Type': 'application/json'},
+    data: input}).then(callback ? function(d) {
+  		callback(d.data)} : callback);
+}
+
+
+var app = angular.module('myApp', [])
+app.controller('myCtrl', function($scope,$http) {
+
+	s = $scope
+
+	$scope.name="pen"
+	$scope.price=10
+	$scope.discount=2
+	$scope.image=""
+	$scope.description="123"
+
+	// $scope.l=[0,1,2,3]
+	$scope.list=[]
+
+	$scope.scroll=function(x){
+        window.scrollTo(0, document.getElementById(x).offsetTop - 70)
+    }
+
+	// api($http,'/all_users', {},function(backend_output) {
+	// 	$scope.l = backend_output
+	// })
+
+	// $scope.edit_variable=false
+
+	$scope.edit=function(p) {
+			p.editing=!p.editing
+	}
+	$scope.update=function(n){
+		api($http, '/product_update',n, function(backend_output){
+			$scope.list=backend_output	
+		});
+	}
+	
+	$scope.save=function(){
+		api($http, '/add_product', { "name":$scope.name, "price":$scope.price,"discount":$scope.discount,"image":$scope.image, "description":$scope.description }, function(backend_output){
+			$scope.list=backend_output
+		})
+	}
+
+	api($http,'/all_products', {},function(backend_output) {
+		$scope.list = backend_output
+	})
+
+
+});
+</script>
+</body>
+</html>

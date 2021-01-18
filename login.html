@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<link rel="stylesheet" href="main.css">
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="load_store.js"></script>
+
+<style>
+	
+div.hsplit:after {
+content: "";
+clear: both;
+display: table;
+}
+
+div.hsplit > div {
+	float: left;
+}
+
+
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+
+	<div ng-include='"header.html"' ></div>
+	
+	<div class="login_main_div">
+		<div class="login_header">Login</div>
+		<div class=" login_header_down_div">
+			<div class="email_password_full_div">
+				<div class="email_password_name_div"
+				>Email</div>
+				<div>
+					<input class="email_password_input_div" type="text" name="name" ng-model="email">
+				</div>
+			</div>
+			<div class="email_password_full_div">
+				<div class="email_password_name_div">Password</div>
+				<div>
+					<input class="email_password_input_div" type="text" name="name" ng-model="password">
+				</div>
+			</div>
+		</div>
+		<div class="login_button_div btn btn-primary active">
+			<button class="login_button" ng-click=login()>Login</button>
+		</div>
+	</div>
+<script>
+var api = function(http, api_url, input, callback) {
+  input = input || {}
+  return http({
+    method: "POST",
+    url: api_url,
+    headers: {'Content-Type': 'application/json'},
+    data: input}).then(callback ? function(d) {
+  		callback(d.data)} : callback);
+}
+
+var app = angular.module('myApp', [])
+app.controller('myCtrl', function($scope,$http) {
+	s = $scope
+	$scope.email="sonu2313saini@gmail.com"
+	$scope.password="123"
+	
+	$scope.login=function(){
+		api($http, '/login', { "email":$scope.email, "password":$scope.password }, function(backend_output){
+			if("error" in backend_output){
+				alert(backend_output.error)
+			}
+			else{
+				alert("Login ho gya !")
+			}
+		})
+
+	}
+
+});
+</script>
+</body>
+</html>

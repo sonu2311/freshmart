@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> 
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<style>
+	
+div.hsplit:after {
+content: "";
+clear: both;
+display: table;
+}
+
+div.hsplit > div {
+	float: left;
+}
+.border{
+	margin:10px;
+	padding:5px;
+	width:230px;
+	height: 360px;
+	text-align: center;
+	overflow: hidden;
+	cursor: pointer;
+}
+.border:hover {
+	box-shadow: 5px 10px 15px #888888;
+	border: #888888;
+}
+.niche_vala_div {
+	position: relative;
+	background-color: white;
+	transition: all 0.2s;
+	top: 0px;
+}
+
+.border:hover > .niche_vala_div {
+	top: -20px;
+}
+.big_div{
+	text-align: center;
+	padding:5px;
+	margin-bottom: 10px;
+}
+img.product_image {
+	height: 280px;
+	
+}
+.header_div{
+	border:solid #ccc 1px;
+	height: 70px; 
+	width: 100%; 
+	background-color: white; 
+	position: fixed; 
+	z-index: 50;
+}
+.bigest_div{
+	padding: 70px 0px; 
+	/*border:solid black 1px; */
+}
+.scroll_div{
+	/*border:solid green 1px; */
+	height: calc(100vh - 80px); overflow-y: scroll; position: fixed; top: 70px;
+}
+.font_weight{
+	font-weight: 600;
+}
+.margin_5{
+	margin:5px;
+}
+.margin_15{
+	margin:15px;
+}
+.image_detail_div{
+	/*border:solid red 1px; */
+	width: calc(100vw - 250px); margin-left: 230px; 
+}
+.padding_8{
+	padding:0px 8px;
+}
+.padding_10{
+	padding:0px 10px;
+}
+.rating_div{
+	background-color:#006600; border-radius: 4px; 
+	color:white; float:left;
+	font-size: 12px;
+	margin-top: 3px;
+	padding: 0px 5px;
+}
+</style>
+
+<body ng-app="myApp" ng-controller="myCtrl">
+<div class="header_div" >
+	Header vala div...
+</div>
+<div class="hsplit bigest_div">
+	<div class="scroll_div">
+		<div class="margin_15">
+			<div class="font_weight"> Color</div>
+			<div class="margin_5" ng-repeat="(x, y) in color_filter_list">
+				<input type="checkbox" ng-model='color_filter_list[x]' ng-change='search()' > {{x}}
+			</div>
+		</div>
+		<div class="margin_15">
+			<div class="font_weight"> Brand</div>
+			<div class="margin_5" ng-repeat="(x, y) in brand_filter_list">
+				<input type="checkbox" ng-model='brand_filter_list[x]' ng-change='search()' > {{x}}
+			</div>
+		</div>
+		<div class="margin_15">
+			<div class="font_weight">Dress Type</div>
+			<div class="margin_5" ng-repeat="(x, y) in dress_type_filter_list">
+				<input type="checkbox" ng-model='dress_type_filter_list[x]' ng-change='search()' > {{x}}
+			</div>
+		</div>
+		<div class="margin_15">
+			<div class="font_weight">sleeves length</div>
+			<div class="margin_5" ng-repeat="(x, y) in sleeves_length_filter_list">
+				<input type="checkbox" ng-model='sleeves_length_filter_list[x]' ng-change='search()' > {{x}}
+			</div>
+		</div>
+		<div class="margin_15">
+			<div class="font_weight">Price</div>
+			<div class="margin_5" ng-repeat="(x, y) in price_filter_list">
+				<input type="checkbox" ng-model='price_filter_list[x].check' ng-change='search()' > {{x}}
+			</div>
+		</div>
+		<div class="margin_15">
+			<div class="font_weight">Discount</div>
+			<div class="margin_5" ng-repeat="(x, y) in discount_filter_list">
+				<input type="checkbox" ng-model='discount_filter_list[x].check' ng-change='search()' > {{x}}
+			</div>
+		</div>
+		<div class="margin_15">
+			<div class="font_weight">Ratings</div>
+			<div class="margin_5" ng-repeat="(x, y) in rating_filter_list">
+				<input type="checkbox" ng-model='rating_filter_list[x].check' ng-change='search()' > {{x}}
+			</div>
+		</div>
+	</div>
+
+	<div class="image_detail_div">
+		<div class="hsplit big_div">
+			<div ng-repeat="x in final_list">
+				<div class="border">
+					<img class="product_image" ng-src="{{x.link}}">
+					<div class="hsplit">
+						<div class="padding_8">{{x.dress_color}}</div>
+						<div class="padding_8">{{x.brand}}</div>
+						<div class="padding_10">{{x.dress_type}}</div>
+						<div class="padding_10">{{x.price}}</div>
+						<div class="padding_10">{{x.discount}}%</div>
+						<span class="padding_8 rating_div">{{x.rating}} </span>
+						<div class="padding_10">{{x.sleeves_length}}</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript" src="products.js" ></script>
+<script>
+var app = angular.module('myApp', [])
+	app.controller('myCtrl', function($scope) {
+
+	$scope.color_filter_list = {"red":false,"blue":false, "yellow":false,"green":false,"white":false,"grey":false,"black":false,"pink":false}
+
+	$scope.brand_filter_list = {"max": false,"lifestyle": false,"westren": false,"trands": false,"biba": false,"zara": false}
+	$scope.dress_type_filter_list={"western frok":false,"shirt":false,"maxi":false,"western short dress":false,"jumpsuit":false}
+	// $scope.price_filter_list={"min":0,"max":100000}
+	$scope.sleeves_length_filter_list={"full sleeves":false,"half sleeves":false,"3/4 sleeves":false,"sleeves less":false}
+
+	$scope.price_filter_list={
+							"0 to 100" : {"check":false, "min":0,"max":100},
+							"100 to 200" : {"check":false, "min":100,"max":200},
+							"200 to 300" : {"check":false, "min":200,"max":300},
+							"500 to 1000" : {"check":false, "min":500,"max":1000},
+							"1000 to 10000" :{"check":false, "min":1000,"max":10000}
+							}
+
+	$scope.discount_filter_list={
+								"0% to 10%":{"check":false, "min":0,"max":10},
+								"10% to 20%":{"check":false, "min":10,"max":20},
+								"20% to 30%":{"check":false, "min":20,"max":30},
+								"30% to 40%":{"check":false, "min":30,"max":40},
+								"40% to 50%":{"check":false, "min":40,"max":50},
+								"50% to 60%":{"check":false, "min":50,"max":60},
+								"60% to 70%":{"check":false, "min":60,"max":70},
+								"70% to 80%":{"check":false, "min":70,"max":80},
+								"80% to 90%":{"check":false, "min":80,"max":90},
+								"90% to 100%":{"check":false, "min":90,"max":100}
+
+	}
+	$scope.rating_filter_list={
+								"0 t0 1":{"check":false,"min":0,"max":1},
+								"1 t0 2":{"check":false,"min":1,"max":2},
+								"2 t0 3":{"check":false,"min":2,"max":3},
+								"3 t0 4":{"check":false,"min":3,"max":4},
+								"4 t0 5":{"check":false,"min":4,"max":5}
+
+								}
+
+	// Ye function input me ek filter lega.
+	// Filter kya hai ?
+	// Filter ka ek example hai {"red": true, "black": true}
+	// Filter ka dusra example hai {"max": false, "redmi": true}
+	// Filter ka format isi type ka hoga.
+	// Is type ke input me agr sari key ke corresponding value agr
+	// false hai to output true hoga.. Agr kisi bhi key ki corresponding
+	// value true ho jati hai to is function ka output false ana chahiye.
+	// Example:
+	// Agr input {"red": false, "blue": false} hai to output true hoga
+	// Agr input {"red": false, "pink" true, "blue": false} hai to
+	// output false hoga, q ki iss input me sari values false ni hai
+	// (pink was true hai).	
+	var	is_all_uncheck= function(filter) {
+	  for ( var i in  filter){
+	    if( filter[i]==true){
+	      return false
+	    }
+		}
+	  return true
+	}
+
+	$scope.check_color_function=function(product) {
+		if(is_all_uncheck($scope.color_filter_list)){
+			return true
+		}
+		return $scope.color_filter_list[product.dress_color] 
+	}
+
+	$scope.check_brand_function=function(product) {
+		if(is_all_uncheck($scope.brand_filter_list)){
+			return true
+		}
+		return $scope.brand_filter_list[product.brand] 
+	}
+	$scope.check_dress_type_function=function(product) {
+		if(is_all_uncheck($scope.dress_type_filter_list)){
+			return true
+		}
+		return $scope.dress_type_filter_list[product.dress_type] 
+	}
+	$scope.check_sleeves_function=function(product) {
+		if(is_all_uncheck($scope.sleeves_length_filter_list)){
+			return true
+		}
+		return $scope.sleeves_length_filter_list[product.sleeves_length] 
+	}
+
+	// $scope.check_price=function(product){
+	// 	if($scope.price_filter_list.min <= product.price && product.price <= $scope.price_filter_list.max){
+	// 		return true
+	// 	}
+	// 	else{
+	// 		return false
+	// 	}
+	// }
+	var is_all_uncheck_price=function(d){
+		for (var i in d){
+		  	if (d[i]["check"]==true){
+		    	return false
+		    }        
+	  	}      
+ 		return true
+	}
+    
+	$scope.check_price_function=function(product){
+		if(is_all_uncheck_price($scope.price_filter_list)){
+			return true
+		}
+		for (var i in $scope.price_filter_list){
+			if( $scope.price_filter_list[i].max>= product.price && $scope.price_filter_list[i].min<= product.price && $scope.price_filter_list[i].check==true){
+				return true
+			}
+		}
+		return false
+	}
+
+	$scope.check_discount_function=function(product){
+		if(is_all_uncheck_price($scope.discount_filter_list)){
+			return true
+		}
+		for (var i in $scope.discount_filter_list){
+			if( $scope.discount_filter_list[i].max>= product.discount && $scope.discount_filter_list[i].min<= product.discount && $scope.discount_filter_list[i].check==true){
+				return true
+			}
+		}
+		return false
+	}
+
+	$scope.check_rating_function=function(product){
+		if(is_all_uncheck_price($scope.rating_filter_list)){
+			return true
+		}
+		for (var i in $scope.rating_filter_list){
+			if( $scope.rating_filter_list[i].max>= product.rating && $scope.rating_filter_list[i].min<= product.rating && $scope.rating_filter_list[i].check==true){
+				return true
+			}
+		}
+		return false
+	}
+
+	$scope.select_list=function(l){
+		var l1=[]
+		for ( var i in l){
+			if( $scope.check_color_function(l[i]) && $scope.check_brand_function(l[i])&& $scope.check_dress_type_function(l[i]) && $scope.check_price_function(l[i]) && $scope.check_discount_function(l[i]) && $scope.check_rating_function(l[i]) && $scope.check_sleeves_function(l[i])){
+				l1.push(l[i])
+			}	
+		}
+		return l1
+	}
+	$scope.search=function(){
+		$scope.final_list= $scope.select_list(all_products_list)
+		console.log($scope.final_list)
+	}
+
+	$scope.final_list= $scope.select_list(all_products_list)
+
+});
+</script>
+</body>
+</html>
+<!-- {
+			"link" : "https://rukminim1.flixcart.com/image/492/590/kesv0y80/dress/d/y/m/l-rd-2001-radius-export-import-original-imafven4vvmrv3px.jpeg?q=50",
+			"price" : 290,
+			"name":"western frok",
+			"dress_color":"white",
+			"title": "Laptop",
+			"brand":"zara",
+			"content":"ye wehj d sh k ahfkd hs .hfd khsk hdk"
+
+		}, -->
