@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<link rel="stylesheet" href="main.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<style>
+.order_detail_div_navbar{
+	background-color:#f9f9f9; 
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	font-weight: 500;
+	padding: 12px 0 12px 30px;
+	font-size: 12px;
+
+}
+.store_name_div{
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: calc(100% - 75px);
+    display: inline-block;
+    vertical-align: top;
+    color: #333;
+    font-size: 15px;
+    font-weight: 600;
+    padding-bottom: 5px;
+    padding-top: 20px;
+    cursor: default;
+
+}
+.view_item_div{
+	padding-top: 20px;font-size: 14px;
+	
+}
+.view_item_link{
+	color: #337ab7;
+}
+.view_item_link:hover{
+	text-decoration: underline;
+	/*font-size: 15px;*/
+}
+
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+	<div ng-include='"header.html"' ></div>
+	<div class="proflie_page_right_div" style=" ">	
+		<div class="hsplit"   style=" border:solid black 1px; padding:0px; margin-top: 6px; ">
+			<div class="col-md-2 col-sm-2" style=""></div>
+			<div class="col-md-8 col-sm-8 col-xs-12" style="">
+				<div style="font-size: 25px; font-weight: 300px; padding:15px 5px;">
+					Order Details
+				</div>
+				<hr>
+				<div class="" style="color:#333;margin-bottom:25px;border-radius: 4px;  box-shadow: 2px 2px 5px #888888;  margin-top:30px"  ng-repeat="x in l">
+					<div class="order_detail_div_navbar ">
+						Delivery Date 
+					</div>	
+					<div class="hsplit" style="padding:40px;">
+						<div class="col-md-4 col-xs-12 col-sm-2" style="font-size: 14px; padding-top: 20px;">Delivered</div>
+						<div class=" store_name_div col-md-6 col-xs-12 col-sm-6 store_name_div" style="" >
+							<div>Super store-HSR Layout.1589</div>
+							<div style="font-size:12px;  color:#666;padding-top:8px;">Order-ID:OR-77879 </div>
+						</div>
+						<div class="col-md-2 col-xs-12 col-sm-2 view_item_div" >
+							<a href="www.abc.com" style="" class="view_item_link">
+								<div class="hsplit">
+									<div style="width: 90px; "> View 20
+									 item ordered
+									</div>
+									<div style="">
+										<span class="material-icons" style="font-size: 13px;">
+										arrow_forward_ios
+										</span>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+<script>
+
+var api = function(http, api_url, input, callback) {
+  input = input || {}
+  return http({
+    method: "POST",
+    url: api_url,
+    headers: {'Content-Type': 'application/json'},
+    data: input}).then(callback ? function(d) {
+  		callback(d.data)} : callback);
+}
+
+var url_params = new URLSearchParams((new URL(window.location.href)).search)
+
+var app = angular.module('myApp', [])
+app.controller('myCtrl', function($scope,$http) {
+
+	s = $scope
+	$scope.l=[1,2,3,4]
+});
+</script>
+</body>
+</html>

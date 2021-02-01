@@ -68,9 +68,10 @@ def products_in_cart(frontend_dict):
 	query2="select sum(cart.product_quantity * products.price) as total_amount from cart inner join products on cart.product_id=products.id "
 	query2_output = db.readQuery(query2)
 	total_amount = query2_output[0]["total_amount"]
-	return {
+	p = {
 		"total_list": db.readQuery(query1),
 		"total_amount": total_amount}
+	return p
 
 @backend.api('/add_product_quantity_in_cart')
 def add_product_quantity_in_cart(frontend_dict):
@@ -79,6 +80,24 @@ def add_product_quantity_in_cart(frontend_dict):
 		query = "insert into cart (product_id ,product_quantity) values ({product_id}, {product_quantity}) "
 		db.writeQuery(query, frontend_dict)
 	return products_in_cart(frontend_dict)
+
+
+@backend.api('/products_according_to_id')
+def products_according_to_id(frontend_dict):
+	query="select products.*, COALESCE(cart.product_quantity, 0) as product_quantity from products left join cart on products.id=cart.product_id where id={product_id}"
+	output=db.readQuery(query, frontend_dict)
+	if len(output)==0:
+		return {"error":"item not available"}
+	else:
+		return output[0]
+
+@backend.api('/checkout')
+def checkout(frontend_dict):
+	cart_info=products_in_cart({});
+	"insert into orders(store_name , total_amount) values ('sonu store', "+ cart_info['total_amount'] +")"
+	
+
+	
 
 
 backend.run(port=5502)

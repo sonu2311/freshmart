@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<link rel="stylesheet" href="main.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<style>
+	
+div.hsplit:after {
+content: "";
+clear: both;
+display: table;
+}
+
+div.hsplit > div {
+	float: left;
+}
+.scroll_in_profile_page{
+	/*border:solid green 1px; */
+	height: calc(100vh - 50px); 
+	/*overflow-y: scroll; */
+	position: fixed; top: 50px;
+}
+.in_scroll_profile_page_div{
+	margin-top: 25px; color:#666;
+}
+.in_scroll_profile_page_div:hover{
+	color:#337ab7;
+	/*color:#2e6da4;*/
+}
+
+.profile_my_account_div{
+	margin:10px;
+	/*padding:5px;*/
+	/*width:230px;*/
+	height: 360px;
+	border-radius: 3px;
+	text-align: center;
+	/*overflow: hidden;*/
+	cursor: pointer;
+	border:solid #ccc 1px; 
+	box-sizing: border-box;
+	position: relative;
+	/*box-shadow: 2px 3px 5px rgba(0, 0, 0, 0);*/
+}
+.profile_my_account_div:hover {
+	box-shadow: 2px 3px 5px #888888;
+	/*border: #888888;*/
+}
+
+.proflie_page_right_div{
+	/*border:solid red 1px; */
+	width: calc(100vw - 220px); 
+	/*margin-left: 160px; */
+	box-sizing: border-box;
+	margin-left: 190px;
+	margin-top: 30px;
+
+}
+.email_contact_input{
+	padding:5px; border:solid #ccc 1px; outline: none; border-radius: 3px;width:300px; color:#333; max-width: 100%; 
+}
+.email_contact_input:hover{
+	box-shadow: 1px 1px 2px 1px #ccc;
+}
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+	<div ng-include='"header.html"' ></div>
+
+	<div class="hsplit bigest_div" style="">
+		<div class="scroll_in_profile_page" style="border:solid #ccc 1px;">
+			<div class="" style="border:solid #ccc 1px; padding:20px; cursor: pointer; ">
+				<div class="in_scroll_profile_page_div"  style=""> My Account</div>
+				<!-- <div class="in_scroll_profile_page_div"> Persnal detail</div> -->
+				<div class="in_scroll_profile_page_div">Address</div>
+				<!-- <div class="in_scroll_profile_page_div">Edit profile</div> -->
+				<div class="in_scroll_profile_page_div">Custmor Service</div>
+				<div class="in_scroll_profile_page_div">My order</div>
+			</div>
+		</div>
+		<!-- ###### -->
+		<div class="proflie_page_right_div" style=" ">	
+			<div class=" "style=" color:#333;margin-bottom:25px;border-radius: 4px; padding: 20px; box-shadow: 2px 2px 5px #888888;">
+				<div style=" ">
+					<div style="font-size: 25px; font-weight: 300px; padding:1px 5px;">
+						Profile Details
+					</div>
+					<hr>
+					<div style="margin-top: 15px;">
+						<div style=" padding: 7px;margin-bottom:10px;">
+							<span class="material-icons" style="color:#ccc; font-size: 20px; vertical-align: bottom; margin-right: 5px;">
+							person
+							</span>
+							<input type="text" name="" ng-model="user_name" class="email_contact_input">
+							<!-- <span style="">sonu233@gmail.com</span> -->
+						</div>
+						<div style=" padding: 7px;margin-bottom:10px;">
+							<span class="material-icons" style="color:#ccc; font-size: 20px; vertical-align: bottom; margin-right: 5px;">
+							email
+							</span>
+							<input type="text" name="" ng-model="email" class="email_contact_input" disabled="true" >
+							<!-- <span style="">sonu233@gmail.com</span> -->
+						</div>
+						<div style=" padding: 7px ; margin-bottom:10px;">
+							<span class="material-icons" style="color:#ccc; font-size: 20px; vertical-align: bottom; margin-right: 5px;">
+							phone
+							</span>
+							<input type="text" name="" ng-model="contact_number" class="email_contact_input">
+						</div>
+					</div>
+				</div>
+				<div class="login_button_div btn btn-primary active" style="text-align: left; margin-top: 15px; padding-left: 30px;">
+					<button class="login_button" ng-click=login()>Save</button>
+				</div>
+			 </div>
+			 
+			 <!--  -->
+
+			 <!-- <div class="proflie_page_right_div" style=" ">	 -->
+
+			<div class=" "style=" color:#333;margin-bottom:25px;border-radius: 4px; padding: 20px; box-shadow: 2px 2px 5px #888888;">
+				<div style=" ">
+					<div style="font-size: 25px; font-weight: 300px; padding:1px 5px;">
+						Address
+					</div>
+					<hr>
+					<div style=" margin-top:30px; padding: 7px ; margin-bottom:10px; margin-left:25px;">
+						<textarea ng-model="profile_textarea" rows="6" cols="50" style="outline: none; border:solid #ccc 1px;border-radius: 3px; padding:8px; line-height:20px;">	
+						</textarea> 
+					</div>
+					
+				</div>
+				<div class="login_button_div btn btn-primary active" style="text-align: left; margin-top: 15px; padding-left: 30px;">
+					<button class="login_button" ng-click=login()>Save</button>
+				</div>
+			</div>
+
+			 <!--  -->
+			 <div class=" "style=" color:#333;margin-bottom:25px;border-radius: 4px; padding: 20px; box-shadow: 2px 2px 5px #888888;">
+				<div style=" ">
+					<div style="font-size: 25px; font-weight: 300px; padding:1px 5px;">
+						Contact us
+					</div>
+					<hr>
+					<div style=" margin-top:20px; padding: 7px ; margin-bottom:10px; margin-left:5px;">
+							<div>
+								<span class="material-icons" style="color:#ccc; font-size: 20px; vertical-align: bottom; margin-right: 5px;">
+									phone
+								</span>
+								{{service_number}}
+							</div>
+							<div style="margin-top: 12px;">
+								<span class="material-icons" style="color:#ccc; font-size: 20px; vertical-align: bottom; margin-right: 5px;">
+									email
+								</span>
+								{{service_email}}
+							</div>
+					</div>	
+				</div>
+			</div>		 
+		</div>
+		
+<script>
+
+var api = function(http, api_url, input, callback) {
+  input = input || {}
+  return http({
+    method: "POST",
+    url: api_url,
+    headers: {'Content-Type': 'application/json'},
+    data: input}).then(callback ? function(d) {
+  		callback(d.data)} : callback);
+}
+
+var url_params = new URLSearchParams((new URL(window.location.href)).search)
+
+var app = angular.module('myApp', [])
+app.controller('myCtrl', function($scope,$http) {
+
+	s = $scope
+	$scope.email=" sonu233@gmail.com"
+	$scope.contact_number="7877180503"
+	$scope.user_name="sonu"
+	$scope.profile_textarea="At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies."
+	$scope.service_number=88997978
+	$scope.service_email="mohit@gmail.com"
+});
+</script>
+</body>
+</html>

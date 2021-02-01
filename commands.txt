@@ -27,3 +27,34 @@ SELECT column_name(s)
 FROM table1
 INNER JOIN table2
 ON table1.column_name = table2.column_name;
+
+
+
+
+create table orders ( id serial primary key , delivery_date int, store_name varchar(1000),total_amount int);
+
+"insert into orders(store_name , total_amount) values ('sonu store', "+ cart_info['total_amount'] +")"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+select cart.product_quantity, products.price, cart.product_quantity * products.price as total_amount from cart inner join products on cart.product_id=products.id;
+
+select sum(cart.product_quantity * products.price) as total_amount from cart inner join products on cart.product_id=products.id
+

@@ -1,0 +1,31 @@
+
+create table age_table (id int, name varchar(100), age varchar(100));
+
+create table seconditemtable (id int);
+
+insert into seconditemtable values(1);insert into seconditemtable values(1);
+insert into seconditemtable values(2);
+insert into seconditemtable values(3);
+insert into seconditemtable values(4);
+insert into seconditemtable values(5);
+
+insert into age_table values(2,'sonam',45); 
+insert into age_table values(3,'mohit',10); 
+insert into age_table values(4,'rahul',20); 
+insert into age_table values(5,'sunita',5); 
+
+insert into item_table values(1,'bag',50); 
+
+insert into item_table values(2,'copy',150); 
+insert into item_table values(3,'book',10); 
+insert into item_table values(4,'laptop',500); 
+insert into item_table values(5,'pen',5); 
+
+select age_table.*,item_table.item, item_table.price from age_table left join item_table on age_table.idsecon=item_table.id;
+
+select age_table.*,seconditemtable.id from age_table left join seconditemtable on age_table.id=seconditemtable.id;
+
+delete from seconditemtable where id>3;
+
+
+query= " insert into oreders (store_name, total_amount) values ('sonu_stor' , " +  cart_info['total_amount'] +" )"

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="main.css">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<style>
+
+body {
+    margin: 0px;
+    padding: 0px;
+    /*background-color: #f8f8f8;*/
+}
+    
+div.hsplit:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+div.hsplit > div {
+    float: left;
+}
+
+.head_div{
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 50;
+    background-color: white;
+    box-shadow: 0px 0px 10px 0px #ddd;
+    border-bottom: solid #eee 2px;
+
+}
+.logo{
+    margin-left: 30px;
+    /*font-size: 30px;*/
+    font-weight: 900;
+    font-family: "Poppins", sans-serif;
+    margin-top: 5px;
+    /*line-height: 3;*/
+    color: black;
+}
+.title{
+    margin-left: 30px;
+    font-weight: 900;
+    font-family: "Poppins", sans-serif;
+    margin-top: 5px;
+    margin-top: 16px; 
+    /*color:#42a5f5; */
+    /*color:#cc9900;*/
+    color:#bd910f;
+    font-size: 20px; 
+    font-family: roboto; 
+    font-weight: 500;
+}
+.heading{
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    font-weight: 600;
+    padding: 15px 22px;
+    color: #333;
+    border-radius: 2px;
+}
+.heading:hover{
+    cursor: pointer;
+    background-color:#666;
+    color:white;
+}
+.gallery{
+    position: relative;
+}
+.gallery_button{
+    /*border:solid black 1px;*/
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 15px; 
+    height:70px; 
+    border-radius: 3px;
+    background-color: white;
+}
+.gallery_button:hover{
+    background-color:#eee;
+    cursor: pointer;
+}
+.gallery_button_position_left{
+    position: absolute;
+    top:150px;
+    left:0;
+}
+.gallery_button_position_right{
+    position: absolute;
+    top:150px;
+    right:0;
+}
+.forward_icon{
+    font-size: 50px;
+}
+.about{
+    padding: 0px 40px;
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color:#42a5f5;
+    /*color: #cc9900*/
+    /*box-shadow: 2px 2px 7px grey ;*/
+}
+.about_contant{
+    font-family: "Poppins", sans-serif;
+    line-height: 1.8;
+    font-size: 15px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.product_image {
+    text-align: center;
+    border: 1px solid #eee;
+    margin: 25px; padding:15px 0px; padding-bottom: 25px; box-sizing: border-box; font-family: roboto;
+}
+.product_image:hover{
+    box-shadow: 10px 20px 30px #ddd;
+    /*5px 10px 15px #888888;
+*/
+    cursor: pointer;
+}
+.contact{
+    padding: 35px 30px;
+    font-family: "Poppins", sans-serif;
+    font-size: 25px;
+    font-weight: 700;
+}
+.contact_repeat_div {
+    display: inline-block;
+    /*border:solid black 1px;*/
+    /*margin: 20px 30px;*/
+    padding:20px 4px; 
+    /*width:185px; */
+    text-align: center;
+    box-shadow: 0px 10px 20px #ddd;
+    width: 210px;
+}
+.contact_name{
+    /*border:solid red 1px;*/
+    padding: 12px 0px;
+    font-weight:600;
+    font-size: 15px;
+    font-family: "Poppins", sans-serif;
+    color:#333333;;
+    
+}
+.last_div{
+    margin-top: 40px;
+    background-color:black; 
+    padding:30px 0px;
+    text-align:center; 
+    color:white;
+    font-family: "Poppins", sans-serif;
+}
+.sold_item{
+    /*height: 300px;*/
+    padding:100px 10px; 
+    text-align: center; 
+    font-size: 30px;
+    font-weight: 400;
+    font-family: "Poppins", sans-serif;
+    /*font-family: roboto*/
+    /*z-index: 50;*/
+    /*text-shadow: 2px 2px #cc9900;*/
+}
+
+.red_border {
+    border: solid red 1px;
+    box-sizing: border-box;
+}
+
+.hide-xs {
+  display: none;
+}
+.show-xs {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .hide-sm {
+    display: none;
+  }
+  .show-sm {
+    display: block;
+  }
+}
+
+@media (min-width: 992px) {
+  .hide-md {
+    display: none;
+  }
+  .show-md {
+    display: block;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hide-lg {
+    display: none;
+  }
+  .show-lg {
+    display: block;
+  }
+}
+.review_div{
+    padding: 10px; box-shadow: 0px 0px 10px 0px #ddd; border:solid #eee 2px; margin-top: 10px; font-family: roboto; display: inline-block; min-width: 200px; border-radius: 5px;
+}
+.background_image{
+    background-size: cover; background-repeat: no-repeat; width: 100%; box-sizing: border-box; background-position: center;
+}
+.sold_div{
+    text-align: center;box-sizing: border-box;
+}
+.sold_div_span1{
+    color:#42a5f5; font-size: 35px; font-weight: 700; padding-right: 10px;
+}
+.sold_div_span2{
+    color:#333;
+}
+.happy_div-span1{
+    color:#42a5f5; font-size: 35px; font-weight: 700; padding-right: 10px;
+}
+.blue_color{
+    color:#42a5f5;
+}
+</style>
+<body ng-app="myApp" ng-controller="myCtrl">
+    <div class="head_div" style="">
+        <div class="hsplit" style="">
+            <div class="logo" style="">
+                <img style="height: 42px;" src=" https://scontent.fblr1-4.fna.fbcdn.net/v/t31.0-8/11844937_828120540590497_4744714200721220533_o.jpg?_nc_cat=105&ccb=2&_nc_sid=e3f864&_nc_ohc=AoXabZjlDQAAX_AWNUy&_nc_ht=scontent.fblr1-4.fna&oh=d33c6365e2a49180bda60d6a1e4104c8&oe=5FE8AF6D
+                ">
+            </div>
+            <div class=" title">Vighnaharta Fashion Jewellery</div>
+            
+            <div class="hsplit hide-xs show-md" style=" float: right; margin-right: 25px;">
+                <!-- <div class="heading">HOME</div> -->
+                <div class="heading" ng-click="scroll('about')">ABOUT</div>
+                <div class="heading"  ng-click="scroll('product')">PRODUCTS</div>
+                <div class="heading"  ng-click="scroll('review')">REVIEW</div>
+                <div class="heading"  ng-click="scroll('contact')">CONTACT</div>
+            </div>
+        </div>
+    </div>
+    <div style="height: 50px;" ></div>
+
+    <div class="gallery" style="border-top: solid red 1px;">
+        <div style="text-align:center;" >
+            <div>
+                <img style="height: 300px;" src="{{picture_list[mera_focus_kis_tag_pr_h].link}}" >
+            </div>
+        </div>
+        <div class="gallery_button gallery_button_position_left" ng-click="previous_function()">
+            <span class="material-icons forward_icon">
+            keyboard_arrow_left
+            </span>
+        </div>
+        <div class="gallery_button gallery_button_position_right" ng-click="next_function()">
+            <span class="material-icons forward_icon">
+            keyboard_arrow_right
+            </span>
+        </div>
+    </div>
+    
+    <div class="about" id="about">ABOUT</div>
+    <div class="hsplit" style=" margin:20px 40px; margin-bottom: 40px;">
+        <div class="about_contant col-lg-8 col-xs-12">
+            Vighnaharta Fashion Jewellery is a Jewellery store that houses high quality jewellery and accessories with strikingly exquisite designs. With its affordable rates and unique shopping experience, selling the stylish fashion jewellery, Originally housing a stunning collection of Necklaces, Rings, Bangles & Bracelets, Pendant, Mangalsutra Pendant and Earrings.
+            We love fashion, and the inspiration it breeds, and our influence comes from a passion for on-the-pulse and individual styles. We source beautiful, exciting, unusual designs, all hand-picked to make you stand-out from the crowd!
+            It is our sole mission to provide services par excellence, to all our customers. We strive to fulfil the aesthetic and after sales needs of the clients, to provide a comprehensive collection that's affordable while high on quality
+        </div>
+    </div>
+    <div class="about" id="product"> PRODUCTS</div>
+    <div class="hsplit" style="margin: 0px 20px; margin-bottom: 40px;" >
+        <div ng-repeat='x in picture_dic' class="col-lg-4 col-md-4 col-sm-6 col-xs-12" >
+            <a href="{{x.amazon_link}}" style="text-decoration: none;" >
+                <div style="" class="product_image" >
+                    <img style="height:300px; padding:10px; " src={{x.link}} >
+                    <div style="height: 30px; text-align: left; padding: 0px 10px; text-decoration: none; color:black; " >{{x.contant}}</div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="about" id="review"> REVIEW</div>
+    <div style="margin-bottom:40px;">
+        <div style=" margin:10px 40px;">
+            <div ng-repeat="x in reviewes" >
+                <div class="review_div" >
+                    <div style="line-height: 25px;" >
+                        "{{x.review}}"
+                        <a href="{{x.review_link}}" target="_blank" ><span class="material-icons" style="font-size: 15px; padding-left: 10px;">
+                        open_in_new
+                        </span></a>
+                    </div>
+                    <div style="text-align: right; font-size: 13px; color: #aaa;" >
+                        - {{x.name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hsplit background_image" style="background-image: url(https://vyaparwebsiteimages.vypcdn.in/background_ratings.svg); "  >
+        <div class="sold_div sold_item col-sm-6 col-lg-6 col-md-6 col-xs-12" style="">
+            <span class="sold_div_span1"> 34500</span>
+            <span class="sold_div_span2" style="">Products Sold </span>
+        </div>
+        <div class="sold_item col-sm-6 col-lg-6 col-md-6 col-xs-12" style="box-sizing: border-box;">
+            <span class="happy_div-span1" style="">16000</span>
+            <span class="sold_div_span2">Happy customers</span>
+         </div>
+    </div>
+
+    <div class="contact" style="text-align: center;" id="contact"> Contact</div>
+    <div class="hsplit" style="margin: 0px 4px;" >
+        <div class="col-sm-1 col-md-2 col-lg-3"></div>
+        <div class="col-xs-6 col-sm-5 col-md-4 col-lg-3" style="text-align: center;" >
+            <div class="contact_repeat_div" >
+                <div >
+                    <span class="material-icons blue_color" style="font-size: 30px; ">
+                    mail_outline
+                    </span>
+                </div>
+                <div class="contact_name">EMAIL</div>
+                <div style="padding:5px 0px;">
+                    info.vighnahartafj@gmail.com
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-5 col-md-4 col-lg-3" style="text-align: center;"  >
+            <div class="contact_repeat_div" >
+                <div >
+                    <span class="material-icons blue_color" style="font-size: 30px; ">
+                    graphic_eq
+                    </span>
+                </div>
+                <div class="contact_name">SOCIAL MEDIA</div>
+                <div>
+                    <a href="https://www.facebook.com/Vighnaharta-Fashion-Jewellery-724793490923203/">
+                        <span class="material-icons blue_color">
+                        facebook
+                        </span>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-1 col-md-2 col-lg-3"></div>
+    </div>
+    <div class="last_div">© 2020 Vighnaharta Fashion Jewellery</div>
+<script>
+var app = angular.module('myApp', [])
+app.controller('myCtrl', function($scope) {
+    $scope.picture_list=[
+                    
+                    {"link":"https://images-na.ssl-images-amazon.com/images/I/71U3kULtTNL._UL1500_.jpg"},
+                    {"link":"https://images-na.ssl-images-amazon.com/images/I/71hQaoQH2tL._UY500_.jpg"},
+                    {"link":"https://images-na.ssl-images-amazon.com/images/I/71OCKzHntFL._UL1500_.jpg"},
+                    {"link":"https://images-na.ssl-images-amazon.com/images/I/81SYSeQO5uL._UL1500_.jpg"}
+    ]
+
+    $scope.picture_dic={
+                        "image1":{
+                            "link":"https://images-na.ssl-images-amazon.com/images/I/71hQaoQH2tL._UY500_.jpg",
+                            "contant":"Zeneme Traditional Gold Plated Designer Bangles Jewellery for Women/Girls",
+                            "amazon_link":"https://www.amazon.in/Zeneme-Gold-Plated-Bangle-Women-Girls/dp/B01GL91HE6/ref=pd_day0_197_2/260-2734098-4425518"
+                        },
+                        "image2":{
+                            "link":"https://images-na.ssl-images-amazon.com/images/I/81SYSeQO5uL._UL1500_.jpg",
+                            "contant":"Vighnaharta Traditional South Screw Back Alloy Gold and Micron Plated Round Earring",
+                            "amazon_link":"https://www.amazon.in/VFJ-VIGHNAHARTA-FASHION-JEWELLERY-Traditional/dp/B07PRC5JQV/ref=sr_1_1"
+                        },
+                        "image3":{
+                            "link":"https://images-na.ssl-images-amazon.com/images/I/71U3kULtTNL._UL1500_.jpg",
+                            "contant":"Vighnaharta 1gm Gold Plated Alloy Bangle for Women and Girls - Pack of 2 pcs Bangle",
+                            "amazon_link":"https://www.amazon.in/Vighnaharta-Plated-Alloy-Bangle-Women/dp/B082G5XJ3C/ref=sr_1_4"
+                        },
+                        "image4":{
+                            "link":"https://images-na.ssl-images-amazon.com/images/I/71OCKzHntFL._UL1500_.jpg",
+                            "contant":"Regular Fit Mix Size White Silver Plated Non-Precious Metal Combo Ring Set for Women ",
+                            "amazon_link":"https://www.amazon.in/VFJ-VIGHNAHARTA-FASHION-JEWELLERY-Non-Precious/dp/B07RNZCZCB/ref=sr_1_10"
+                        },
+                        "image5":{
+                            "link":"https://images-na.ssl-images-amazon.com/images/I/719mhxo46yL._UL1500_.jpg",
+                            "contant":"Vighnaharta Gold Plated Alloy Bangle for Women and Girls",
+                            "amazon_link":"https://www.amazon.in/Vighnaharta-Plated-Alloy-Bangle-Women/dp/B08KY9JY12/ref=sr_1_94"
+                        },
+                        "image6":{
+                            "link":"https://images-na.ssl-images-amazon.com/images/I/61v9OKuDBIL._UL1500_.jpg",
+                            "contant":"Vighnaharta Gold And Rhodium Plated Alloy and Cubic Zirconia Dual Heart Ring for Women & Girls",
+                            "amazon_link":"https://www.amazon.in/Vighnaharta-Rhodium-Plated-Girls-VFJ1417FRG10/dp/B07L8K9WV8/ref=sr_1_144"
+                        }
+                    
+                    }
+
+    $scope.reviewes=[
+        {
+            "review":"Looks good like real gold bangles. Good quality. Awesome fir the price paid. Happy with it.",
+            "name":"Aditya",
+            "review_link":"https://www.amazon.in/gp/customer-reviews/R12RATH2228NWD/ref=cm_cr_dp_d_rvw_ttl?ie=UTF8&ASIN=B01GL91HE6"
+        }, {
+            "review":"Love the product .IT Really looks likes Gold",
+            "name":"Savitha Nair",
+            "review_link":"https://www.amazon.in/gp/customer-reviews/R123SASYE6GWUH/ref=cm_cr_dp_d_rvw_ttl?ie=UTF8&ASIN=B07PRC5JQV"
+        },
+        {
+            "review":"This product came as I expected without any damage...&it delivered before delivery date.....",
+            "name":"Namratha Alla",
+            "review_link":"https://www.amazon.in/gp/customer-reviews/R2I155FQXIRUQV/ref=cm_cr_dp_d_rvw_ttl?ie=UTF8&ASIN=B07PRC5JQV"
+        },
+        {
+            "review":"Very pretty and elegant looks but not sure if these are for daily wear. Look like real gold.",
+            "name":"Rajasree Bhattacharyya",
+            "review_link":"https://www.amazon.in/gp/customer-reviews/RR4VKIS5ZQRLT/ref=cm_cr_dp_d_rvw_ttl?ie=UTF8&ASIN=B01GL91HE6"
+        },
+        ]
+    $scope.mera_focus_kis_tag_pr_h=0
+
+    $scope.next_function=function(){
+        $scope.mera_focus_kis_tag_pr_h=($scope.mera_focus_kis_tag_pr_h+1)%$scope.picture_list.length
+    }
+
+    $scope.previous_function=function(){
+        $scope.mera_focus_kis_tag_pr_h=($scope.mera_focus_kis_tag_pr_h - 1 + $scope.picture_list.length) % $scope.picture_list.length
+    }
+    
+    $scope.move=function(){
+
+    }
+    $scope.scroll=function(x){
+        window.scrollTo(0, document.getElementById(x).offsetTop - 70)
+    }
+});
+</script>
+</body>
+</html>

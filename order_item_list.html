@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<link rel="stylesheet" href="main.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<style>
+table {
+  border-collapse: collapse;
+  /*width: 100%;*/
+}
+
+td, th {
+  /*text-align: left;*/
+  text-align: center;
+  padding: 8px;
+}
+td{
+	padding: 30px 10px;
+}
+/*tr:nth-child(odd){background-color: #f2f2f2}*/
+
+.cart_row {
+	border-bottom: solid #ddd 1px;
+}
+
+
+th {
+  background-color: #f9f9f9;
+  color: #666;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 20px 5px;
+  /*border: solid black 1px;*/
+  /*box-sizing: border-box;*/
+}
+
+.th_image_width{
+	width:100px;
+	text-align: left
+
+}
+.th_name_width{
+	width: calc(100vw - 500px); 
+	text-align: left;
+	
+}
+.th_price_width{
+	width:120px;
+	
+}
+.th_add_quantity_width{
+	width:210px;
+	
+}
+.th_discount_width{
+	width:80px;
+	
+}
+.th_save_price_width{
+	width:100px;
+	
+}
+.th_total_price_width{
+	width:100px;
+	
+}
+
+.cart_name_div{
+	/*border:solid black 1px; */
+	margin-top: 22px; padding-left: 105px; 
+	font-size: 22px;font-weight: 600;  
+}
+.order_detail_div_navbar{
+	background-color:#f9f9f9; 
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	font-weight: 500;
+	padding: 12px 0 12px 30px;
+	font-size: 12px;
+
+}
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+	<div ng-include='"header.html"' ></div>
+	
+	<div class="hsplit" style=" padding:30px 0px;">
+    	<div class="col-md-1"></div>
+	 	<div class="col-md-10 col-xs-12" style="color:#333;margin-bottom:25px;border-radius: 4px; box-shadow: 2px 2px 5px #888888;  margin-top:30px">
+	 		<div style="border:solid #ccc 1px;" class="order_detail_div_navbar"> Super store-HSR Layout.1589</div>
+		    <table>
+				  <!-- <tr>
+				  	<th class="th_image_width">Image</th>
+				    <th class="th_name_width">Name</th>
+				    <th class="th_price_width">Price</th>
+				    <th class="th_add_quantity_width">Add quantity</th>
+				    <th class="th_discount_width">Discount</th>
+				    <th class="th_save_price_width">Save price</th>
+				    <th class="th_total_price_width">subtotal</th>
+				  </tr> -->
+				  <tr ng-repeat='x in l' class="cart_row" >
+				    <td class="th_add_quantity_width">
+				    	<img src='' style="width:60px;">image
+				    </td>
+				    <td style="max-width: 200px; text-align: left" class="th_name_width">1
+				    </td>
+				    <td class="th_price_width">2</td>
+					<td class="th_discount_width">5</td>
+					<td class="th_total_price_width">subtotal</td>
+					<td class="th_total_price_width">sub</td>
+					<td class="th_total_price_width">sub5</td>
+				  </tr>
+			</table>
+
+			<div class="hsplit" style="text-align: right; padding: 15px; ">
+				<div class="th_total_price_width" style="float:right;text-align: center;  ">total_amount</div>
+				<div class="th_discount_width" style="float:right; text-align: center; ">TOTAL</div>
+			</div>
+
+		</div>
+
+	</div>
+<script>
+
+var api = function(http, api_url, input, callback) {
+  input = input || {}
+  return http({
+    method: "POST",
+    url: api_url,
+    headers: {'Content-Type': 'application/json'},
+    data: input}).then(callback ? function(d) {
+  		callback(d.data)} : callback);
+}
+
+var url_params = new URLSearchParams((new URL(window.location.href)).search)
+
+var app = angular.module('myApp', [])
+app.controller('myCtrl', function($scope,$http) {
+
+	s = $scope
+	$scope.l=[1,2,3,4,5]
+});
+</script>
+</body>
+</html>

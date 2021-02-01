@@ -44,7 +44,7 @@ div.hsplit > div {
     margin-top: 16px; 
     /*color:#42a5f5; */
     /*color:#cc9900;*/
-    color:#bd910f;
+    color:#337ab7;
     font-size: 20px; 
     font-family: roboto; 
     font-weight: 500;
@@ -1125,7 +1125,14 @@ div.hsplit > div {
     /*display: none;*/
 }
 .discount_div{
-	position:absolute; left:0px; color:#fff; background-color:#4c91cd; padding:2px 5px;margin:10px; border-radius: 3px; box-sizing: border-box;  font-size: 15px; width:50px; 
+	position:absolute; 
+	left:0px; color:#fff; 
+	background-color:#4c91cd; 
+	padding:2px 5px;margin:10px; 
+	border-radius: 3px; 
+	box-sizing: border-box;  
+	font-size: 15px; 
+	width:50px; 
 }
 .image_div{
 	height:250px; overflow: hidden; 
@@ -1142,7 +1149,8 @@ div.hsplit > div {
 	 color:#666;
 }
 .add_remove_class{
-	font-size: 22px;font-weight: 200; color:#337ab7; margin-top: 8px; 
+	font-size: 22px;font-weight: 200; 
+  color:#337ab7; margin-top: 8px; 
 	/*border:solid red 1px;*/
 	margin-bottom: 0px; 
 	cursor: pointer;

@@ -70,6 +70,40 @@ th {
 	/*border:solid black 1px; */
 	margin-top: 22px; padding-left: 105px; font-size: 22px;font-weight: 600;  
 }
+.checkout_div{
+	/*font-size: 20px;*/
+	margin-bottom: 30px; 
+	margin-right: 130px; 
+	margin-left:130px; 
+	/*background-color: #333; */
+	/*color:#ccc;*/
+	padding:10px;
+	text-align: right;
+}
+.checkout_button{
+    background-color:#ebf3f9
+    border-color: #ccc; 
+    color:#337ab7;
+    /*width:200px;*/
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    padding: 10px 35px;
+    font-size: 16px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    outline: none;
+}
+.checkout_button:hover{
+    box-shadow: 2px 3px 5px #ccc;
+}
 </style>
 <body ng-app="myApp" ng-controller="myCtrl">
     <div ng-include='"header.html"' ></div>
@@ -124,11 +158,12 @@ th {
 				<div class="th_total_price_width" style="float:right;text-align: center;  ">{{total_amount}}</div>
 				<div class="th_discount_width" style="float:right; text-align: center; ">TOTAL</div>
 			</div>
-
 		</div>
-
 	</div>
-    <!-- <div style="font-size: 40px; margin-top: 100px;text-align: center;" >This is  Cart.</div> -->
+	<!-- <div  >This is  Cart.</div> -->
+	<div class="checkout_div"><button class="checkout_button">Check Out</button></div>
+
+    
 <script>
 var api = function(http, api_url, input, callback) {
   input = input || {}
@@ -164,6 +199,12 @@ app.controller('myCtrl', function($scope, $http) {
 		api($http, '/add_product_quantity_in_cart',{"product_id": p.id, "product_quantity": p.product_quantity},function(backend_output){
 				$scope.list= backend_output.total_list
 				$scope.total_amount=backend_output.total_amount
+		})
+	}
+
+	$scope.checkout=function(){
+		api($http, '/checkout', {},function(backend_output){
+
 		})
 	}
 		

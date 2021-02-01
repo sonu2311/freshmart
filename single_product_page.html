@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<link rel="stylesheet" href="main.css">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<style>
+	
+div.hsplit:after {
+content: "";
+clear: both;
+display: table;
+}
+
+div.hsplit > div {
+	float: left;
+}
+.gallery{
+    position: relative;
+     /*border:solid red 1px;
+    box-sizing: border-box;*/
+}
+.gallery_button{
+    /*border:solid black 1px;*/
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 15px; 
+    height:70px; 
+    border-radius: 3px;
+    background-color: white;
+    color:#666;
+    /*font-weight:400;
+    font-size: 5px;*/
+}
+.gallery_button:hover{
+    background-color:#eee;
+    cursor: pointer;
+}
+.gallery_button_position_left{
+    position: absolute;
+    top:150px;
+    left:0;
+}
+.gallery_button_position_right{
+    position: absolute;
+    top:150px;
+    right:0;
+}
+.forward_icon{
+    /*font-size: 50px;*/
+}
+.single_page_discount_div{
+  background-color:#4c91cd; 
+  padding:6px 5px;
+  margin:10px 0px; 
+  border-radius: 3px; 
+  box-sizing: border-box;  
+  font-size: 14px; 
+  width:70px;
+  text-align: center; 
+  
+  color:white;
+  border:solid #ddd 1px; 
+}
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+	<div ng-include='"header.html"' ></div>
+
+  <div style="margin-top: 10px;">
+    <div class="hsplit" style="border:solid #ccc 1px;">
+      <!-- <div style="border:solid #ccc 1px; box-sizing: border-box;" class="col-lg-6 col-sm-12 hsplit"> -->
+        <div class="gallery col-lg-6 col-sm-6 col-md-6 col-xs-12" >
+          <!-- <div style="text-align:center;" > -->
+              <div style="text-align: center; padding: 40px 50px;">
+                  <img style="height: 300px;" src="{{d.image}}" >
+              </div>
+          <!-- </div> -->
+          <div class="gallery_button gallery_button_position_left" >
+              <span class="material-icons forward_icon">
+              keyboard_arrow_left
+              </span>
+          </div>
+          <div class="gallery_button gallery_button_position_right" >
+              <span class="material-icons forward_icon">
+              keyboard_arrow_right
+              </span>
+          </div>
+      </div>
+
+
+      
+      <div style="box-sizing: border-box; padding: 40px 30px;" class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+        <!-- <div>{{d}}</div> -->
+        <div class="single_page_discount_div" >{{d.discount}}% OFF</div>
+
+        <div style="padding: 10px 0px; font-size: 22px;">
+          {{d.name}}
+        </div>
+        <div style="padding: 10px 0px; "> Selling price:
+
+        <span style="font-size: 20px; font-weight: 600; color:#444;"> 
+         <span style="font-size: 15px;">₹</span> {{d.price}}
+        </span>
+        </div>
+
+        
+        
+        <!-- <div style="padding: 10px;"> uhkjhk</div> -->
+        <div class="hsplit" style=" padding:10px 0px; height:40px;">
+                <!-- <div  class="price_in_product_detail" >{{x.price}}</div> -->
+
+                <div class=" add_cart" style=" padding:12px 30px; background-color: #2e6da4; color:#eee; font-size: 15px; cursor: pointer; border-radius: 2px; color:white;" ng-if='d.product_quantity == 0'  ng-click="add_product_quantity_in_cart()">Add To Cart</div>
+
+                <div class="hsplit add_remove_comman_div" style=" padding-left: 7px;" ng-if="d.product_quantity > 0" >
+                  <div >
+                    <span class="material-icons add_remove_class margin_right_5" ng-click="remove_product_quantity_in_cart()" >
+                    remove_circle_outline
+                    </span>
+                  </div>
+                  <div class="add_number" style="padding-top: 3px;">
+                    <span >{{d.product_quantity}}</span>
+                  </div>
+                  <div >
+                    <span class="material-icons add_remove_class margin_left_5" ng-click="add_product_quantity_in_cart()" >
+                    add_circle_outline
+                    </span>
+                  </div>
+                </div>
+                
+          </div>
+
+        <!-- <div style="padding: 10px;">uhkjhk</div> -->
+         <div style=" padding:10px 0px;">{{d.description}}</div>
+      </div>
+    </div>
+  </div>
+
+  
+<script>
+
+var api = function(http, api_url, input, callback) {
+  input = input || {}
+  return http({
+    method: "POST",
+    url: api_url,
+    headers: {'Content-Type': 'application/json'},
+    data: input}).then(callback ? function(d) {
+  		callback(d.data)} : callback);
+}
+
+var url_params = new URLSearchParams((new URL(window.location.href)).search)
+
+var app = angular.module('myApp', [])
+app.controller('myCtrl', function($scope,$http) {
+
+	s = $scope
+
+  $scope.add_product_quantity_in_cart=function(){
+    $scope.d.product_quantity += 1
+    api($http, '/add_product_quantity_in_cart',{"product_id": $scope.d.id, "product_quantity": $scope.d.product_quantity},function(backend_output){
+        $scope.list= backend_output.total_list
+        // $scope.total_amount=backend_output.total_amount
+    })
+  }
+
+  $scope.remove_product_quantity_in_cart=function(){
+    $scope.d.product_quantity -= 1
+    api($http, '/add_product_quantity_in_cart',{"product_id": $scope.d.id, "product_quantity": $scope.d.product_quantity},function(backend_output){
+        $scope.list= backend_output.total_list
+        // $scope.total_amount=backend_output.total_amount
+    })
+  }
+
+  $scope.product_id = url_params.get("product_id")
+  api($http, '/products_according_to_id',{ "product_id": $scope.product_id },function(backend_output){
+    $scope.d=backend_output
+  })
+
+});
+</script>
+</body>
+</html>

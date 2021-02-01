@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 <link rel="stylesheet" href="main.css">
-
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="load_store.js"></script>
 <style>
@@ -40,18 +40,23 @@ div.hsplit > div {
 				<div ng-repeat="x in list" class=" col-xs-12 col-sm-6 col-lg-4 box_sizing">
 					<div class="border" style="">
 						<div class="discount_div ">{{x.discount}}%</div>
-						<div  class="image_div">
-							<img class="image_width" src="{{x.image}}" >
-						</div>
+						<a href="http://0.0.0.0:5502/single_product_page.html?product_id={{x.id}}">
+							<div style="height: 250px; text-align: center; overflow: hidden; vertical-align: middle; white-space: nowrap;" >
+								<span style="vertical-align: middle;height: 100%; display: inline-block; visibility: hidden;" ></span>
+								<img style="max-height: 250px; max-width: 100%; vertical-align: middle" src="{{x.image}}" >
+							</div>
+						</a>
 						<div  class="product_detail_div " >
 							<!-- <div class="padding_10"><img style='width:90%' src="{{x.image}}" > </div> -->
-							<div >{{x.name}}</div>
-							<div >{{x.price}} kg </div>
-							<!-- <div class="padding_10">{{x.discount}}%</div>
-							<div class="padding_10">{{x.description}}</div> -->
+							<div style="overflow: hidden;
+          						text-overflow: ellipsis; white-space: nowrap; ">
+      							{{x.name}}
+      						</div>
+							<div > {{x.product_quantity}}</div>
 							
 							<div class="hsplit" style="">
-								<div  class="price_in_product_detail" >{{x.price}}</div>
+								<div  class="price_in_product_detail" >
+									<span style="font-size: 15px;">₹</span> {{x.price}}</div>
 								<div class=" add_cart" style="float:right;" ng-if='x.product_quantity == 0'  ng-click="add_product_quantity(x)">Add To Cart</div>
 
 								<div class="hsplit add_remove_comman_div" style="float:right;" ng-if="x.product_quantity > 0" >
@@ -68,13 +73,13 @@ div.hsplit > div {
 										add_circle_outline
 										</span>
 									</div>
-								</div>
-								
+								</div>	
 							</div>
 						</div>
-					 </div>
+					</div>
 				 </div>
 			 </div>
+			 <div style="height: 200px;" ></div>
 		</div>
 	</div>
 <script>

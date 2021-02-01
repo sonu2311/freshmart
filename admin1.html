@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 <link rel="stylesheet" href="main.css">
-
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="load_store.js"></script>
 <style>
@@ -110,6 +110,9 @@ body {
 						Product image=<br>
 						name={{x.name}}
 						<br>{{x.price}}<br>{{x.discount}}<br>{{x.image}}<br>{{x.description}}
+						<div>
+							<img style="max-height: 50px; max-width: 50px;" src="{{x.image}}">
+						</div>
 					</div>
 					<div class="edit_div" ng-if="x.editing">
 						<div>
@@ -249,22 +252,25 @@ app.controller('myCtrl', function($scope,$http) {
 	// })
 
 	// $scope.edit_variable=false
-
-	$scope.edit=function(p) {
-			p.editing=!p.editing
-	}
-	$scope.update=function(n){
-		api($http, '/product_update',n, function(backend_output){
-			$scope.list=backend_output	
-		});
-	}
-	
 	$scope.save=function(){
 		api($http, '/add_product', { "name":$scope.name, "price":$scope.price,"discount":$scope.discount,"image":$scope.image, "description":$scope.description }, function(backend_output){
 			$scope.list=backend_output
 		})
 	}
 
+
+	$scope.edit=function(p) {
+			p.editing=!p.editing
+	}
+
+	// yha n=us dictionary ko show kr rha h jo hma frontend se backend me bhejte h usko yha phlr input me liya gya h is function me matbl ki jo dict.input me aayegi vhi yha se api ke thrue yha se jayegi kyuki hm product ko update krenge to vo ek dict. ko denot krta h to jisko hme update krna h usko input me bhejnge.
+	$scope.update=function(n){
+		api($http, '/product_update',n, function(backend_output){
+			$scope.list=backend_output	
+		});
+	}
+	
+	// yha pr all_products api ki jrurt ni thi but ye api bnayi hui thi tho yha bi use kr li bs jada iska use ni h
 	api($http,'/all_products', {},function(backend_output) {
 		$scope.list = backend_output
 	})
