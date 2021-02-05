@@ -1,5 +1,6 @@
 from flask_lib import FlaskLib
 import database
+import time
 
 
 backend = FlaskLib()
@@ -94,10 +95,43 @@ def products_according_to_id(frontend_dict):
 @backend.api('/checkout')
 def checkout(frontend_dict):
 	cart_info=products_in_cart({});
-	"insert into orders(store_name , total_amount) values ('sonu store', "+ cart_info['total_amount'] +")"
-	
+	query1="insert into orders(store_name , total_amount, ordered_at, expected_delivery_at, status) values ('sonu store', {total_amount}, {ordered_at}, {expected_delivery_at}, 'ORDERED')"
+	frontend_dict['total_amount'] = cart_info['total_amount']
+	frontend_dict['ordered_at'] = int(time.time())
+	frontend_dict['expected_delivery_at'] = frontend_dict['ordered_at'] + 48*3600
+	db.writeQuery(query1, frontend_dict)
 
-	
+	A="select max(id) As order_id from orders"
+	B=db.readQuery(A)[0]['order_id']
+	print(B)
+
+	for i in cart_info['total_list']:
+		p = {"x" : B, "y": i["id"], "z": i["product_quantity"]}
+		db.writeQuery("insert into order_items (order_id , product_id, product_quantity) values({x}, {y}, {z})", p)
+	db.writeQuery("delete from cart")
+
+@backend.api('/orders')
+def orders(frontend_dict):
+	query=db.readQuery("select * from orders order by id desc")
+	print(query)
+	return  query
+
+@backend.api('/order_item')
+def order_item(frontend_dict):
+	query1="select order_items.*,products.id, products.image, products.price,products.name, product_quantity*products.price As subtotal from order_items left join products on order_items.product_id=products.id where order_items.order_id={order_id}"
+
+	return db.readQuery( query1, frontend_dict)
+
+
+@backend.api('/orders_details')
+def orders_details(frontend_dict):
+	return db.readQuery("select * from orders order by id desc")
+
+
+@backend.api('/Status_save')
+def Status_save(frontend_dict):
+	db.writeQuery("UPDATE orders SET status = {status} WHERE id={order_id}", frontend_dict)
+	return db.readQuery("select * from orders order by id desc")
 
 
 backend.run(port=5502)

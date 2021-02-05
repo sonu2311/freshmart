@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<link rel="stylesheet" href="main.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<style>
+
+.button-small {
+    padding: .10rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+.button-small:hover{
+	background-color: #2d6a9f;
+	box-shadow:2px 3px 5px #ccc;
+
+}
+
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+	<div ng-include='"header.html"' ></div>
+
+	<div class="hsplit" style=" padding:2px 0px; " >
+    	<div class="col-md-1 col-sm-1" ></div>
+	 	<div class="col-md-10 col-sm-10 col-xs-12" style="color:#333;margin-bottom:25px;border-radius: 4px; box-shadow: 2px 2px 5px #888888;  margin-top:20px">
+	 		<div style="border:solid #ccc 1px;" class="order_detail_div_navbar">Super store-HSR Layout.1589</div>
+		    <table>
+				  <tr>
+				  	<th class="th_image_width">Id</th>
+				    <th class="th_name_width">Store Name</th>
+				    <th class="th_price_width">Order at</th>
+				    <th class="th_add_quantity_width">delivery at</th>
+				    <th class="th_discount_width">expect delivery</th>
+				    <th class="th_save_price_width">Total Amount</th>
+				    <th class="th_total_price_width">Status</th>
+				    <th class="th_total_price_width"></th>
+				  </tr>
+				  <tr class="cart_row" ng-repeat="x in l" >
+				    <!-- <td class="th_add_quantity_width">
+				    	<img src='' style="width:60px;">
+				    </td> -->
+				    <td style="max-width: 50px; " class="th_image_width">{{x.id}}
+				    </td>
+				    <td class="th_name_width" style="">{{x.store_name}}</td>
+					<td class="th_discount_width">{{x.order_at}}</td>
+					
+					<td class="th_total_price_width">{{x.delivery_at}}</td>
+					<td class="th_total_price_width">{{x.expect_delivery}}</td>
+
+					<td class="th_total_price_width"> <span style="font-size: 15px;">₹</span> {{x.total_amount}}</td>
+					<td class="th_total_price_width">
+						<select style="outline: none;padding:2px 1px;" ng-model="x.status">
+							<option>ORDERED</option>
+							<option>CONFIRMED </option>
+							<option>SHIPPED</option>
+							<option>DELIVERED</option>
+						</select>
+					</td>
+					<td class="th_total_price_width">
+						<button class="button-small" ng-click="Status_save(x)" >Save</button>
+					</td>
+				  </tr>
+			</table>
+		</div>
+	</div>
+<script>
+
+var api = function(http, api_url, input, callback) {
+  input = input || {}
+  return http({
+    method: "POST",
+    url: api_url,
+    headers: {'Content-Type': 'application/json'},
+    data: input}).then(callback ? function(d) {
+  		callback(d.data)} : callback);
+}
+var app = angular.module('myApp', [])
+app.controller('myCtrl', function($scope,$http) {
+
+
+	s = $scope
+	api($http, '/orders_details', {},function(backend_output){
+				$scope.l= backend_output
+	})
+	
+	$scope.Status_save=function(p){
+		api($http, '/Status_save', {"order_id":p.id, "status":p.status},function(backend_output){
+				$scope.l= backend_output
+		})
+	}
+	
+});
+</script>
+</body>
+</html>

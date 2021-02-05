@@ -1176,3 +1176,81 @@ div.hsplit > div {
 .price_in_product_detail{
 	font-size: 17px; font-weight: 600; color:#333; margin-top: 8px;
 }
+/**/
+table {
+  border-collapse: collapse;
+  /*width: 100%;*/
+}
+
+td, th {
+  /*text-align: left;*/
+  text-align: center;
+  padding: 8px;
+}
+td{
+  padding: 30px 10px;
+}
+/*tr:nth-child(odd){background-color: #f2f2f2}*/
+
+.cart_row {
+  border-bottom: solid #ddd 1px;
+}
+
+
+th {
+  background-color: #f9f9f9;
+  color: #666;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 20px 5px;
+  /*border: solid black 1px;*/
+  /*box-sizing: border-box;*/
+}
+
+.th_image_width{
+  width:100px;
+  text-align: left
+
+}
+.th_name_width{
+  width: calc(100vw - 500px); 
+  text-align: left;
+  
+}
+.th_price_width{
+  width:120px;
+  
+}
+.th_add_quantity_width{
+  width:210px;
+  
+}
+.th_discount_width{
+  width:80px;
+  
+}
+.th_save_price_width{
+  width:100px;
+  
+}
+.th_total_price_width{
+  width:100px;
+  
+}
+
+.cart_name_div{
+  /*border:solid black 1px; */
+  margin-top: 22px; padding-left: 105px; 
+  font-size: 22px;font-weight: 600;  
+}
+.order_detail_div_navbar{
+  background-color:#f9f9f9; 
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  font-weight: 500;
+  padding: 12px 0 12px 30px;
+  font-size: 12px;
+
+}

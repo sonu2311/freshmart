@@ -88,32 +88,42 @@ th {
 </head>
 <body ng-app="myApp" ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
-	
-	<div class="hsplit" style=" padding:30px 0px;">
-    	<div class="col-md-1"></div>
-	 	<div class="col-md-10 col-xs-12" style="color:#333;margin-bottom:25px;border-radius: 4px; box-shadow: 2px 2px 5px #888888;  margin-top:30px">
-	 		<div style="border:solid #ccc 1px;" class="order_detail_div_navbar"> Super store-HSR Layout.1589</div>
+
+	<div class="hsplit " style="margin-top:20px;" ng-if="l.length==0">
+		<div class="col-md-8 col-sm-10 col-xs-8" style="">
+			<img style="width: 100%;" src="https://complianceandethics.org/wp-content/uploads/2017/03/AdobeStock_53712600.jpg"> 
+		</div>
+		<div class="col-md-3 col-sm-2 col-xs-3" style="margin-top: 40px;">
+			<h2 style="color:#4db2ec;">Oops!</h2>
+			<p>The page you are looking for can’t be found.</p>
+		</div>
+	</div>
+	<div class="hsplit" style=" padding:30px 0px;" ng-if="l.length>0" >
+    	<div class="col-md-3 col-sm-2" ></div>
+	 	<div class="col-md-6 col-sm-8 col-xs-12" style="color:#333;margin-bottom:25px;border-radius: 4px; box-shadow: 2px 2px 5px #888888;  margin-top:30px">
+	 		
+	 		<div style="border:solid #ccc 1px;" class="order_detail_div_navbar" > Super store-HSR Layout.1589</div>
 		    <table>
-				  <!-- <tr>
-				  	<th class="th_image_width">Image</th>
+				  <tr>
+				  	<!-- <th class="th_image_width">Image</th>
 				    <th class="th_name_width">Name</th>
 				    <th class="th_price_width">Price</th>
 				    <th class="th_add_quantity_width">Add quantity</th>
 				    <th class="th_discount_width">Discount</th>
 				    <th class="th_save_price_width">Save price</th>
-				    <th class="th_total_price_width">subtotal</th>
-				  </tr> -->
+				    <th class="th_total_price_width">subtotal</th> -->
+				  </tr>
 				  <tr ng-repeat='x in l' class="cart_row" >
 				    <td class="th_add_quantity_width">
-				    	<img src='' style="width:60px;">image
+				    	<img src='{{x.image}}' style="width:60px;">
 				    </td>
-				    <td style="max-width: 200px; text-align: left" class="th_name_width">1
+				    <td style="max-width: 200px; text-align: left" class="th_name_width">{{x.name}}
 				    </td>
-				    <td class="th_price_width">2</td>
-					<td class="th_discount_width">5</td>
-					<td class="th_total_price_width">subtotal</td>
-					<td class="th_total_price_width">sub</td>
-					<td class="th_total_price_width">sub5</td>
+				    <td class="th_price_width">{{x.product_quantity}} </td>
+					<td class="th_discount_width"> <span style="font-size: 15px;">₹</span> {{x.price}}</td>
+					<td class="th_total_price_width"> <span style="font-size: 15px;">₹</span> {{x.subtotal}}</td>
+					<!-- <td class="th_total_price_width">sub</td>
+					<td class="th_total_price_width">sub5</td> -->
 				  </tr>
 			</table>
 
@@ -121,9 +131,7 @@ th {
 				<div class="th_total_price_width" style="float:right;text-align: center;  ">total_amount</div>
 				<div class="th_discount_width" style="float:right; text-align: center; ">TOTAL</div>
 			</div>
-
 		</div>
-
 	</div>
 <script>
 
@@ -143,7 +151,15 @@ var app = angular.module('myApp', [])
 app.controller('myCtrl', function($scope,$http) {
 
 	s = $scope
-	$scope.l=[1,2,3,4,5]
+	// $scope.l=[1,2,3,4,5]
+
+var url_params = new URLSearchParams((new URL(window.location.href)).search)
+
+		$scope.order_id = url_params.get("order_id")
+			api($http, '/order_item', {"order_id": $scope.order_id },function(backend_output){
+				$scope.l= backend_output
+			})
+	
 });
 </script>
 </body>
