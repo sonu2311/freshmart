@@ -1,5 +1,6 @@
 from flask import Flask, request, send_from_directory
 import json
+import inspect
 
 class FlaskLib:
 	def __init__(self):
@@ -25,7 +26,9 @@ class FlaskLib:
 					request_input = json.loads(url_args['json'])
 				else:
 					request_input = request.json or url_args
-				return json.dumps(f(request_input))
+				session = request_input.get("session", {})
+				data = f(*([request_input, session][:len(inspect.signature(f).parameters)]))
+				return json.dumps({"data": data, "session": session})
 			g.__name__ = "api_" + str(self.name_counter)
 			self.name_counter += 1
 			self.app.route(route, methods=['POST', 'GET'])(g)

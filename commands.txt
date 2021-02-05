@@ -6,9 +6,17 @@ create table users ( id serial primary key,name varchar(100),email varchar(100),
 
 create table products ( id serial primary key,name varchar(1000),price int, discount int, image varchar(100), description varchar(100));
 
-"update products set name = {name}, price  = {price}, discount={discount}, image={image}, description={description}"
+create table orders ( id serial primary key , delivery_at int, store_name varchar(1000),total_amount int, expected_delivery_at int, status  varchar(30), ordered_at int);
 
 create table cart ( product_id int ,product_quantity int,user_id int);
+
+create table order_items( order_id int, product_id int, product_quantity int);
+
+
+
+
+"update products set name = {name}, price  = {price}, discount={discount}, image={image}, description={description}"
+
 
 query = "insert into cart (product_id int ,quantity int,user_id int) values ({product_id}, {product_quantity}) "
 
@@ -31,11 +39,7 @@ ON table1.column_name = table2.column_name;
 
 
 
-create table orders ( id serial primary key , delivery_date int, store_name varchar(1000),total_amount int);
-
 "insert into orders(store_name , total_amount) values ('sonu store', "+ cart_info['total_amount'] +")"
-
-create table order_items( order_id int, product_id int, product_quantity int);
 
 
 "select order_items.*,products.id, products.image, products.price,products.name from order_items left join products on order_items.order_id=products.id" where order_items.order_id=

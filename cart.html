@@ -5,6 +5,7 @@
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <link rel="stylesheet" href="main.css">
+<script src="main.js"></script>
 <style>
 /*body{
 	background-color: #f3f3f3;;
@@ -165,15 +166,6 @@ th {
 
     
 <script>
-var api = function(http, api_url, input, callback) {
-  input = input || {}
-  return http({
-    method: "POST",
-    url: api_url,
-    headers: {'Content-Type': 'application/json'},
-    data: input}).then(callback ? function(d) {
-  		callback(d.data)} : callback);
-}
 
 
 var app = angular.module('myApp', [])

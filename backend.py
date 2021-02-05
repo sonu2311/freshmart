@@ -1,10 +1,15 @@
 from flask_lib import FlaskLib
 import database
 import time
+import os
 
 
 backend = FlaskLib()
-db = database.Database(dbname='postgres', user="sonu", password="sonu")
+
+if os.environ.get('FRESHMART_SONU_ENV') == 'mohit':
+	db = database.Database(dbname='postgres', user="mohit.saini", password="")
+else:
+	db = database.Database(dbname='postgres', user="sonu", password="sonu")
 
 
 @backend.api('/api/multi')
@@ -14,21 +19,24 @@ def multi(d):
 ########
 
 @backend.api('/sign_up')
-def sign_up_function(frontend_dict):
+def sign_up_function(frontend_dict, session):
 	query1="select * from users where email={email}"
 	output={}
 	if len(db.readQuery(query1, frontend_dict))==0:
 		query2 = "insert into users (name, email, phone, password) values ({name}, {email}, {phone}, {password}) "
-		new_id = db.writeQuery(query2, frontend_dict)
-		output['id']=new_id
+		db.writeQuery(query2, frontend_dict)
+		new_id = db.readQuery("select max(id) as new_id from users")[0]["new_id"]
+		session['login'] = {"id": new_id, "name": frontend_dict["name"]}
 	else:
 		output['error']="phle se email h"
 	return output
 
 
 @backend.api('/login')
-def login_function(frontend_dict):
-	if len(db.readQuery("select * from users where email={email} AND password={password}", frontend_dict)) != 0:
+def login_function(frontend_dict, session):
+	query_output = db.readQuery("select * from users where email={email} AND password={password}", frontend_dict)
+	if len(query_output) != 0:
+		session['login'] = {"id": query_output[0]['id'], "name": query_output[0]['name']}
 		return {}
 	else:
 		return {"error": "Email or password is incorrect."}

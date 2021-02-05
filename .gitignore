@@ -1,0 +1,9 @@
+# ignore mac temp file #
+*._.DS_Store
+
+# OS X
+.DS_Store
+
+# Python
+*.pyc
+
