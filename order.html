@@ -59,11 +59,14 @@
 				</div>
 				<hr>
 				<div class="" style="color:#333;margin-bottom:25px;border-radius: 4px;  box-shadow: 2px 2px 5px #888888;  margin-top:30px"  ng-repeat="x in l">
-					<div class="order_detail_div_navbar "> date-
+					<div class="order_detail_div_navbar" ng-if="x.status!='DELIVERED'"> date-
 						{{x.ordered_at_str}} 
 					</div>	
+					<div class="order_detail_div_navbar" ng-if="x.status=='DELIVERED'"> date-
+						{{x.delivery_at_str}} 
+					</div>	
 					<div class="hsplit" style="padding:40px;">
-						<div class="col-md-4 col-xs-12 col-sm-2" style="font-size: 14px; padding-top: 20px;">{{x.status}}</div>
+						<div class="col-md-4 col-xs-12 col-sm-2" style="font-size: 14px; padding-top: 20px;">{{x.status_display}}</div>
 						<div class=" store_name_div col-md-6 col-xs-12 col-sm-6 " style="" >
 							<div>{{x.store_name}} - <span style="font-size: 15px;">₹</span> {{x.total_amount}}</div>
 							<div style="font-size:12px;  color:#666;padding-top:8px;">Order-ID:{{x.id}} </div>
@@ -103,18 +106,20 @@ var app = angular.module('myApp', [])
 app.controller('myCtrl', function($scope,$http) {
 
 	s = $scope
+	// is funtion order_preprocessing me yha 'order_info' backend se aayi hui dict. h jisme  hm or key ko add kr rhe h 1. (order_info.ordered_at_str) 2.(order_info.delivery_at_str) kyuki backend se order_at or delivery_at ki jo value h vo epoch formate me matlb ki intiger format me hogi but hme yha string for met me chahiye to hm yha new date().... function ko use krke inko strting me change kr rhe h 
 
-	var order_preprocessing = function(order_info) {
-		order_info.ordered_at_str = new Date(order_info.ordered_at * 1000).toLocaleString()
-		order_info.status = order_info.status ? order_info.status.toLowerCase() : order_info.status
-		return order_info
-	}
+	// var order_preprocessing = function(order_info) {
+	// 	order_info.ordered_at_str = new Date(order_info.ordered_at * 1000).toLocaleString()
+	// 	order_info.delivery_at_str = new Date(order_info.delivery_at * 1000).toLocaleString()
+	// 	order_info.status = order_info.status ? order_info.status.toLowerCase() : order_info.status
+	// 	return order_info
+	// }
 
 	api($http, '/orders', {},function(backend_output){
 		$scope.l= backend_output
-		for (var i in $scope.l) {
-			$scope.l[i] = order_preprocessing($scope.l[i])
-		}
+		// for (var i in $scope.l) {
+		// 	$scope.l[i] = order_preprocessing($scope.l[i])
+		// }
 	})
 
 

@@ -120,9 +120,13 @@ def checkout(frontend_dict):
 
 @backend.api('/orders')
 def orders(frontend_dict):
-	query=db.readQuery("select * from orders order by id desc")
-	print(query)
-	return  query
+	l=db.readQuery("select * from orders order by id desc")
+	for i in l:
+		i['ordered_at_str'] = time.strftime('%Y-%m-%d %I:%M:%S %p', time.localtime(i['ordered_at']))
+		i['delivery_at_str'] = time.strftime('%Y-%m-%d %I:%M:%S %p', time.localtime(i['delivery_at']))
+		i['expected_delivery_at_str'] = time.strftime('%Y-%m-%d %I:%M:%S %p', time.localtime(i['expected_delivery_at']))
+		i['status_display']=i['status'].title()
+	return  l
 
 @backend.api('/order_item')
 def order_item(frontend_dict):
@@ -133,7 +137,7 @@ def order_item(frontend_dict):
 
 @backend.api('/orders_details')
 def orders_details(frontend_dict):
-	return db.readQuery("select * from orders order by id desc")
+	return orders(frontend_dict)
 
 
 @backend.api('/Status_save')

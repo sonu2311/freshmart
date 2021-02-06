@@ -27,6 +27,68 @@
 
 }
 
+
+table {
+  border-collapse: collapse;
+  /*width: 100%;*/
+}
+
+td, th {
+  /*text-align: left;*/
+  text-align: center;
+  padding: 8px;
+}
+td{
+  padding: 30px 10px;
+  font-size: 12px;
+}
+/*tr:nth-child(odd){background-color: #f2f2f2}*/
+
+.cart_row {
+  border-bottom: solid #ddd 1px;
+}
+
+
+th {
+  background-color: #f9f9f9;
+  color: #666;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 20px 5px;
+  /*border: solid black 1px;*/
+  /*box-sizing: border-box;*/
+}
+
+.th_image_width{
+  width:100px;
+  text-align: left
+
+}
+.th_name_width{
+  width: calc(100vw - 500px); 
+  text-align: left;
+  font-size: 16px;
+}
+.th_price_width{
+  width:120px;
+  
+}
+.th_add_quantity_width{
+  width:210px;
+  
+}
+.th_ordered_at_str_width{
+  width:180px;
+  
+}
+.th_save_price_width{
+  width:100px;
+  
+}
+.th_total_price_width{
+  width:100px;
+  
+}
 </style>
 </head>
 <body ng-app="myApp" ng-controller="myCtrl" >
@@ -54,10 +116,10 @@
 				    <td style="max-width: 50px; " class="th_image_width">{{x.id}}
 				    </td>
 				    <td class="th_name_width" style="">{{x.store_name}}</td>
-					<td class="th_discount_width">{{x.order_at}}</td>
+					<td class="th_ordered_at_str_width">{{x.ordered_at_str}}</td>
 					
-					<td class="th_total_price_width">{{x.delivery_at}}</td>
-					<td class="th_total_price_width">{{x.expect_delivery}}</td>
+					<td class="th_total_price_width">{{x.delivery_at_str}}</td>
+					<td class="th_total_price_width">{{x.expected_delivery_at_str}}</td>
 
 					<td class="th_total_price_width"> <span style="font-size: 15px;">₹</span> {{x.total_amount}}</td>
 					<td class="th_total_price_width">
@@ -80,7 +142,6 @@
 
 var app = angular.module('myApp', [])
 app.controller('myCtrl', function($scope,$http) {
-
 
 	s = $scope
 	api($http, '/orders_details', {},function(backend_output){
