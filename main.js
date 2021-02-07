@@ -56,6 +56,11 @@ function clear(key) {
 
 var session = getter("session") || {}
 
+var clear_session = function() {
+  clear("session")
+  session = {}
+}
+
 var api = function(http, api_url, input, callback) {
   input = input || {}
   input.session = session
@@ -69,4 +74,13 @@ var api = function(http, api_url, input, callback) {
         setter("session", session)
         callback(d.data.data)
       } : callback);
+}
+
+var Is_login=function(){
+  if(("login_key" in session) && ("id" in session["login_key"])){
+    return true
+  }
+  else{
+    return false
+  }
 }

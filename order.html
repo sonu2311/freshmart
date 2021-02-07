@@ -51,22 +51,22 @@
 <body ng-app="myApp" ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
 	<div class="proflie_page_right_div" style=" ">	
-		<div class="hsplit"   style=" border:solid black 1px; padding:0px; margin-top: 6px; ">
+		<div class="hsplit"   style=" border:solid black 1px;padding:0px;margin-top:6px;">
 			<div class="col-md-2 col-sm-2" style=""></div>
 			<div class="col-md-8 col-sm-8 col-xs-12" style="">
 				<div style="font-size: 25px; font-weight: 300px; padding:15px 5px;">
 					Order Details
 				</div>
 				<hr>
-				<div class="" style="color:#333;margin-bottom:25px;border-radius: 4px;  box-shadow: 2px 2px 5px #888888;  margin-top:30px"  ng-repeat="x in l">
-					<div class="order_detail_div_navbar" ng-if="x.status!='DELIVERED'"> date-
-						{{x.ordered_at_str}} 
+				<div class="" style="color:#333;margin-bottom:25px;border-radius: 4px;  box-shadow: 2px 2px 5px #888888; margin-top:30px"  ng-repeat="x in l">
+					<div class="order_detail_div_navbar" ng-if="x.status!='DELIVERED'"><b> Date :
+						{{x.ordered_at_str}} </b>
 					</div>	
-					<div class="order_detail_div_navbar" ng-if="x.status=='DELIVERED'"> date-
-						{{x.delivery_at_str}} 
+					<div class="order_detail_div_navbar" ng-if="x.status=='DELIVERED'"><b>Date :
+						{{x.delivery_at_str}}</b> 
 					</div>	
 					<div class="hsplit" style="padding:40px;">
-						<div class="col-md-4 col-xs-12 col-sm-2" style="font-size: 14px; padding-top: 20px;">{{x.status_display}}</div>
+						<div class="col-md-4 col-xs-12 col-sm-2" style="font-size: 14px; padding-top: 20px;"><b>{{x.status_display}}</b></div>
 						<div class=" store_name_div col-md-6 col-xs-12 col-sm-6 " style="" >
 							<div>{{x.store_name}} - <span style="font-size: 15px;">₹</span> {{x.total_amount}}</div>
 							<div style="font-size:12px;  color:#666;padding-top:8px;">Order-ID:{{x.id}} </div>
@@ -74,11 +74,11 @@
 						<div class="col-md-2 col-xs-12 col-sm-2 view_item_div" >
 							<a href="order_item_list.html?order_id={{x.id}}" style="" class="view_item_link">
 								<div class="hsplit">
-									<div style="width: 90px; "> View 20
+									<div style="width: 90px;"> View 20
 									 item ordered
 									</div>
 									<div style="">
-										<span class="material-icons" style="font-size: 13px;">
+										<span class="material-icons" style="font-size:13px;">
 										arrow_forward_ios
 										</span>
 									</div>
@@ -86,14 +86,12 @@
 							</a>
 						</div>
 					</div>
-					<div class="hsplit" style="padding: 0px 40px; padding-bottom:35px;  ">
+					<div class="hsplit" style="padding: 0px 40px; padding-bottom:35px;">
 						<div style="">delivery address</div>
-						<div style=" margin-left: 130px; width:65%; color:#666;font-size:15px;line-height: 20px;text-align:justify;
+						<div style=" margin-left:130px; width:65%; color:#666;font-size:15px;line-height: 20px;text-align:justify;
     text-justify: inter-word;">Mohit Saini, Flat 8, 4th Floor, House 385, 3rd Cross, 3rd Main, ITI Main Road,jhgj jhhj ghgh  Hospalya Stage 3, HSR Layout Sector 7, Bangalore, India, Pin: 560068, Hosapalaya, HSR Layout, Bengaluru, Banglore</div>
 					</div>
 				</div>
-				<br>
-				
 			</div>
 		</div>
 	</div>
@@ -116,10 +114,15 @@ app.controller('myCtrl', function($scope,$http) {
 	// }
 
 	api($http, '/orders', {},function(backend_output){
-		$scope.l= backend_output
+		if(Is_login()){
+			$scope.l= backend_output
 		// for (var i in $scope.l) {
 		// 	$scope.l[i] = order_preprocessing($scope.l[i])
 		// }
+		}
+		else{
+			alert("Orders ko dekhne ke liye login krna hoga")
+	}
 	})
 
 

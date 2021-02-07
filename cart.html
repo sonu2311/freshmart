@@ -127,7 +127,7 @@ th {
 				    <td class="th_image_width">
 				    	<img src='{{x.image}}' style="width:60px;">
 				    </td>
-				    <td style="max-width: 200px; text-align: left" class="th_name_width">{{x.name}}
+				    <td style="max-width: 200px; text-align: left; color:#666;" class="th_name_width">{{x.name}}
 				    </td>
 
 				    <td class="th_price_width">{{x.price}}</td>
@@ -179,11 +179,16 @@ app.controller('myCtrl', function($scope, $http) {
 	})
 
 	$scope.add_product_quantity_in_cart=function(p){
-		p.product_quantity += 1
-		api($http, '/add_product_quantity_in_cart',{"product_id": p.id, "product_quantity": p.product_quantity},function(backend_output){
-				$scope.list= backend_output.total_list
-				$scope.total_amount=backend_output.total_amount
-		})
+		if(Is_login()){
+			p.product_quantity += 1
+			api($http, '/add_product_quantity_in_cart',{"product_id": p.id, "product_quantity": p.product_quantity},function(backend_output){
+					$scope.list= backend_output.total_list
+					$scope.total_amount=backend_output.total_amount
+			})
+		}
+		else{
+		alert("cart me add krne ke liye login krna hoga")
+		}
 	}
 
 	$scope.remove_product_quantity_in_cart=function(p){
@@ -195,9 +200,14 @@ app.controller('myCtrl', function($scope, $http) {
 	}
 
 	$scope.checkout=function(){
-		api($http, '/checkout', {},function(backend_output){
-
-		})
+		if(Is_login()){
+			api($http, '/checkout', {},function(backend_output){
+				alert("Checkout hoga gya hT")
+			})
+		}
+		else{
+			alert("Checkout krne ke liye login krna hoga")
+		}
 	}
 		
 });

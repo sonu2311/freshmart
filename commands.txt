@@ -36,7 +36,8 @@ FROM table1
 INNER JOIN table2
 ON table1.column_name = table2.column_name;
 
-
+ALTER TABLE orders
+ADD user_id int;
 
 
 "insert into orders(store_name , total_amount) values ('sonu store', "+ cart_info['total_amount'] +")"

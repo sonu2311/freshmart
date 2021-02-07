@@ -149,11 +149,16 @@ app.controller('myCtrl', function($scope,$http) {
 	s = $scope
 
   $scope.add_product_quantity_in_cart=function(){
+    if(Is_login()){
     $scope.d.product_quantity += 1
     api($http, '/add_product_quantity_in_cart',{"product_id": $scope.d.id, "product_quantity": $scope.d.product_quantity},function(backend_output){
         $scope.list= backend_output.total_list
         // $scope.total_amount=backend_output.total_amount
     })
+    }
+    else{
+    alert("cart me add krne ke liye login krna hoga")
+  }
   }
 
   $scope.remove_product_quantity_in_cart=function(){
