@@ -2,6 +2,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 <link rel="stylesheet" href="main.css">
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
@@ -10,7 +11,7 @@
 <style>
 	
 div.hsplit:after {
-content: "";
+content: "";big_div
 clear: both;
 display: table;
 }
@@ -18,101 +19,190 @@ display: table;
 div.hsplit > div {
 	float: left;
 }
-
+.pagination_button {
+	border: solid #2e6da4 1px; padding:2px 9px; border-radius: 2px;
+	outline: none;
+	margin: 2px;
+}
+.pagination_button:hover{
+	/*background-color: #ccc;*/
+	outline: none;
+}
+.pagination_previous_button{
+	border:solid #ccc 1px; 
+	outline: none;
+	width:100px; 
+	/*padding-right:25px; 
+	padding-left:25px;
+	padding-top:2px; 
+	padding-bottom: 2px; */
+	border-radius: 2px;  
+}
 </style>
 </head>
 <body ng-app="myApp" ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
+	<div ng-if="list.length>0" style="margin-top:15px; margin-right: 23px;text-align: right;" >
+		
+		<select style=" outline: none; border-radius: 2px; padding:3px;color:#333; cursor: pointer; font-size: 13px;" ng-model="self.sort_price" ng-change='reload()' >
+			<option style="cursor: pointer;">Sort By Relevence</option>
+			<option style="cursor: pointer;">Price: High to Low</option>
+			<option style="cursor: pointer;">Price: Low to High</option>
+		</select>
 
-	<div class="hsplit bigest_div" style="">
-		<div class="scroll_div" style="border:solid black 1px;">
-			<div class="margin_15" style="border:solid black 1px; padding-right:  35px;">
-				<div class="font_weight"> Color</div>
-				<div class="margin_5" ng-repeat="x in color">
-					<input type="checkbox">{{x}}
+	</div>
+
+	<div class="hsplit big_div" ng-if="list.length>0">
+		<div ng-repeat="x in list" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 box_sizing">
+			<div class="border" style="">
+				<a href="http://0.0.0.0:5502/single_product_page.html?product_id={{x.id}}">
+					<div style="height: 250px; text-align: center; overflow: hidden; vertical-align: middle; white-space: nowrap;" >
+						<span style="vertical-align: middle;height: 100%; display: inline-block; visibility: hidden;" ></span>
+						<img style="max-height: 250px; max-width: 100%; vertical-align: middle" src="{{x.image}}" >
+					</div>
+				</a>
+				<div  class="product_detail_div " >
+					<div style="overflow: hidden;
+  						text-overflow: ellipsis; white-space: nowrap; ">
+							{{x.name}}
+						</div>
+					<!-- <div >{{x.product_quantity}}</div> -->
+					<div>id={{x.id}}</div>
+					<div class="hsplit" style="">
+						<div  class="price_in_product_detail" >
+							<span style="font-size: 15px;">₹</span> {{x.price}}</div>
+						<div class=" add_cart" style="float:right;" ng-if='x.product_quantity == 0'  ng-click="add_product_quantity(x)">Add To Cart</div>
+
+						<div class="hsplit add_remove_comman_div" style="float:right; " ng-if="x.product_quantity > 0" >
+							<div >
+								<span class="material-icons add_remove_class margin_right_5" ng-click="remove_product_quantity(x)" >
+								remove_circle_outline
+								</span>
+							</div>
+							<div class="add_number">
+								<span >{{x.product_quantity}}</span>
+							</div>
+							<div >
+								<span class="material-icons add_remove_class margin_left_5" ng-click="add_product_quantity(x)" >
+								add_circle_outline
+								</span>
+							</div>
+						</div>	
+					</div>
 				</div>
 			</div>
 		</div>
-		<!-- <div style="width:100px;border:solid yellow 1px;  ">hhhh</div> -->
-		<!-- ###### -->
-		<div class="image_detail_div" style="">
-			<div class="hsplit big_div">
-				<div ng-repeat="x in list" class=" col-xs-12 col-sm-6 col-lg-4 box_sizing">
-					<div class="border" style="">
-						<div class="discount_div ">{{x.discount}}%</div>
-						<a href="http://0.0.0.0:5502/single_product_page.html?product_id={{x.id}}">
-							<div style="height: 250px; text-align: center; overflow: hidden; vertical-align: middle; white-space: nowrap;" >
-								<span style="vertical-align: middle;height: 100%; display: inline-block; visibility: hidden;" ></span>
-								<img style="max-height: 250px; max-width: 100%; vertical-align: middle" src="{{x.image}}" >
-							</div>
-						</a>
-						<div  class="product_detail_div " >
-							<!-- <div class="padding_10"><img style='width:90%' src="{{x.image}}" > </div> -->
-							<div style="overflow: hidden;
-          						text-overflow: ellipsis; white-space: nowrap; ">
-      							{{x.name}}
-      						</div>
-							<div > {{x.product_quantity}}</div>
-							
-							<div class="hsplit" style="">
-								<div  class="price_in_product_detail" >
-									<span style="font-size: 15px;">₹</span> {{x.price}}</div>
-								<div class=" add_cart" style="float:right;" ng-if='x.product_quantity == 0'  ng-click="add_product_quantity(x)">Add To Cart</div>
+	</div>
 
-								<div class="hsplit add_remove_comman_div" style="float:right;" ng-if="x.product_quantity > 0" >
-									<div >
-										<span class="material-icons add_remove_class margin_right_5" ng-click="remove_product_quantity(x)" >
-										remove_circle_outline
-										</span>
-									</div>
-									<div class="add_number">
-										<span >{{x.product_quantity}}</span>
-									</div>
-									<div >
-										<span class="material-icons add_remove_class margin_left_5" ng-click="add_product_quantity(x)" >
-										add_circle_outline
-										</span>
-									</div>
-								</div>	
-							</div>
-						</div>
+	<div style="height: 50px;" ng-if="list.length>0" ></div>
+	<hr ng-if="list.length>0">
+	<div class="hsplit" style=" box-sizing: border-box; margin-bottom: 10px; text-align: center;" ng-if="list.length>0">
+		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-1" style="box-sizing: border-box;"></div>
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-10" style=" padding-left: 0px; padding-right:0px;box-sizing: border-box; ">
+			<div style="  display: inline-block; " >
+				<a style="outline: none;"  href="product_page.html?search_key={{search_key}}&sort_price={{sort_price}}&page={{page-1}}">
+					<button class="pagination_previous_button" style="" ng-disabled="page==1">
+						<span class="material-icons" style="vertical-align: middle;font-size: 15px; color:#666;">
+							fast_rewind
+						</span>
+						previous
+					</button>
+				</a>
+			</div>
+			<div style="display: inline-block;">
+				<div style="display: inline-block;" ng-repeat='x in page_number_list'>
+					<div>
+						<a style="outline: none;"  href="product_page.html?search_key={{search_key}}&sort_price={{sort_price}}&page={{x.page}}" ng-if="x.page!=0"><button class="pagination_button" ng-style='{"background-color": x.page == page ? "#2e6da4": "#ccc","color":x.page == page ?"#fff":"#222"}'>{{x.page}}</button>
+						</a>
 					</div>
-				 </div>
-			 </div>
-			 <div style="height: 200px;" ></div>
+					<div ng-if="x.page==0" style="margin: 1px;">...</div>
+				</div>
+			</div>
+			<div style="display: inline-block; margin-left:6px;" >
+				<a style="outline: none;"  href="product_page.html?search_key={{search_key}}&sort_price={{sort_price}}&page={{1+page}}">
+					<button style="border:solid #ccc 1px; outline:none; padding:2px 25px; border-radius: 2px; " ng-disabled="page>=page_count">
+						next
+						<span class="material-icons" style="vertical-align: middle;font-size: 15px;color:#666;">
+							fast_forward
+						</span>
+					</button>
+				</a>
+			</div>
 		</div>
+		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-1" style="box-sizing: border-box;"></div>
+	</div>
+	<hr ng-if="list.length>0">
+	<div style="height: 100px;" ng-if="list.length>0" ></div>
+
+	<div ng-if="list.length <= 0" style="margin-top:100px; margin-left: 80px;">
+		<img style='max-height:400px; max-width: 80%;' src="images/search_no_result.png">
 	</div>
 <script>
-
-
-
-var app = angular.module('myApp', [])
 app.controller('myCtrl', function($scope,$http) {
-
+	$scope.self = $scope
 	s = $scope
 
-	$scope.color=["red","blue","yellow","green"]
+	var button_list=function(c,n) {
+		var l=[]
+		var i=1
+		while(i <=n){
+			if(i== 1 || i==n || Math.abs(c-i)<=1){
+				l.push({page: i})
+			}
+			else {
+				if(l[l.length-1].page!=0){
+					l.push({page: 0})
+				}
+			}
+			i+=1
+		}
+		return l
+	}
+	var url_params = new URLSearchParams((new URL(window.location.href)).search)
+	$scope.sort_price = url_params.get("sort_price") || "Sort By Relevence"
+	$scope.search_key = url_params.get("search_key") || ""
+	$scope.page = parseInt(url_params.get("page") || '1')
+	// products or cart ki jo join table h vo yha return me milegi to vhi hme ng-repeat me use krni h.
+	$scope.load_all_products = function() {
+		api($http,'/all_products', {"search_key":$scope.search_key,"sort_price":$scope.sort_price, "page": $scope.page}, function(backend_output) {
+			$scope.list = backend_output.products_list
+			$scope.page_count=backend_output.num_page
+			console.log($scope.page_count)
+			$scope.page_number_list=button_list($scope.page, $scope.page_count)
+			console.log($scope.page_number_list)
+		})
+	}
+	$scope.load_all_products()
+
+	$scope.reload = function() {
+		window.location.href = "product_page.html?search_key=" + $scope.search_key + "&sort_price=" + $scope.sort_price
+	}
+
+// products page me hm bina login kiye saman add ni kr skte isliye phle yha ye check krna h ki user ne login kiya h ki ni kiya age login kiya h to api work kre ni to alert aa jaye ki login ni h.
+	$scope.add_product_quantity=function(p) {
+		if(Is_login()){
+			p.product_quantity += 1
+			api($http, '/add_product_quantity',{"product_id": p.id, "product_quantity": p.product_quantity},function(backend_output){})	
+		}
+		else{
+			alert("cart me add krne ke liye login krna hoga")
+		}	
+	}
+// isme bi same hi api use hogi kyuki quantitis hi update krni h.
+	$scope.remove_product_quantity=function(p){
+		p.product_quantity -= 1
+		api($http, '/add_product_quantity',{"product_id": p.id, "product_quantity": p.product_quantity},function(backend_output){})
+	}
+
+	// $scope.page_buttons = [1,2,3,4,5]
+
+	// $scope.pagination_button_number=function(n){
+	// 	$scope_pagination_number=n
+	// 	console.log($scope_pagination_number)
+	// }
+
 
 	
-	api($http,'/all_products', {},function(backend_output) {
-		$scope.list = backend_output
-	})
-
-$scope.add_product_quantity=function(p) {
-	if(Is_login()){
-		p.product_quantity += 1
-	api($http, '/add_product_quantity',{"product_id": p.id, "product_quantity": p.product_quantity})	
-	}
-	else{
-		alert("cart me add krne ke liye login krna hoga")
-	}
-	
-}
-
-$scope.remove_product_quantity=function(p){
-	p.product_quantity -= 1
-	api($http, '/add_product_quantity',{"product_id": p.id, "product_quantity": p.product_quantity})
-}
 
 });
 </script>

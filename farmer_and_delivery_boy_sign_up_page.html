@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<link rel="stylesheet" href="main.css">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="main.js"></script>
+
+<style>
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+	<div ng-include='"header.html"' ></div>
+	<div class="login_main_div sing_up_margin_top" style="margin-bottom: 25px;">
+		<div class="login_header">Sign up</div>
+		<div class="login_header_down_div">
+			<label>
+				<div class="email_password_full_div">
+					<div class="email_password_name_div">Name</div>
+					<div>
+						<input class="email_password_input_div" type="text" name="name" ng-model="name">
+					</div>
+				</div>
+			</label>
+			<label>
+				<div class="email_password_full_div">
+					<div class="email_password_name_div">Email</div>
+					<div>
+						<input class="email_password_input_div" type="text" name="name" ng-model="email">
+					</div>
+				</div>
+			</label>
+			<label>
+				<div class="email_password_full_div">
+					<div class="email_password_name_div">Phone number</div>
+					<div>
+						<input class="email_password_input_div"type="text" name="name" ng-model="number">
+					</div>
+				</div>
+			</label>
+			
+			<label>
+				<div class="email_password_full_div">
+					<div class="email_password_name_div">Password</div>
+					<div>
+						<input class="email_password_input_div"type="password" name="name" ng-model="password">
+					</div>
+				</div>
+			</label>
+
+			<label>
+				<div class="email_password_full_div">
+					<div class="email_password_name_div">Role</div>
+					<div>
+						<select class="email_password_input_div" style="width:275px; margin-bottom:15px;" ng-model="role">
+							<option value="FARMER">Farmer</option>
+							<option value="DELIVERY_PERSON" >Delivery Person</option>
+						</select>  
+					</div>
+				</div>
+			</label>
+		</div>
+		<div class="login_button_div" >
+			<button class="login_button" ng-click="sign_up()">Sign up</button>
+		</div>
+	</div>
+<script>
+app.controller('myCtrl', function($scope,$http) {
+	s = $scope
+	$scope.role = "FARMER"
+	$scope.name = ""
+	$scope.email = ""
+	$scope.number = ""
+	$scope.password = ""	
+
+	$scope.sign_up=function(){
+		api($http,'/sign_up', {"name":$scope.name, "email":$scope.email,"phone":$scope.number,"password":$scope.password,"role":$scope.role},function(backend_output){
+			if("error" in backend_output) {
+				alert(backend_output.error)
+			}
+			else{
+				alert("Signup ho gya !")
+				window.location.href = "product_page.html"
+			}
+		})
+	}
+});
+</script>
+</body>
+</html>

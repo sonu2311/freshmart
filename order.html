@@ -4,9 +4,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
 <link rel="stylesheet" href="main.css">
-<script src="main.js"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="main.js"></script>
+
 <style>
 .order_detail_div_navbar{
 	background-color:#f9f9f9; 
@@ -51,7 +52,7 @@
 <body ng-app="myApp" ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
 	<div class="proflie_page_right_div" style=" ">	
-		<div class="hsplit"   style=" border:solid black 1px;padding:0px;margin-top:6px;">
+		<div class="hsplit"   style=" padding:0px;margin-top:6px;">
 			<div class="col-md-2 col-sm-2" style=""></div>
 			<div class="col-md-8 col-sm-8 col-xs-12" style="">
 				<div style="font-size: 25px; font-weight: 300px; padding:15px 5px;">
@@ -88,8 +89,7 @@
 					</div>
 					<div class="hsplit" style="padding: 0px 40px; padding-bottom:35px;">
 						<div style="">delivery address</div>
-						<div style=" margin-left:130px; width:65%; color:#666;font-size:15px;line-height: 20px;text-align:justify;
-    text-justify: inter-word;">Mohit Saini, Flat 8, 4th Floor, House 385, 3rd Cross, 3rd Main, ITI Main Road,jhgj jhhj ghgh  Hospalya Stage 3, HSR Layout Sector 7, Bangalore, India, Pin: 560068, Hosapalaya, HSR Layout, Bengaluru, Banglore</div>
+						<div style=" margin-left:130px; width:65%; color:#666;font-size:15px;line-height: 20px;text-align:justify;text-justify: inter-word;">{{x.address}}</div>
 					</div>
 				</div>
 			</div>
@@ -100,7 +100,7 @@
 <script>
 
 
-var app = angular.module('myApp', [])
+
 app.controller('myCtrl', function($scope,$http) {
 
 	s = $scope
@@ -115,6 +115,7 @@ app.controller('myCtrl', function($scope,$http) {
 
 	api($http, '/orders', {},function(backend_output){
 		if(Is_login()){
+			console.log(backend_output)
 			$scope.l= backend_output
 		// for (var i in $scope.l) {
 		// 	$scope.l[i] = order_preprocessing($scope.l[i])

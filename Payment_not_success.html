@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="main.css">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="main.js"></script>
+<style>
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+	<div ng-include='"header.html"' ></div>
+	<div style="text-align: center;margin-top: 120px;">
+		<!-- <div>Thank You !</div> -->
+		<div><span class="material-icons" style="font-size: 50px; color:#b30000">
+			error_outline
+		</span></div>
+		<div style="margin:10px; font-size: 20px; color:#337ab7;">Payment Failed Please Try Again.</div>
+	</div>
+<script>
+app.controller('myCtrl', function($scope,$http) {
+});
+</script>
+</body>
+</html>

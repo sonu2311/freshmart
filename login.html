@@ -42,7 +42,7 @@ div.hsplit > div {
 			<div class="email_password_full_div">
 				<div class="email_password_name_div">Password</div>
 				<div>
-					<input class="email_password_input_div" type="text" name="name" ng-model="password">
+					<input class="email_password_input_div" type="password" name="name" ng-model="password">
 				</div>
 			</div>
 		</div>
@@ -51,9 +51,6 @@ div.hsplit > div {
 		</div>
 	</div>
 <script>
-
-
-var app = angular.module('myApp', [])
 app.controller('myCtrl', function($scope,$http) {
 	s = $scope
 	$scope.email="sonu2313saini@gmail.com"
@@ -66,6 +63,7 @@ app.controller('myCtrl', function($scope,$http) {
 			}
 			else{
 				alert("Login ho gya !")
+				window.location.href = "product_page.html"
 			}
 		})
 

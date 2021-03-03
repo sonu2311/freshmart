@@ -108,67 +108,81 @@ th {
 </style>
 <body ng-app="myApp" ng-controller="myCtrl">
     <div ng-include='"header.html"' ></div>
-    <div class="cart_name_div"> CART</div>
+    
 
-    <div class="hsplit" style=" padding:30px 0px;">
-    	<div class="col-md-1"></div>
-	 	<div class="col-md-10 col-xs-12">
-		    <table>
-				  <tr>
-				  	<th class="th_image_width">Image</th>
-				    <th class="th_name_width">Name</th>
-				    <th class="th_price_width">Price</th>
-				    <th class="th_add_quantity_width">Add quantity</th>
-				    <th class="th_discount_width">Discount</th>
-				    <!-- <th class="th_save_price_width">Save price</th> -->
-				    <th class="th_total_price_width">subtotal</th>
-				  </tr>
-				  <tr ng-repeat='x in list' class="cart_row" >
-				    <td class="th_image_width">
-				    	<img src='{{x.image}}' style="width:60px;">
-				    </td>
-				    <td style="max-width: 200px; text-align: left; color:#666;" class="th_name_width">{{x.name}}
-				    </td>
+    <div ng-if='list.length > 0' >
+    	<div class="cart_name_div"> CART</div>
+	    <div class="hsplit" style=" padding:30px 0px;">
+	    	<div class="col-md-1"></div>
+		 	<div class="col-md-10 col-xs-12">
+			    <table>
+					  <tr>
+					  	<th class="th_image_width">Image</th>
+					    <th class="th_name_width">Name</th>
+					    <th class="th_price_width">Price</th>
+					    <th class="th_add_quantity_width">Add quantity</th>
+					    <th class="th_discount_width">Discount</th>
+					    <!-- <th class="th_save_price_width">Save price</th> -->
+					    <th class="th_total_price_width">subtotal</th>
+					  </tr>
+					  <tr ng-repeat='x in list' class="cart_row" >
+					    <td class="th_image_width">
+					    	<img src='{{x.image}}' style="width:60px;">
+					    </td>
+					    <td style="max-width: 200px; text-align: left; color:#666;" class="th_name_width">{{x.name}}
+					    </td>
 
-				    <td class="th_price_width">{{x.price}}</td>
-				    
-				    <td class="th_add_quantity_width" style="text-align: center;" >
-				    	<div class="hsplit add_remove_comman_div" style="display: inline-block;" >
-							<div >
-								<span class="material-icons add_remove_class margin_right_5"ng-click="remove_product_quantity_in_cart(x)" >
-								remove_circle_outline
-								</span>
+					    <td class="th_price_width">{{x.price}}</td>
+					    
+					    <td class="th_add_quantity_width" style="text-align: center;" >
+					    	<div class="hsplit add_remove_comman_div" style="display: inline-block;" >
+								<div >
+									<span class="material-icons add_remove_class margin_right_5"ng-click="remove_product_quantity_in_cart(x)" >
+									remove_circle_outline
+									</span>
+								</div>
+								<div class="add_number" style="font-weight:100; font-size: 16px; color:#666; padding-top: 5px;">
+									<span >{{x.product_quantity}}</span>
+								</div>
+								<div >
+									<span class="material-icons add_remove_class margin_left_5" ng-click="add_product_quantity_in_cart(x)">
+									add_circle_outline
+									</span>
+								</div>
 							</div>
-							<div class="add_number" style="font-weight:100; font-size: 16px; color:#666; padding-top: 5px;">
-								<span >{{x.product_quantity}}</span>
-							</div>
-							<div >
-								<span class="material-icons add_remove_class margin_left_5" ng-click="add_product_quantity_in_cart(x)">
-								add_circle_outline
-								</span>
-							</div>
-						</div>
-					</td>
-					<td class="th_discount_width">{{x.discount}}%</td>
-					<!-- <td class="th_save_price_width">save</td> -->
-					<td class="th_total_price_width">{{x.subtotal}}</td>
-				  </tr>
-			</table>
+						</td>
+						<td class="th_discount_width">{{x.discount}}%</td>
+						<!-- <td class="th_save_price_width">save</td> -->
+						<td class="th_total_price_width">{{x.subtotal}}</td>
+					  </tr>
+				</table>
 
-			<div class="hsplit" style="text-align: right; padding: 5px; ">
-				<div class="th_total_price_width" style="float:right;text-align: center;  ">{{total_amount}}</div>
-				<div class="th_discount_width" style="float:right; text-align: center; ">TOTAL</div>
+				<div class="hsplit" style="text-align: right; padding: 5px; ">
+					<div class="th_total_price_width" style="float:right;text-align: center;  ">{{total_amount}}</div>
+					<div class="th_discount_width" style="float:right; text-align: center; ">TOTAL</div>
+				</div>
 			</div>
 		</div>
+		<!-- <div  >This is  Cart.</div> -->
+		<div class="checkout_div">
+			<a href="payment_page.html">
+				<button class="checkout_button">Check Out</button>
+			</a>
+		</div>
 	</div>
-	<!-- <div  >This is  Cart.</div> -->
-	<div class="checkout_div"><button class="checkout_button" ng-click="checkout()">Check Out</button></div>
+	<div class="hsplit" ng-if='list.length == 0' style="margin-top: 130px;">
+		<!-- <div ng-if='list.length == 0' style="" > -->
+		<div  ng-if='list.length == 0' class="col-lg-2 col-md-2 col-sm-2 col-xs-1" ></div>
+		<div ng-if='list.length == 0' style="text-align: center;box-sizing: border-box;" class="col-lg-7 col-md-7 col-sm-8 col-xs-11">
+			<div style=" padding-left:70px; font-size: 25px; color:#337ab7;">cart is empty.</div>
+			<img src="https://i.imgur.com/1wMUv1A.png" style="width:300px;">
+			
+		</div>
+		<div  ng-if='list.length == 0' class="col-lg-2 col-md-2 col-sm-1 " ></div>
+	</div>
 
-    
 <script>
 
-
-var app = angular.module('myApp', [])
 app.controller('myCtrl', function($scope, $http) {
 
 	$scope.list= []
@@ -199,16 +213,16 @@ app.controller('myCtrl', function($scope, $http) {
 		})
 	}
 
-	$scope.checkout=function(){
-		if(Is_login()){
-			api($http, '/checkout', {},function(backend_output){
-				alert("Checkout hoga gya hT")
-			})
-		}
-		else{
-			alert("Checkout krne ke liye login krna hoga")
-		}
-	}
+	// $scope.checkout=function(){
+	// 	if(Is_login()){
+	// 		api($http, '/checkout', {},function(backend_output){
+	// 			alert("Checkout hoga gya hT")
+	// 		})
+	// 	}
+	// 	else{
+	// 		alert("Checkout krne ke liye login krna hoga")
+	// 	}
+	// }
 		
 });
 </script>

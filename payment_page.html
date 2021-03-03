@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<link rel="stylesheet" href="main.css">
+<script src="main.js"></script>
+
+<style>
+.cart_image{
+	height: 40px;
+	text-align: left
+</style>
+<body ng-app="myApp" ng-controller="myCtrl">
+
+	<div>
+		<div ng-include='"header.html"' ></div>
+		<div class="hsplit" style="margin-top: 140px; ">
+			<div class="col-lg-1 col-md-1 " style="box-sizing: border-box;"></div>
+			<div class="col-lg-7 col-md-7 col-sm-12 col-xs-12" style="border:solid #eee 1px; box-sizing: border-box;">
+				<div style="padding:25px 45px; border-bottom:solid #eee 1px; color:#333;">
+					<span style="color:#2e6da4; ">Phone Number Verification :</span>
+					<span  style="font-size: 15px; ">{{phone_number}}</span>
+				</div>
+				<div style="padding:25px 45px; border-bottom:solid #eee 1px; font-size: 22px; color:#2e6da4;  background-color: #fbfbfb;">
+					Delivery Address
+					<div  style="border: solid #ccc 1px; line-height: 22px;margin: 25px 0px; box-shadow: 2px 3px 5px #888888;border-radius: 3px; background-color: #fff;">
+						<div  style=" border-bottom: solid #ccc 1px; padding: 20px 0px; border-collapse: collapse;" ng-repeat="x in delivery_address_list">
+							<label class="vcenter"  >
+								<input type="radio" name='address_choice' value="{{x.id}}" ng-model='self.address_choice' ng-change=address_function() >
+								<div style="display: inline-block; width: calc(100% - 50px); text-align: justify;text-justify: inter-word; font-size: 15px; color:#333;">{{x.address}}</div>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div style="padding:25px 45px; border-bottom:solid #eee 1px;">
+					<label>
+						<input type="checkbox" ng-model="cod">
+						<span style="padding-left: 15px; font-size: 15px; color:#2e6da4; ">Pay Case On Delivery</span>
+					</label>
+					<div style="margin-top: 15px; padding-left:5px;" ng-if="cod==false">
+						<a href="fake_payment_gateway.html"><button class="login_button"> pay ( {{cart_items.total_amount}} Rs. )</button></a>
+					</div>
+
+					<div style="margin-top: 15px; padding-left:5px;" ng-if="cod==true">
+						<button class="login_button" ng-click="pay_later_and_order()"> Pay later & order</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 hide-xs show-md" style="padding: 0px 15px; box-sizing: border-box;">
+				<div style="border:solid #eee 1px; ">
+					<div style=" border-bottom:solid #eee 1px;background-color: #fbfbfb; padding:10px; border-radius: 3px; color:#2e6da4;  font-weight: 600; font-size: 15px; ">My Cart</div>
+					<div style="border-top:solid #eee 1px; font-size:15px; color:#666; vertical-align:middle; ">
+						<div class="hsplit" ng-repeat="x in cart_items.total_list" style="border-bottom:solid #ccc 1px;">
+							<div style=" padding:25px;">{{x.product_quantity}}</div>
+							<div style="height: 50px; width: 50px; text-align: center; overflow: hidden; vertical-align: middle; white-space: nowrap;" >
+								<span style="vertical-align: middle;height: 100%; display: inline-block; visibility: hidden;" ></span>
+								<img style="max-height: 50px; max-width: 100%; vertical-align: middle" src="{{x.image}}" >
+							</div>
+							<div style="padding:12px 10px; font-size: 12px; ">
+								<div style="padding:7px 5px;">{{x.name}}</div>
+								<div style="padding:7px 5px;">{{x.price}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-1 col-md-1" style="box-sizing: border-box;"></div>
+		</div>
+		<div style="height: 100px;"></div>
+	</div>
+<script>
+
+app.controller('myCtrl', function($scope, $http) {
+	$scope.cod=false
+	$scope.self = $scope
+
+	api($http, '/checkout_info',{},function(backend_output){
+		console.log(backend_output)
+		$scope.cart_items= backend_output.cart_items
+		$scope.phone_number=backend_output.phone_number
+		$scope.delivery_address_list=backend_output.delivery_address_list
+		console.log($scope.cart_items)
+		console.log($scope.phone_number)
+		console.log($scope.delivery_address_list)
+	})
+
+	$scope.address_function=function(){
+		console.log($scope.address_choice)
+	}
+
+	$scope.pay_later_and_order=function(){
+		console.log("$scope.address_choice = ", $scope.address_choice)
+		if ($scope.address_choice == undefined) {
+			alert("Address not chosen.")
+		} else {
+			api($http, '/pay_later_and_order', {"address_id": $scope.address_choice}, function(backend_output){
+				alert("Checkout hoga gya hT")
+				window.location.href = "order.html"
+			})
+		}
+	}
+
+});
+</script>
+</body>
+</html>
+

@@ -1,66 +1,132 @@
-    <div class="head_div" style="">
+    <div class="head_div" style="" ng-controller='ctrl_header' >
         <div class="hsplit" style="">
             <div class="logo" style="">
                 <a href="index.html" >
                 <img style="height: 42px;" src="https://rukminim1.flixcart.com/image/352/352/k0wqwsw0/showpiece-figurine/w/z/y/wps8054-craft-junction-original-imafkhg3dy9xgnkh.jpeg?q=70
-                ">
+                " >
                 </a>
             </div>
             <div class="title" style="display: none;" >Fresh Mart</div>
-            <div style="margin-top: 10px;  margin-left: 20px; display: none;">
-                <input type="text" placeholder="Search..." name=""  style="border:solid #ccc 1px;height:28px; width:200px; padding: 0px 10px; outline: none; border-radius: 3px; ">
+            <div>
+                <form ng-submit="search()" >
+                    <div class="hsplit" style="margin-top: 10px;  margin-left: 20px;border: solid #ccc 1px;border-radius: 3px; ">
+                        <div>
+                            <input type="text" ng-model="search_key" placeholder="Search..." name=""  style="border:solid #ccc 1px;height:28px; width:200px; padding: 0px 10px; outline: none;  border: none; ">
+                        </div>
+                        <div style="background-color: #eee;cursor: pointer; ">
+                            <span class="material-icons" style="color:#aaa; font-size: 22px; vertical-align: middle;padding: 3px;">
+                                search
+                            </span>
+                        </div>
+                        <button type="submit" style="display: none;" >A</button>
+                    </div>
+                </form>
             </div>
-            
             <div class="hsplit navbar_tabs" style=" float: right; margin-right: 25px;">
-                <div>
-                    <div style="border:solid #ccc 1px;">
+                <div class="show-md hide-xs show-sm">
+                    <div style="" ng-if="is_login==false">
                         <a href="login.html">
                             <div class="heading" >Login</div>
                         </a>
                     </div>
-                    <!-- <div style="border:solid red 1px;">
-                        <div style="border:solid #ccc 1px;">user name</div>
-                        <div class="heading" style="border:solid blue; 1px;">Logout</div>
-                    </div> -->
                 </div>
-                <!-- <div class="heading">name</div> -->
-                <div>
-                    <a href="admin.html">
-                        <div class="heading">Admin</div>
-                    </a>
-                </div>
-                <div>
-                    <a href="product_page.html">
+                <div class="show-md hide-xs show-sm">
+                    <a href="product_page.html" ng-if="is_login==true">
                         <div class="heading">Products</div>
                     </a>
                 </div>
-                <div>
-                    <a href="profile_page.html">
-                        <div class="heading">Profile</div>
+                <div class="show-md hide-xs show-sm">
+                    <a href="profile_page.html" ng-if="is_login==true">
+                        <div class="heading">
+                            <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 10px;">
+                                 person
+                            </span>{{profile_name}}
+                        </div>
                     </a>
                 </div>
-                <div>
-                    <a href="order.html">
-                        <div class="heading">Orders</div>
+                <div class="show-md hide-xs show-sm">
+                    <a href="cart.html" ng-if="is_login==true">
+                        <div class="heading">
+                            <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 10px;">
+                                 shopping_cart
+                            </span>Cart
+                        </div>
                     </a>
                 </div>
-                <div>
-                    <a href="sign_up.html">
+
+                <div class="show-md hide-xs show-sm">
+                    <a href="sign_up.html" ng-if="is_login==false">
                         <div class="heading">Sign Up</div>
                     </a>
                 </div>
-                <div>
-                    <a href="cart.html">
-                        <div class="heading">Cart</div>
+
+                <div class="show-md show-xs show-sm" style="" >
+                    <a >
+                        <div class="menu"  ng-click="menu_close_open()">
+                            <span class="material-icons" style="font-weight: 600;" >more_vert</span>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+            <div style="position: fixed; top:62px; right:23px;border-radius: 2px;box-shadow: 1px 2px 3px #888888;cursor: pointer; z-index: 100px;background-color: #fff "; ng-if='open_menu'>
+                <div class="logout_div" ng-if="is_login==true" >
+                    <a href="order.html"  style="text-decoration: none;">
+                        <div >Orders</div>
+                    </a>
+                </div>
+
+                <div class="hide-md show-xs hide-sm logout_div" ng-if="is_login==false">
+                    <a href="login.html" style="text-decoration: none;" >
+                        <div>Login</div>
+                    </a>
+                </div>
+                <div class="hide-md show-xs hide-sm logout_div" ng-if="is_login==true">
+                    <a href="product_page.html"  style="text-decoration: none;">
+                        <div >Products</div>
+                    </a>
+                </div>
+
+                <div class="hide-md show-xs hide-sm logout_div" ng-if="is_login==true" >
+                    <a class="" href="profile_page.html">
+                        <div class="hsplit">
+                            <div >
+                                <span class="material-icons" style=" vertical-align: middle; font-size: 18px;">
+                                 person
+                                </span>
+                            </div>
+                            <div  style="">{{profile_name}}</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class=" hide-md show-xs hide-sm logout_div" ng-if="is_login==true">
+                    <a href="cart.html"  >
+                        <div class="hsplit">
+                            <div >
+                                <span class="material-icons" style=" vertical-align: middle; font-size: 18px;">
+                                    shopping_cart
+                                </span>
+                            </div>
+                            <div  style="">Cart</div>
+                        </div>
                     </a>
                </div>
-                <div>
-                    <a>
-                        <div class="heading">Logout</div>
+
+               <div class="hide-md show-xs hide-sm logout_div" ng-if="is_login==false">
+                    <a href="sign_up.html" style="text-decoration: none;" >
+                        <div>Sign Up</div>
                     </a>
-               </div>
-                <!-- <div class="heading">Log Out</div> -->
+                </div>
+
+                <div class="logout_div" ng-if="is_login==true" >
+                    <a ng-click='logout()'  style="text-decoration: none;">
+                        <div>Logout</div>
+                    </a>
+                </div>
+
             </div>
         </div>
+
     </div>
     <div style="height: 50px;" ></div>

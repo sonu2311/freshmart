@@ -4,9 +4,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
 <link rel="stylesheet" href="main.css">
-<script src="main.js"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="main.js"></script>
+
 <style>
 table {
   border-collapse: collapse;
@@ -48,26 +49,18 @@ th {
 	text-align: left;
 	
 }
-.th_price_width{
-	width:120px;
-	
-}
 .th_add_quantity_width{
 	width:210px;
 	
+}
+.th_big_width{
+	width:230px;
 }
 .th_discount_width{
 	width:80px;
 	
 }
-.th_save_price_width{
-	width:100px;
-	
-}
-.th_total_price_width{
-	width:100px;
-	
-}
+
 
 .cart_name_div{
 	/*border:solid black 1px; */
@@ -90,7 +83,7 @@ th {
 <body ng-app="myApp" ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
 
-	<div class="hsplit " style="margin-top:20px;" ng-if="l.length==0">
+	<div class="hsplit " style="margin-top:20px;" ng-if="error">
 		<div class="col-md-8 col-sm-10 col-xs-8" style="">
 			<img style="width: 100%;" src="https://complianceandethics.org/wp-content/uploads/2017/03/AdobeStock_53712600.jpg"> 
 		</div>
@@ -99,56 +92,56 @@ th {
 			<p>The page you are looking for can’t be found.</p>
 		</div>
 	</div>
-	<div class="hsplit" style=" padding:30px 0px;" ng-if="l.length>0" >
-    	<div class="col-md-3 col-sm-2" ></div>
-	 	<div class="col-md-6 col-sm-8 col-xs-12" style="color:#333;margin-bottom:25px;border-radius: 4px; box-shadow: 2px 2px 5px #888888;  margin-top:30px">
+	<div class="hsplit" style=" padding:30px 0px;" ng-if="!error" >
+    	<div class="col-md-2 col-sm-2" ></div>
+	 	<div class="col-md-8 col-sm-8 col-xs-12" style="color:#333;margin-bottom:25px;border-radius: 4px; box-shadow: 2px 2px 5px #888888;  margin-top:30px">
 	 		
 	 		<div style="border:solid #ccc 1px;" class="order_detail_div_navbar" > Super store-HSR Layout.1589</div>
 		    <table>
-				  <tr>
-				  	<!-- <th class="th_image_width">Image</th>
-				    <th class="th_name_width">Name</th>
-				    <th class="th_price_width">Price</th>
-				    <th class="th_add_quantity_width">Add quantity</th>
-				    <th class="th_discount_width">Discount</th>
-				    <th class="th_save_price_width">Save price</th>
-				    <th class="th_total_price_width">subtotal</th> -->
-				  </tr>
-				  <tr ng-repeat='x in l' class="cart_row" >
+				  <tr ng-repeat='x in l.order_item_list' class="cart_row" >
 				    <td class="th_add_quantity_width">
 				    	<img src='{{x.image}}' style="width:60px;">
 				    </td>
 				    <td style="max-width: 200px; text-align: left" class="th_name_width">{{x.name}}
 				    </td>
-				    <td class="th_price_width">{{x.product_quantity}} </td>
+				    <td >{{x.product_quantity}} </td>
+				    <td>
+				    	x
+				    </td>
 					<td class="th_discount_width"> <span style="font-size: 15px;">₹</span> {{x.price}}</td>
-					<td class="th_total_price_width"> <span style="font-size: 15px;">₹</span> {{x.subtotal}}</td>
+					<td class="th_big_width"> <span style="font-size: 15px;">₹</span> {{x.subtotal}}</td>
 					<!-- <td class="th_total_price_width">sub</td>
 					<td class="th_total_price_width">sub5</td> -->
 				  </tr>
 			</table>
 
 			<div class="hsplit" style="text-align: right; padding: 15px; ">
-				<div class="th_total_price_width" style="float:right;text-align: center;  ">total_amount</div>
-				<div class="th_discount_width" style="float:right; text-align: center; ">TOTAL</div>
+				<div class="th_total_price_width" style="float:right;text-align: center;  ">{{l.total_amount}}</div>
+				<div class="th_image_width" style="float:right; text-align: center;  ">Total</div>
 			</div>
+			
 		</div>
 	</div>
 <script>
 
 
-var app = angular.module('myApp', [])
+
 app.controller('myCtrl', function($scope,$http) {
 
 	s = $scope
 	// $scope.l=[1,2,3,4,5]
 
-var url_params = new URLSearchParams((new URL(window.location.href)).search)
+	var url_params = new URLSearchParams((new URL(window.location.href)).search)
+	$scope.l = {}
 
-		$scope.order_id = url_params.get("order_id")
-			api($http, '/order_item', {"order_id": $scope.order_id },function(backend_output){
-				$scope.l= backend_output
-			})
+	$scope.error = false
+
+	$scope.order_id = url_params.get("order_id")
+	api($http, '/order_item', {"order_id": $scope.order_id },function(backend_output) {
+		$scope.error = ('error' in backend_output)
+		$scope.l= backend_output
+		console.log($scope.l)
+	})
 	
 });
 </script>

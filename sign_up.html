@@ -65,7 +65,7 @@ div.hsplit > div {
 <script>
 
 
-var app = angular.module('myApp', [])
+
 app.controller('myCtrl', function($scope,$http) {
 	s = $scope
 	$scope.name="sonu"
@@ -80,11 +80,9 @@ app.controller('myCtrl', function($scope,$http) {
 			}
 			else{
 				alert("Signup ho gya !")
+				window.location.href = "product_page.html"
 			}
 		})
-			
-			// alert($scope.name + " ka sign up yo gya.. Wow.. ")
-			// // window.location.href = "welcome.html"
 	}
 
 

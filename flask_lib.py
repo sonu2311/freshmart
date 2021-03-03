@@ -16,7 +16,7 @@ class FlaskLib:
 		    return r
 
 	def run(self, port):
-		self.app.run(host='0.0.0.0', port=port, debug=True)
+		self.app.run(host='0.0.0.0', port=port, debug=True, threaded=False)
 
 	def api(self, route):
 		def decorator(f):

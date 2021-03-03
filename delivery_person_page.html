@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<link rel="stylesheet" href="main.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="main.js"></script>
+
+<style>
+.sing_up_margin_top{
+    margin-top:50px;
+}
+table, td, th {
+  border: 1px solid #CCC;
+  text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+  /*width: 50%;*/
+}
+
+th, td{
+	padding: 5px;
+  
+}
+
+.th_name_width{
+	width: calc(100vw - 300px); 
+	text-align: left;
+	
+}
+.th_width{
+	width:450px;
+	padding: 15px;
+}
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+	<div ng-include='"header.html"' ></div>
+
+
+
+	<div style=" margin-bottom: 30px;padding: 5px 10px; " >
+		<!-- <h3>Table</h3> -->
+		<div style="font-size: 25px; font-weight: 300px; padding:10px 5px;margin-bottom: 5px; color: #337ab7;">
+			All Farmer Details
+		</div>
+		
+		<table>
+			<thead>
+				<tr>
+					<th class="th_width">Id</th>
+					<th class="th_width">Name</th>
+					<th class="th_width">Email</th>
+					<th class="th_width">Phone</th>
+					<th class="th_name_width" style="text-align: center;">User Profile</th>
+					<th class="th_name_width" style="text-align: center;">Role</th>
+					<th> Order Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="x in l">
+					<td class="th_width">{{x.id}}</td>
+					<td class="th_width">{{x.name}}</td>
+					<td class="th_name_width">{{x.email}}</td>
+					<td class="th_width" style="font-size: 15px;">{{x.phone}}</td>
+					<td class="th_width" style="text-align: center;">
+						<a href="profile_page.html?id={{x.id}}" style="text-decoration: none; font-size: 15px; "> view details</a> 
+					</td>
+					<td class="th_width" style="font-size: 14px;">{{x.role}}</td>
+					<td>
+						<select style="outline: none;padding:2px 1px;">
+							<option>ORDERED</option>
+							<option>CONFIRMED </option>
+							<option>SHIPPED</option>
+							<option>DELIVERED</option>
+						</select>
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+<script>
+app.controller('myCtrl', function($scope,$http) {
+	s = $scope
+	api($http,'/all_users', {},function(backend_output) {
+		
+			$scope.l = backend_output
+			console.log(backend_output)
+			console.log(backend_output)
+		
+	})
+});
+</script>
+</body>
+</html>

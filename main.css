@@ -60,9 +60,44 @@ div.hsplit > div {
 }
 .heading:hover{
     cursor: pointer;
-    background-color:#666;
+    background-color: #337ab7;
     color:white;
 }
+
+.menu{
+  line-height: 1.7;
+  padding: 10px 22px;
+  color: #333;
+}
+
+.menu:hover{
+  cursor: pointer;
+  color:#2e6da4; 
+    /*color:white;*/
+    /*background-color: #337ab7;*/
+}
+
+.profile_icon_div{
+  font-size: 14px;
+    line-height: 1.7;
+    font-weight: 600;
+    /*padding: 15px 4px;*/
+    /*color: #333;*/
+    border-radius: 2px;
+}
+
+
+.profile_tab_in_header {
+  padding: 0px 22px;
+  border-radius: 2px;
+}
+
+.profile_tab_in_header:hover{
+  cursor: pointer;
+  background-color: #337ab7;
+  color:white;
+}
+
 
 .navbar_tabs div a {
     color: inherit;
@@ -998,7 +1033,7 @@ body, button {
 
 .email_password_name_div{
     padding: 7px 0px; 
-    font-size: 18px;
+    font-size: 15px;
 }
 
 .email_password_input_div{
@@ -1068,8 +1103,8 @@ body, button {
 
 .image_detail_div{
 	/*border:solid red 1px; */
-	width: calc(100vw - 190px); 
-	margin-left: 160px; 
+	/*width: calc(100vw - 190px); */
+	/*margin-left: 160px; */
 	box-sizing: border-box;
 }
 .big_div{
@@ -1124,6 +1159,12 @@ div.hsplit > div {
     box-sizing: border-box;
     /*display: none;*/
 }
+
+.add_cart:hover{
+  background-color: #2e6da4;
+  color:#eee;
+}
+
 .discount_div{
 	position:absolute; 
 	left:0px; color:#fff; 
@@ -1173,6 +1214,10 @@ div.hsplit > div {
 	font-size: 18px;
 	text-align: center;
 }
+/*.add_remove_comman_div:hover{
+  background-color: #2e6da4;
+}*/
+
 .price_in_product_detail{
 	font-size: 17px; font-weight: 600; color:#333; margin-top: 8px;
 }
@@ -1196,6 +1241,18 @@ td{
   border-bottom: solid #ddd 1px;
 }
 
+.logout_div{
+  border-bottom:solid #ccc 1px; padding:10px;
+  /*padding-right: 100px;*/
+  width:150px;
+  color:#333; 
+  font-size: 15px;
+}
+
+.logout_div:hover{
+  background-color:#f9f9f9;
+  color:#337ab7;
+}
 
 th {
   background-color: #f9f9f9;
@@ -1254,3 +1311,18 @@ th {
   font-size: 12px;
 
 }
+
+
+
+.vcenter:before {
+   content: " ";
+   display: inline-block;
+   height: 100%;
+   vertical-align: middle;
+}
+
+.vcenter > * {
+   display: inline-block;
+   vertical-align: middle;
+}
+

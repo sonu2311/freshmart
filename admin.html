@@ -23,13 +23,13 @@ div.hsplit > div {
     margin-top:50px;
 }
 table, td, th {
-  border: 1px solid black;
+  border: 1px solid #CCC;
   text-align: center;
 }
 
 table {
   border-collapse: collapse;
-  width: 50%;
+  /*width: 50%;*/
 }
 
 th, td{
@@ -37,63 +37,59 @@ th, td{
   
 }
 
+.th_name_width{
+	width: calc(100vw - 300px); 
+	text-align: left;
+	
+}
+.th_width{
+	width:450px;
+	padding: 15px;
+}
+
 </style>
 </head>
 <body ng-app="myApp" ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
 
+<div class="hsplit" style="margin-top: 15px; ">
+	<div style=" margin-bottom: 10px; " class="col-lg-3 col-md-3 col-sm-3 col-xs-12" >
+		<div class="login_button_div btn btn-primary active" style="text-align: left; margin-top:5px; padding-left: 2px;">
+			<a href="admin_user.html?role=USER">
+				<button class="login_button" >Admin - All users page</button>	
+			</a>
+		</div>
+		<div class="login_button_div btn btn-primary active" style="text-align: left; margin-top:5px; padding-left: 2px;">
+			<a href="admin1.html">
+				<button class="login_button">Admin - Products List</button>	
+			</a>
+		</div>
 
-	<div style="margin-top: 100px;" >
-
-		<a href="admin.html">
-			<button>Admin - All users page</button>	
-		</a>
-
-		<a href="admin1.html">
-			<button>Admin - Products List</button>	
-		</a>
-
-
-		<a href="orders_admin_page.html">
-			<button>Admin Orders Page</button>	
-		</a>
-
-		
+		<div class="login_button_div btn btn-primary active" style="text-align: left; margin-top:5px; padding-left: 2px;">
+			<a href="orders_admin_page.html">
+				<button class="login_button">Admin - Orders Page</button>	
+			</a>
+		</div>		
+		<div class="login_button_div btn btn-primary active" style="text-align: left; margin-top:5px; padding-left: 2px;">
+			<a href="admin_user.html?role=FARMER">
+				<button class="login_button">Admin - Farmer Page</button>	
+			</a>
+		</div>	
+		<div class="login_button_div btn btn-primary active" style="text-align: left; margin-top:5px; padding-left: 2px;">
+			<a href="admin_user.html?role=DELIVERY_PERSON">
+				<button class="login_button">Admin -  Deliver Person</button>	
+			</a>
+		</div>		
 	</div>
-	<div style="padding-left: 60px;">
-		<h1>Table</h1>
-		<table>
-			<thead>
-				<tr>
-					<th> id</th>
-					<th>Name</th>
-					<th>Email</th>
-					<th>Phone</th>
-					<th>Password</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="x in l">
-					<td>{{x.id}}</td>
-					<td>{{x.name}}</td>
-					<td>{{x.email}}</td>
-					<td>{{x.phone}}</td>
-					<td>{{x.password}}</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>	
+
+	<div style=" margin-bottom: 30px; " class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+	</div>
+</div>
 	
 <script>
 
-var app = angular.module('myApp', [])
-app.controller('myCtrl', function($scope,$http) {
-	s = $scope
-	$scope.l=[]
-	api($http,'/all_users', {},function(backend_output) {
-		$scope.l = backend_output
-	})
 
+app.controller('myCtrl', function($scope,$http) {
 });
 </script>
 </body>

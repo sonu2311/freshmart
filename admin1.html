@@ -190,12 +190,12 @@ body {
 								<input type="text" name="name" ng-model="price" class="input" >
 							</div>
 						</div>
-						<div class="margin-top-15">
+						<!-- <div class="margin-top-15">
 							<div class="font_size-18">Discount</div>
 							<div>
 								<input type="text" name="name" ng-model="discount" class="input">
 							</div>
-						</div>
+						</div> -->
 						<div class="margin-top-15">
 							<div class="font_size-18">Image</div>
 							<div>
@@ -219,8 +219,6 @@ body {
 	
 <script>
 
-
-var app = angular.module('myApp', [])
 app.controller('myCtrl', function($scope,$http) {
 
 	s = $scope
@@ -237,14 +235,16 @@ app.controller('myCtrl', function($scope,$http) {
 	$scope.scroll=function(x){
         window.scrollTo(0, document.getElementById(x).offsetTop - 70)
     }
+// yha pr all_products api ki jrurt ni thi but ye api bnayi hui thi tho yha bi use kr li bs jada iska use ni h.
+// but ha ye vali api jb kam kregi jb 1st time hm produts page open krnge tb ye list apload ho kr dikhayi degi.
+	api($http,'/admin_all_products', {},function(backend_output) {
+		$scope.list = backend_output
+	})
 
-	// api($http,'/all_users', {},function(backend_output) {
-	// 	$scope.l = backend_output
-	// })
 
-	// $scope.edit_variable=false
+	// yha se jo bi details gyi vo table me insert hone ke bad yha table jo retun mili h usi ko ng_repeat me use kiya gya h
 	$scope.save=function(){
-		api($http, '/add_product', { "name":$scope.name, "price":$scope.price,"discount":$scope.discount,"image":$scope.image, "description":$scope.description }, function(backend_output){
+		api($http, '/add_product', { "name":$scope.name, "price":$scope.price,"image":$scope.image, "description":$scope.description }, function(backend_output){
 			$scope.list=backend_output
 		})
 	}
@@ -261,11 +261,7 @@ app.controller('myCtrl', function($scope,$http) {
 		});
 	}
 	
-	// yha pr all_products api ki jrurt ni thi but ye api bnayi hui thi tho yha bi use kr li bs jada iska use ni h
-	api($http,'/all_products', {},function(backend_output) {
-		$scope.list = backend_output
-	})
-
+	
 
 });
 </script>

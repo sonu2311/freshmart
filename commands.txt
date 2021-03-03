@@ -12,10 +12,22 @@ create table cart ( product_id int ,product_quantity int,user_id int);
 
 create table order_items( order_id int, product_id int, product_quantity int);
 
+create table addresses (id serial primary key, user_id int, address varchar(1000), label varchar(100));
 
 
 
 "update products set name = {name}, price  = {price}, discount={discount}, image={image}, description={description}"
+
+"update users set name = {name}, price  = {price}"
+
+"update addresses set address = {address} where user_id={user_id}"
+
+"update users set password = {new_password} where id={user_id}"
+
+DELETE FROM addresses where id={address_id} AND user_id={user_id}";
+
+"select total_amount from orders where order_items.order_id={order_id}"
+
 
 
 query = "insert into cart (product_id int ,quantity int,user_id int) values ({product_id}, {product_quantity}) "
@@ -46,14 +58,10 @@ ADD user_id int;
 "select order_items.*,products.id, products.image, products.price,products.name from order_items left join products on order_items.order_id=products.id" where order_items.order_id=
 
 
+select products.*, COALESCE(cart.product_quantity, 0) as product_quantity from products left join cart  on products.id=cart.product_id AND cart.user_id={user_id} WHERE name like {search_key} 
 
 
-
-
-
-
-
-
+"select orders.*,addresses.address from orders left join addresses on orders.address_id=addresses.id order by id desc"
 
 
 
@@ -62,8 +70,18 @@ import time
 
 int(time.time())
 
+ALTER TABLE adderss
+DROP COLUMN user_type;
+
+ALTER TABLE adderss
+ADD COLUMN label ;
+
 ALTER TABLE orders
 ADD COLUMN ordered_at int
+
+ALTER TABLE users ADD COLUMN role varchar(20)
+
+ALTER TABLE orders ADD COLUMN address_id int;
 
 ALTER TABLE orders
 ADD COLUMN expect_delivery  int;
@@ -71,13 +89,13 @@ ADD COLUMN expect_delivery  int;
 ALTER TABLE orders
 ADD COLUMN status  varchar(30);
 
+ALTER TABLE orders ADD COLUMN paid int;
 
 ALTER TABLE table_name 
-RENAME column_name TO new_column_name;
+RENAME column_name TO new_column_name varchar(30);
 
 
-ALTER TABLE orders 
-RENAME delivery_date TO delivery_at;
+ALTER TABLE orders RENAME delivery_date TO delivery_at;
 
 
 
@@ -94,8 +112,19 @@ UPDATE orders
 SET status = frontend_dict.status
 WHERE orders.id=frontend_dict.id;
 
-
 select cart.product_quantity, products.price, cart.product_quantity * products.price as total_amount from cart inner join products on cart.product_id=products.id;
 
 select sum(cart.product_quantity * products.price) as total_amount from cart inner join products on cart.product_id=products.id
 "insert into orders(store_name , total_amount) values ()"
+
+"insert into users(address) values(address)"
+
+ALTER TABLE users ADD COLUMN address varchar(1000);
+
+ALTER TABLE adderss ADD COLUMN label varchar(1000);
+
+SELECT price FROM products
+ORDER BY price DESC;
+
+SELECT COUNT(id)FROM products;
+

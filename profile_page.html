@@ -4,9 +4,9 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
 <link rel="stylesheet" href="main.css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="main.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <style>
 	
 div.hsplit:after {
@@ -18,17 +18,27 @@ display: table;
 div.hsplit > div {
 	float: left;
 }
-.scroll_in_profile_page{
+
+.scroll_in_profile_page {
 	/*border:solid green 1px; */
 	height: calc(100vh - 50px); 
 	/*overflow-y: scroll; */
-	position: fixed; top: 50px;
+	position: fixed;
+	top: 50px;
+	left: 0px;
 }
-.in_scroll_profile_page_div{
-	margin-top: 25px; color:#666;
+
+.in_scroll_profile_page_div {
+	/*margin-top: 25px;*/
+	color:#666;
+	padding: 10px;
+	padding-left: 20px;
+	cursor: pointer;
 }
+
 .in_scroll_profile_page_div:hover{
 	color:#337ab7;
+	background-color: #eee;
 	/*color:#2e6da4;*/
 }
 
@@ -53,137 +63,254 @@ div.hsplit > div {
 
 .proflie_page_right_div{
 	/*border:solid red 1px; */
-	width: calc(100vw - 220px); 
+	/*width: calc(100vw - 350px); */
 	/*margin-left: 160px; */
 	box-sizing: border-box;
-	margin-left: 190px;
-	margin-top: 30px;
+	/*margin-left: 250px;*/
+	/*margin-top: 30px;*/
 
 }
 .email_contact_input{
-	padding:5px; border:solid #ccc 1px; outline: none; border-radius: 3px;width:300px; color:#333; max-width: 100%; 
+	padding:5px; border:solid #ccc 1px; outline: none; border-radius: 3px; width:420px; color:#333; max-width: 100%; 
 }
 .email_contact_input:hover{
 	box-shadow: 1px 1px 2px 1px #ccc;
 }
+
+
 </style>
 </head>
 <body ng-app="myApp" ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
 
-	<div class="hsplit bigest_div" style="">
-		<div class="scroll_in_profile_page" style="border:solid #ccc 1px;">
-			<div class="" style="border:solid #ccc 1px; padding:20px; cursor: pointer; ">
-				<div class="in_scroll_profile_page_div"  style=""> My Account</div>
-				<!-- <div class="in_scroll_profile_page_div"> Persnal detail</div> -->
-				<div class="in_scroll_profile_page_div">Address</div>
-				<!-- <div class="in_scroll_profile_page_div">Edit profile</div> -->
-				<div class="in_scroll_profile_page_div">Custmor Service</div>
-				<div class="in_scroll_profile_page_div">My order</div>
-			</div>
+	<div class="scroll_in_profile_page hide-xs hide-sm show-md hide-md" style="border:solid #ccc 1px;" ng-if="allow_edit">
+		<div  style="width: 170px; margin-top: 6px;">
+			<div class="in_scroll_profile_page_div"  ng-click="scroll('account')"> My Account</div>
+			<div class="in_scroll_profile_page_div" ng-click="scroll('address')">Address</div>
+			<a href="order.html" style="text-decoration: none;" ><div class="in_scroll_profile_page_div" >My order</div></a>
 		</div>
-		<!-- ###### -->
-		<div class="proflie_page_right_div" style=" ">	
+	</div>
 
+	<div class="hsplit bigest_div" style="margin-top: 10px;">
+		<div class="col-lg-2 col-sm-2 col-xs-1" ></div>
+		<div class="proflie_page_right_div col-lg-8 col-sm-8 col-xs-10"style="box-sizing: border-box; ">	
 			<div style="margin-top: 30px; margin-bottom: 30px;" >
 				Currently Login  = {{login_details}}
 			</div>
 
-			<div class=" "style=" color:#333;margin-bottom:25px;border-radius: 4px; padding: 20px; box-shadow: 2px 2px 5px #888888;">
-				<div style=" ">
-					<div style="font-size: 25px; font-weight: 300px; padding:1px 5px;">
+			<div id="account" class=" "style="color:#333;margin-bottom:25px;border-radius: 4px; padding: 20px; box-shadow: 2px 2px 5px #888888; background-color:#fff; ">
+				<div style="">
+					<div style="font-size: 25px; font-weight: 300px; padding:1px 5px; color: #337ab7;">
 						Profile Details
 					</div>
-					<hr>
-					<div style="margin-top: 15px;">
-						<div style=" padding: 7px;margin-bottom:10px;">
-							<span class="material-icons" style="color:#ccc; font-size: 20px; vertical-align: bottom; margin-right: 5px;">
-							person
-							</span>
-							<input type="text" name="" ng-model="user_name" class="email_contact_input">
-							<!-- <span style="">sonu233@gmail.com</span> -->
-						</div>
+					<div style="border-bottom: solid #eee 1px;" ></div>
+					<div style="margin-top:25px;">
 						<div style=" padding: 7px;margin-bottom:10px;">
 							<span class="material-icons" style="color:#ccc; font-size: 20px; vertical-align: bottom; margin-right: 5px;">
 							email
 							</span>
-							<input type="text" name="" ng-model="email" class="email_contact_input" disabled="true" >
-							<!-- <span style="">sonu233@gmail.com</span> -->
+							<input type="text" name="" ng-model="user_info.email" class="email_contact_input" disabled="true" >
 						</div>
+						<div style=" padding: 7px;margin-bottom:10px;">
+							<span class="material-icons" style="color:#ccc; font-size: 20px; vertical-align: bottom; margin-right: 5px;">
+							person
+							</span>
+							<input type="text" name="" ng-model="user_info.name" class="email_contact_input">
+						</div>
+						
 						<div style=" padding: 7px ; margin-bottom:10px;">
 							<span class="material-icons" style="color:#ccc; font-size: 20px; vertical-align: bottom; margin-right: 5px;">
 							phone
 							</span>
-							<input type="text" name="" ng-model="contact_number" class="email_contact_input">
+							<input type="text" name="" ng-model="user_info.phone" class="email_contact_input">
 						</div>
 					</div>
 				</div>
-				<div class="login_button_div btn btn-primary active" style="text-align: left; margin-top: 15px; padding-left: 30px;">
-					<button class="login_button" ng-click=login()>Save</button>
+				<div class="login_button_div btn btn-primary active" style="text-align: left; margin-top:20px; padding-left: 30px;" ng-if="allow_edit">
+					<button class="login_button" ng-click="user_new_details_save_button()">Save</button>
 				</div>
-			 </div>
+			</div>
 			 
 			 <!--  -->
-
-			 <!-- <div class="proflie_page_right_div" style=" ">	 -->
-
-			<div class=" "style=" color:#333;margin-bottom:25px;border-radius: 4px; padding: 20px; box-shadow: 2px 2px 5px #888888;">
-				<div style=" ">
-					<div style="font-size: 25px; font-weight: 300px; padding:1px 5px;">
-						Address
+			 <div id="password" ng-if="allow_edit" class=" "style="color:#333;margin-bottom:25px;border-radius: 4px; padding: 20px; box-shadow: 2px 2px 5px #888888; background-color:#fff; ">
+				<div style="">
+					<div style="font-size: 25px; font-weight: 300px; padding:1px 5px; color: #337ab7;">
+						Password
 					</div>
-					<hr>
-					<div style=" margin-top:30px; padding: 7px ; margin-bottom:10px; margin-left:25px;">
-						<textarea ng-model="profile_textarea" rows="6" cols="50" style="outline: none; border:solid #ccc 1px;border-radius: 3px; padding:8px; line-height:20px;">	
-						</textarea> 
+					<div style="border-bottom: solid #eee 1px;" ></div>
+					<div style="margin-top:25px;">
+						<div style=" padding:0px 7px; font-size: 12px;">Old Password</div>
+						<div style=" padding: 7px;margin-bottom:10px;">
+							<input type="{{show_password ? 'text':'password'}}" name="" ng-model="self.old_password" class="email_contact_input" >
+						</div>
+						
 					</div>
-					
+					<div style="margin-top:25px;">
+						<div style=" padding:0px 7px; font-size: 12px;">New Password</div>
+						<div style=" padding: 7px;margin-bottom:10px;">
+							<input type="{{show_password ? 'text':'password'}}" name="" ng-model="self.new_password" class="email_contact_input">
+						</div>	
+					</div>
+					<div style="margin-top:25px;">
+						<div style=" padding:0px 7px; font-size: 12px;">Repeat password</div>
+						<div style=" padding: 7px;margin-bottom:10px;">
+							<input type="{{show_password ? 'text':'password'}}" name="" ng-model="self.repeat_password" class="email_contact_input" >
+						</div>	
+					</div>
+					<div style="padding-top: 8px;">
+						<label> <input type="checkbox" ng-model="self.show_password">Show Password</label>
+					</div>
 				</div>
-				<div class="login_button_div btn btn-primary active" style="text-align: left; margin-top: 15px; padding-left: 30px;">
-					<button class="login_button" ng-click=login()>Save</button>
+				<div class="login_button_div btn btn-primary active" style="text-align: left; margin-top:20px; padding-left: 5px;">
+					<button class="login_button" ng-click="update_password()">Update Password</button>
 				</div>
 			</div>
 
-			 <!--  -->
-			 <div class=" "style=" color:#333;margin-bottom:25px;border-radius: 4px; padding: 20px; box-shadow: 2px 2px 5px #888888;">
+			<div id="address" class=" "style=" color:#333;margin-bottom:25px;border-radius: 4px; padding-bottom: 20px; box-shadow: 2px 2px 5px #888888; margin-top: 45px;">
 				<div style=" ">
-					<div style="font-size: 25px; font-weight: 300px; padding:1px 5px;">
-						Contact us
+					<div style="padding:20px;" ng-click="add_address()" ng-if="allow_edit" >
+						<span class="material-icons" style="font-size:18px; margin-right:10px;vertical-align: middle; color:#337ab7; cursor: pointer;">
+						add_circle_outline
+						</span>
+						<span style="margin-left:10px; margin-top: 0px; margin-bottom: 5px; vertical-align: middle; font-size: 15px; color:#337ab7; cursor: pointer;">Add New Address</span>
 					</div>
-					<hr>
-					<div style=" margin-top:20px; padding: 7px ; margin-bottom:10px; margin-left:5px;">
-							<div>
-								<span class="material-icons" style="color:#ccc; font-size: 20px; vertical-align: bottom; margin-right: 5px;">
-									phone
-								</span>
-								{{service_number}}
+					<div class="hsplit" ng-if='add_address_show_textarea' style="margin-top:5px; margin-bottom:10px; margin-left:55px; font-size: 14px; font-weight:500; line-height:20px;" >
+						<div style="width:calc(100% - 140px); margin-right: 20px; text-align: justify;text-justify: inter-word;">
+							<textarea rows="4" style="outline: none; resize: none;  padding:10px; line-height: 20px; background-color:#eee;border: solid #eee 1px; width: 100%;" ng-model="self.new_address"></textarea>
+						</div>
+						<div style="margin-right:10px; margin-left: 10px; font-size: 14px; color:#666; cursor: pointer; color:#337ab7;" ng-click="new_address_save_button()"> Add
+						</div>
+						<div style="margin-right: 10px; margin-left: 10px;font-size: 14px; color:#666;cursor: pointer; color:#337ab7;" ng-click='cancel_add_new_address()' >Cancel
+						</div>
+					</div>
+					
+					<div ng-repeat="x in user_info.address_list">
+						<!--  -->
+						<div style="border-bottom: solid #eee 1px;" ></div>
+						<div style="padding-left:20px; padding-top:15px;">
+							<span class="material-icons"  style="  margin-right:10px;vertical-align: middle;font-size:18px;">
+							location_on
+							</span>
+							<span style="vertical-align: middle;font-size: 14px; font-weight: 600;"> Home</span>
+						</div>
+						<div class="hsplit" style="margin-top:5px; margin-bottom:10px; margin-left:55px; font-size: 14px; font-weight:500; line-height:20px;" >
+							<div style="width:calc(100% - 140px); margin-right: 20px; text-align: justify;text-justify: inter-word; min-height: 1px;">
+								<div ng-if='!x.show_textarea' >{{x.address}}</div>
+								<textarea ng-if='x.show_textarea' rows="4" style="outline: none; resize: none;  padding:10px; line-height: 20px; background-color:#eee;border: solid #eee 1px; width: 100%;" ng-model="x.address"></textarea>
 							</div>
-							<div style="margin-top: 12px;">
-								<span class="material-icons" style="color:#ccc; font-size: 20px; vertical-align: bottom; margin-right: 5px;">
-									email
-								</span>
-								{{service_email}}
+							<div ng-if='!x.show_textarea && allow_edit' style="margin-right:10px; margin-left: 10px; font-size: 14px; color:#666; cursor: pointer; color:#337ab7;" ng-click="edit(x)"> Edit
 							</div>
-					</div>	
+							<div ng-if='!x.show_textarea && allow_edit' style="margin-right: 10px; margin-left: 10px;font-size: 14px; color:#666;cursor: pointer; color:#337ab7;" ng-click="address_delete_button(x)">Delete
+							</div>
+							<div ng-if='x.show_textarea' style="margin-right:10px; margin-left: 10px; font-size: 14px; color:#666; cursor: pointer; color:#337ab7;" ng-click="address_update_save_button(x)"> Save
+							</div>
+							<div ng-if='x.show_textarea' style="margin-right:10px; margin-left: 10px; font-size: 14px; color:#666; cursor: pointer; color:#337ab7;" ng-click="cancel(x)"> Cancel
+							</div>
+						</div>
+ 					</div>
 				</div>
-			</div>		 
+			</div>
 		</div>
+		<!-- <div>4444</div> -->
+	</div>
 		
 <script>
 
-
-var app = angular.module('myApp', [])
 app.controller('myCtrl', function($scope,$http) {
-
+	$scope.self = $scope
 	s = $scope
-	$scope.email=" sonu233@gmail.com"
-	$scope.contact_number="7877180503"
-	$scope.user_name="sonu"
-	$scope.profile_textarea="At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies."
-	$scope.service_number=88997978
-	$scope.service_email="mohit@gmail.com"
-
 	$scope.login_details = session.login_key
+
+	$scope.show_password=false
+	$scope.new_password = ""
+	$scope.old_password = ""
+	$scope.repeat_password = ""
+
+	$scope.scroll=function(x) {
+		console.log("x= ",x)
+        window.scrollTo(0, document.getElementById(x).offsetTop - 10)
+    }
+    $scope.editing=true
+
+    $scope.edit=function(x) {
+		x.show_textarea = true
+	}
+
+	$scope.cancel=function(x) {
+		x.show_textarea = false
+	}
+
+	$scope.cancel_add_new_address = function() {
+		$scope.add_address_show_textarea = false
+		$scope.new_address = ""
+	}
+
+	// Add-address krne ke bad textarea show hona chahiye.. add-address vala.
+	$scope.add_address_show_textarea = false
+
+	$scope.add_address=function() {
+		$scope.add_address_show_textarea = !$scope.add_address_show_textarea
+	}
+
+	$scope.user_info = {}
+
+	var url_params = new URLSearchParams((new URL(window.location.href)).search)
+
+	var url_user_id=url_params.get("id")
+	console.log(url_user_id)
+	$scope.variable_user_id = url_user_id || session.login_key.id
+ 	$scope.allow_edit = ($scope.variable_user_id == session.login_key.id)
+	
+
+	api($http,'/get_user_detail', {"user_ki_id": $scope.variable_user_id},function(backend_output) {
+		if("error" in backend_output){
+			alert(backend_output.error)
+		}
+		else{
+			$scope.user_info = backend_output
+		}	
+	})
+
+	$scope.user_new_details_save_button=function() {
+		api($http, '/update_user_details', $scope.user_info, function(backend_output){
+			alert("Saved.")
+		});
+	}
+
+	$scope.new_address_save_button=function(){
+		console.log("$scope.new_address = ",$scope.new_address)
+		api($http, '/add_address',{"address":$scope.new_address}, function(backend_output){
+			$scope.user_info.address_list=backend_output
+			$scope.add_address_show_textarea = false
+			$scope.new_address = ""
+			alert("Saved.")
+		})
+	}
+	$scope.address_update_save_button=function(x) {
+		api($http, '/update_address',{"address": x.address, "address_id": x.id}, function(backend_output){
+			x.show_textarea = false
+			alert("Saved.")
+		})
+	}
+
+	$scope.address_delete_button=function(x) {
+		api($http, '/delete_address',{"address_id": x.id}, function(backend_output){
+			$scope.user_info.address_list=backend_output
+			alert("Delete.")
+		})
+	}
+
+	$scope.update_password=function(){
+		api($http, '/update_password', {"old_password":$scope.old_password, "new_password":$scope.new_password, "repeat_password":$scope.repeat_password},function(backend_output) {
+			if("error" in backend_output){
+				alert(backend_output.error)
+			}
+			else{
+				alert("update password")
+			}
+		})
+	}
+
 });
 </script>
 </body>

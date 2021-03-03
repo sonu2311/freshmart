@@ -84,3 +84,30 @@ var Is_login=function(){
     return false
   }
 }
+
+var app = angular.module('myApp', [])
+
+app.controller('ctrl_header', function($scope) {
+  $scope.profile_name = Is_login() ? session.login_key.name : "Not login"
+  $scope.is_login = Is_login()
+  $scope.logout = function() {
+    clear_session()
+    window.location.href = "index.html"
+  }
+
+  $scope.search_key = ""
+  $scope.search=function(){
+    console.log(3333)
+    window.location.href = "product_page.html?search_key=" + $scope.search_key
+  }
+ 
+  $scope.open_menu=false
+
+  $scope.menu_close_open=function(){
+    console.log(11)
+    $scope.open_menu =!$scope.open_menu
+  }
+
+
+
+})
