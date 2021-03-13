@@ -85,11 +85,33 @@ var Is_login=function(){
   }
 }
 
+var getLoginId=function(){
+  if(("login_key" in session) && ("id" in session["login_key"])){
+    return session["login_key"]["id"]
+  }
+  else{
+    return 0
+  }
+}
+
+// jo bi is vakt login h uska role btayega ye fuction. 
+// agr abi farmer login h to output FARMER ayega.
+var Login_Role=function(){
+  if(("login_key" in session) && ("role" in session["login_key"])){
+    return session["login_key"]["role"]
+  }
+  else{
+    return null
+  }
+}
+
 var app = angular.module('myApp', [])
 
 app.controller('ctrl_header', function($scope) {
   $scope.profile_name = Is_login() ? session.login_key.name : "Not login"
   $scope.is_login = Is_login()
+  $scope.role = Login_Role()
+
   $scope.logout = function() {
     clear_session()
     window.location.href = "index.html"

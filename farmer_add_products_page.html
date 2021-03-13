@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<link rel="stylesheet" href="main.css">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="load_store.js"></script>
+<script src="main.js"></script>
+<style>
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+	<div ng-include='"header.html"' ></div>
+
+	<div class="col-sm-3" ></div>
+	<div class="col-xs-12 col-sm-6" style="margin-top:20px; margin-left:20px; margin-right:20px;">
+		<div class=" card_div" style="padding:0px;">
+			<div class="login_header comman_hader_style" style="background-color:#ccc; padding:9px 0px; background-color: #337ab7; color:#fff;">
+			<span style="font-size: 21px; font-weight: 400;" ng-if="edit_page==false" >Add Product</span>
+			<span style="font-size: 21px; font-weight: 400;" ng-if="edit_page==true">Edit Product</span>
+			</div>
+			<label>
+				<div style="margin-left:20px; margin-right:20px; margin-top: 25px;">
+					<div class="font_size-15"> Product Name</div>
+					<div>
+						<input type="text" name="name" ng-model="name" class="input">
+					</div>
+				</div>
+			</label>
+			<label>
+				<div class="margin-top-15" style="margin-left:20px; margin-right:20px;">
+					<div class="font_size-15">Price</div>
+					<div>
+						<input type="text" name="name" ng-model="price" class="input" >
+					</div>
+				</div>
+			</label>
+			<label>
+				<div class="margin-top-15" style="margin-left:20px; margin-right:20px;">
+					<div class="font_size-15">Image</div>
+					<div>
+						<input type="text" name="name" ng-model="image" class="input">
+					</div>
+				</div>
+			</label>
+			<label>
+				<div class="margin-top-15" style="margin-left:20px; margin-right:20px;">
+					<div class="font_size-15">Description</div>
+					<div>
+						<input type="text" name="name" ng-model="description" class="input">
+					</div>
+				</div>
+			</label>
+			<div class="login_button_div" style="margin-bottom: 30px;" ng-if="edit_page==false">
+				<button class="login_button button_color" ng-click="save()" style="background-color:#337ab7;" >Save</button>
+			</div>
+
+			<div style="margin-bottom: 30px;" class="login_button_div" ng-if="edit_page==true" >
+				<button class="login_button button_color" style="background-color:#337ab7;" ng-click="update()">update</button>
+			</div>
+		</div>
+	</div>
+<script>
+app.controller('myCtrl', function($scope,$http) {
+	$scope.self = $scope
+	s = $scope
+
+	$scope.name=""
+	$scope.price=0
+	$scope.image=""
+	$scope.description=""
+
+
+	var url_params = new URLSearchParams((new URL(window.location.href)).search)
+	var product_id=url_params.get("product_id")
+
+	if(product_id==null){
+		$scope.edit_page=false
+	}
+	else{
+		$scope.edit_page=true
+		api($http, '/products_according_to_id',{ "product_id": product_id },function(backend_output){
+		    $scope.name=backend_output.name
+			$scope.price=backend_output.price
+			$scope.image=backend_output.image
+			$scope.description=backend_output.description
+		})
+	}
+	
+
+
+	// api($http,'/admin_all_products', {},function(backend_output) {
+	// 	$scope.list = backend_output
+	// })
+
+
+	$scope.save=function(){
+		api($http, '/add_product', { "name":$scope.name, "price":$scope.price,"image":$scope.image, "description":$scope.description }, function(backend_output){
+			window.location.href = "farmer_all_products.html"
+		})
+	}
+
+	
+
+	$scope.update=function(n){
+		api($http, '/product_update',{"name":$scope.name, "price":$scope.price,"image":$scope.image, "description":$scope.description, "id": product_id}, function(backend_output){
+			$scope.list=backend_output
+			window.location.href = "farmer_all_products.html"	
+		});
+	}
+
+});
+</script>
+</body>
+</html>

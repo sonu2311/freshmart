@@ -9,7 +9,7 @@
             <div class="title" style="display: none;" >Fresh Mart</div>
             <div>
                 <form ng-submit="search()" >
-                    <div class="hsplit" style="margin-top: 10px;  margin-left: 20px;border: solid #ccc 1px;border-radius: 3px; ">
+                    <div class="hsplit" style="margin-top: 10px;  margin-left: 20px;border: solid #ccc 1px;border-radius: 3px;">
                         <div>
                             <input type="text" ng-model="search_key" placeholder="Search..." name=""  style="border:solid #ccc 1px;height:28px; width:200px; padding: 0px 10px; outline: none;  border: none; ">
                         </div>
@@ -70,8 +70,24 @@
 
             </div>
             <div style="position: fixed; top:62px; right:23px;border-radius: 2px;box-shadow: 1px 2px 3px #888888;cursor: pointer; z-index: 100px;background-color: #fff "; ng-if='open_menu'>
-                <div class="logout_div" ng-if="is_login==true" >
+                <div class="logout_div" ng-if="role=='USER'" >
                     <a href="order.html"  style="text-decoration: none;">
+                        <div >Orders</div>
+                    </a>
+                </div>
+
+                <div class="logout_div" ng-if="role=='FARMER'" >
+                    <a href="farmer_all_products.html"  style="text-decoration: none;">
+                        <div >Products</div>
+                    </a>
+                </div>
+                <div class="logout_div" ng-if="role=='FARMER'" >
+                    <a href="farmer_order_page.html"  style="text-decoration: none;">
+                        <div >Orders</div>
+                    </a>
+                </div>
+                <div class="logout_div" ng-if="role=='DELIVERY_PERSON'" >
+                    <a href="delivery_person_order_page.html"  style="text-decoration: none;">
                         <div >Orders</div>
                     </a>
                 </div>

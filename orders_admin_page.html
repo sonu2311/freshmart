@@ -102,7 +102,8 @@ th {
 		    <table>
 				  <tr>
 				  	<th style="padding-left: 30px; padding-right: 20px;">Id</th>
-				    <th>Store Name</th>
+				    <th>Farmer Name</th>
+				    <th>Delivery Person</th>
 				    <th>Order at</th>
 				    <th>Delivery at</th>
 				    <th>Expect Delivery</th>
@@ -116,7 +117,12 @@ th {
 				  </tr>
 				  <tr class="cart_row" ng-repeat="x in l" >
 				    <td style="max-width: 50px;padding-left: 30px; padding-right: 20px; ">{{x.id}}</td>
-				    <td style="">{{x.store_name}}</td>
+				    <td style=""><a href="profile_page.html?id={{x.farmer_id}}" style="text-decoration: none;">{{x.farmer_name}}</a></td>
+				    <td>
+				    	<select style="outline: none;" ng-model="x.delivery_person_id" ng-change="assign_delivery_person(x)">
+				    		<option style="" ng-repeat="y in delivery_person" ng-value="y.id" >{{y.name}}</option>
+				    	</select>
+				    </td>
 					<td>{{x.ordered_at_str}}</td>
 					
 					<td>{{x.delivery_at_str}}</td>
@@ -153,16 +159,24 @@ th {
 app.controller('myCtrl', function($scope,$http) {
 
 	s = $scope
-	api($http, '/admin_all_orders', {},function(backend_output){
 
-				$scope.l= backend_output
+	api($http, '/admin_all_orders', {},function(backend_output){
+				$scope.l= backend_output.orders_details
+				$scope.delivery_person=backend_output.delivery_person_list
 				console.log($scope.l)
+				console.log($scope.delivery_person)
 				// $scope.total_amount=backend_output.total_amount
 	})
+
+	$scope.assign_delivery_person=function(a) {
+		api($http, '/assign_delivery_person', {"order_id":a.id,"delivery_person_id":a.delivery_person_id},function(backend_output){
+
+		});
+	}
 	
 	$scope.Status_save=function(p){
 		api($http, '/Status_save', {"order_id":p.id, "status":p.status},function(backend_output){
-				$scope.l= backend_output
+				// $scope.l= backend_output
 		})
 	}
 	

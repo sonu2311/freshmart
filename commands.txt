@@ -83,6 +83,8 @@ ALTER TABLE users ADD COLUMN role varchar(20)
 
 ALTER TABLE orders ADD COLUMN address_id int;
 
+ALTER TABLE products ADD COLUMN farmer_id int;
+
 ALTER TABLE orders
 ADD COLUMN expect_delivery  int;
 
@@ -97,7 +99,9 @@ RENAME column_name TO new_column_name varchar(30);
 
 ALTER TABLE orders RENAME delivery_date TO delivery_at;
 
+ALTER TABLE orders ADD COLUMN farmer_id int;
 
+ALTER TABLE orders ADD COLUMN delivery_person_id int;
 
 
 ALTER TABLE orders RENAME expect_delivery TO expected_delivery_at;
@@ -107,12 +111,42 @@ UPDATE table_name
 SET column1 = value1, column2 = value2, ...
 WHERE condition;
 
+("update orders set delivery_person_id={delivery_person_id} where id={order_id}",frontend_dict)
 
 UPDATE orders
 SET status = frontend_dict.status
 WHERE orders.id=frontend_dict.id;
 
+update users set account_ststus=frontend_dict.account_status
+
+"select orders.* ,users.name,farmers.name as farmers_name,farmers.address as farmer_address, addresses.address form orders left join users on orders.user_id = users.id left join addresses on orders.address_id=addresses.id left join users as farmers on orders.farmer_id= farmers.id "
+
+
+
+
+"select orders.* ,users.name,farmers.name,farmers.address as , addresses.address form orders left join users on orders.user_id = users.id left join addresses on orders.address_id=addresses.id left join users as farmers on orders.farmer_id= farmers.id "
+
+
+
+
+
+
+ id | delivery_at | store_name | total_amount | ordered_at | expected_delivery_at | status  | user_id | address_id | paid | farmer_id | delivery_person_id 
+----+-------------+------------+--------------+------------+----------------------+---------+---------+------------+------+-----------+--------------------
+ 40 |             | sonu store |          160 | 1615049148 |           1615221948 | ORDERED |      21 |         14 |    0 |        22 |                 18
+(1 row)
+
+
+id |  name  |     email     | phone  | password | address |      role       | account_status 
+----+--------+---------------+--------+----------+---------+-----------------+----------------
+ 18 | champu | abc@gmail.com | 112232 | 123      |         | DELIVERY_PERSON | ACTIVE
+(1 row)
+
+
 select cart.product_quantity, products.price, cart.product_quantity * products.price as total_amount from cart inner join products on cart.product_id=products.id;
+
+
+"select products.farmer_id from cart left jion products on cart.product_id=products.id";
 
 select sum(cart.product_quantity * products.price) as total_amount from cart inner join products on cart.product_id=products.id
 "insert into orders(store_name , total_amount) values ()"

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<link rel="stylesheet" href="main.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="main.js"></script>
+
+<style>
+.order_detail_div_navbar{
+	background-color:#f9f9f9; 
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	font-weight: 500;
+	padding: 12px 0 12px 30px;
+	font-size: 12px;
+
+}
+.store_name_div{
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: calc(100% - 75px);
+    display: inline-block;
+    vertical-align: top;
+    color: #333;
+    font-size: 15px;
+    font-weight: 600;
+    padding-bottom: 5px;
+    padding-top: 0px;
+    cursor: default;
+
+}
+.view_item_div{
+	padding-top: 20px;font-size: 14px;
+	
+}
+.view_item_link{
+	color: #337ab7;
+}
+.view_item_link:hover{
+	text-decoration: underline;
+	/*font-size: 15px;*/
+}
+
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+	<div ng-include='"header.html"' ></div>
+	<div class="proflie_page_right_div" style=" ">	
+		<div class="hsplit"   style=" padding:0px;margin-top:6px;">
+			<div class="col-md-2 col-sm-2" style=""></div>
+			<div class="col-md-8 col-sm-8 col-xs-12" style="">
+				<div style="font-size: 25px; font-weight: 300px; padding:15px 5px;">
+					Order Details
+				</div>
+				<hr>
+				<div  style=" color:#333;margin-bottom:25px;border-radius: 4px;  box-shadow: 2px 2px 5px #888888; margin-top:30px; box-sizing: border-box; "  ng-repeat="x in l">
+					{{x}}
+					<div class=" hsplit order_detail_div_navbar" ng-if="x.status!='DELIVERED'">
+						<div class="col-md-4 col-xs-4 col-sm-4 col-lg-4" style="box-sizing: border-box; "><b> 
+							Date :{{x.ordered_at_str}} </b>
+						</div>
+						<div class="col-md-4 col-xs-4 col-sm-4 col-lg-4" style="box-sizing: border-box;text-align: center;" >
+							<div style=""><b>{{x.store_name}} - <span style="font-size: 15px; vertical-align: middle;">₹</span> 	{{x.total_amount}}</b>
+							</div>
+							
+						</div>
+						<div class="col-md-4 col-xs-4 col-sm-4 col-lg-4 " style="box-sizing: border-box; padding-right: 15px;   text-align: right;"><b>Order-ID:{{x.id}}</b> </div>
+
+					</div>
+					
+					<!-- <div class="order_detail_div_navbar" ng-if="x.status=='DELIVERED'"><b>Date :
+						{{x.delivery_at_str}}</b> 
+					</div> -->
+					<!-- {{x}} -->
+					<div class="hsplit" style="padding:40px; box-sizing: border-box;">
+						<div class="col-md-8 col-xs-12 col-sm-8 col-lg-8" style="box-sizing: border-box; padding-bottom:15px;">
+							<div style="color:#337ab7; font-size: 18px; padding:7px 0px;" >Delivery Address :</div>
+							<div style="margin-left:2px;width:96%; color:#333;font-size:15px;line-height:20px;text-align:justify;text-justify: inter-word;">	{{x.address}}
+							</div>
+						</div>
+
+						<!-- <div class="col-md-4 col-xs-12 col-sm-2" style="font-size: 14px; padding-top: 0px;"> -->
+							<!-- <b>{{x.status_display}}</b> -->
+						<div class="col-md-4 col-xs-12 col-sm-4 col-lg-4 " style="box-sizing: border-box; padding:5px; ">
+							<div style=" box-sizing: border-box; ">
+								<div >
+									<a href="order_item_list.html?order_id={{x.id}}" style="" class="view_item_link">
+										<div class="hsplit">
+											<div style="width:100px;">
+												ordered item 
+											</div>
+											<div style="">
+												<span class="material-icons" style="font-size:13px;">
+												arrow_forward_ios
+												</span>
+											</div>
+										</div>
+									</a>
+								</div>	
+							</div>
+							<div style="box-sizing: border-box; padding-top: 40px;">
+								<div style="display: inline-block;">
+									<select style="outline: none;padding:2px 1px;" ng-model="x.status">
+										<option>ORDERED</option>
+										<option>CONFORMED</option>
+									</select>
+								</div>
+								<div style="display: inline-block; padding-left: 20px; ">
+									<button  style="background: #337ab7;  border-radius: 2px; border:solid #337ab7 1px; ; outline: none; color: #fff; cursor: pointer; padding:2px 4px;" ng-click="Status_save(x)">Save
+									</button>
+								</div>
+							</div>
+							<div style="padding: 0px 40px; padding-bottom:35px;">
+						Farmer Addres:  {{x.farmer_address}}
+					</div>
+							
+						</div>
+					</div>
+				</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+<script>
+app.controller('myCtrl', function($scope,$http) {
+	s = $scope
+
+	api($http, '/delivery_person_all_orders', {},function(backend_output){
+			$scope.l= backend_output
+			console.log($scope.l)
+		// for (var i in $scope.l) {
+		// 	$scope.l[i] = order_preprocessing($scope.l[i])
+		// }
+		
+	})
+
+	// var url_params = new URLSearchParams((new URL(window.location.href)).search)
+	// var farmer_id=url_params.get("farmer_id")
+
+	// $scope.Status_save=function(p){
+	// 	api($http, '/Status_save', {"order_id":p.id, "status":p.status},function(backend_output){
+	// 	})
+	// }
+
+});
+</script>
+</body>
+</html>

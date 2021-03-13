@@ -82,12 +82,16 @@ div.hsplit > div {
 </head>
 <body ng-app="myApp" ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
-
 	<div class="scroll_in_profile_page hide-xs hide-sm show-md hide-md" style="border:solid #ccc 1px;" ng-if="allow_edit">
 		<div  style="width: 170px; margin-top: 6px;">
 			<div class="in_scroll_profile_page_div"  ng-click="scroll('account')"> My Account</div>
-			<div class="in_scroll_profile_page_div" ng-click="scroll('address')">Address</div>
-			<a href="order.html" style="text-decoration: none;" ><div class="in_scroll_profile_page_div" >My order</div></a>
+			<div class="in_scroll_profile_page_div" ng-click="scroll('address')" ng-if="user_info.role=='USER'">Address</div>
+			<a href="farmer_order_page.html" style="text-decoration: none;" ng-if="user_info.role=='FARMER'" >
+				<div class="in_scroll_profile_page_div" >My order</div>
+			</a>
+			<a href="order.html" style="text-decoration: none;" ng-if="user_info.role=='USER'"  >
+				<div class="in_scroll_profile_page_div" >My order</div>
+			</a>
 		</div>
 	</div>
 
@@ -96,8 +100,8 @@ div.hsplit > div {
 		<div class="proflie_page_right_div col-lg-8 col-sm-8 col-xs-10"style="box-sizing: border-box; ">	
 			<div style="margin-top: 30px; margin-bottom: 30px;" >
 				Currently Login  = {{login_details}}
+				<br>user_info = {{user_info}}
 			</div>
-
 			<div id="account" class=" "style="color:#333;margin-bottom:25px;border-radius: 4px; padding: 20px; box-shadow: 2px 2px 5px #888888; background-color:#fff; ">
 				<div style="">
 					<div style="font-size: 25px; font-weight: 300px; padding:1px 5px; color: #337ab7;">
@@ -124,9 +128,15 @@ div.hsplit > div {
 							</span>
 							<input type="text" name="" ng-model="user_info.phone" class="email_contact_input">
 						</div>
+						<div style="padding: 7px; margin-bottom:10px;" ng-if="user_info.role=='FARMER'">
+							<span class="material-icons" style="color:#ccc; font-size: 20px;  margin-right: 5px; vertical-align: top;">
+							home
+							</span>
+							<textarea rows="4" placeholder="address.." style="vertical-align: middle; resize: none;" class="email_contact_input" ng-model="user_info.address"></textarea>
+						</div>
 					</div>
 				</div>
-				<div class="login_button_div btn btn-primary active" style="text-align: left; margin-top:20px; padding-left: 30px;" ng-if="allow_edit">
+				<div class="login_button_div btn btn-primary active" style="text-align: left; margin-top:20px; padding-left: 32px;" ng-if="allow_edit">
 					<button class="login_button" ng-click="user_new_details_save_button()">Save</button>
 				</div>
 			</div>
@@ -166,7 +176,7 @@ div.hsplit > div {
 				</div>
 			</div>
 
-			<div id="address" class=" "style=" color:#333;margin-bottom:25px;border-radius: 4px; padding-bottom: 20px; box-shadow: 2px 2px 5px #888888; margin-top: 45px;">
+			<div id="address" class=" "style=" color:#333;margin-bottom:25px;border-radius: 4px; padding-bottom: 20px; box-shadow: 2px 2px 5px #888888; margin-top: 45px;" ng-if="user_info.role=='USER'">
 				<div style=" ">
 					<div style="padding:20px;" ng-click="add_address()" ng-if="allow_edit" >
 						<span class="material-icons" style="font-size:18px; margin-right:10px;vertical-align: middle; color:#337ab7; cursor: pointer;">
@@ -259,7 +269,7 @@ app.controller('myCtrl', function($scope,$http) {
 	var url_user_id=url_params.get("id")
 	console.log(url_user_id)
 	$scope.variable_user_id = url_user_id || session.login_key.id
- 	$scope.allow_edit = ($scope.variable_user_id == session.login_key.id)
+ 	$scope.allow_edit = ($scope.variable_user_id == getLoginId())
 	
 
 	api($http,'/get_user_detail', {"user_ki_id": $scope.variable_user_id},function(backend_output) {

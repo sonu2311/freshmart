@@ -43,7 +43,7 @@ th, td{
 	
 }
 .th_width{
-	width:450px;
+	/*width:450px;*/
 	padding: 15px;
 }
 
@@ -52,12 +52,12 @@ th, td{
 <body ng-app="myApp" ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
 
-<div class="hsplit" style="margin-top: 15px; ">
+<div class="hsplit" style="margin-top: 15px;padding:0px; ">
 
 	<div style=" margin-bottom: 30px;" >
 		<!-- <h3>Table</h3> -->
-		<div style="font-size: 25px; font-weight: 300px; padding:5px;margin-bottom: 5px; color: #337ab7;">
-			All Details
+		<div style="font-size: 20px; font-weight: 300px; padding:5px;margin-bottom: 5px; color: #337ab7;">
+			ALL <span style="font-size: 20px;">{{l[0].role}}</span> DETAILS
 		</div>
 		
 		<table>
@@ -67,21 +67,32 @@ th, td{
 					<th class="th_width">Name</th>
 					<th class="th_width">Email</th>
 					<th class="th_width">Phone</th>
-					<th class="th_name_width" style="text-align: center;">User Profile</th>
-					<th class="th_name_width" style="text-align: center;">Role</th>
+					<th class="th_width" style="text-align: center;">User Profile</th>
+					<th class="th_width" style="text-align: center;">Role</th>
+					<th class="th_width">Account Status</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr ng-repeat="x in l">
 					<td class="th_width">{{x.id}}</td>
-					<td class="th_width">{{x.name}}</td>
-					<td class="th_name_width">{{x.email}}</td>
-					<td class="th_width" style="font-size: 15px;">{{x.phone}}</td>
+					<td class="th_width" style="text-align: left;" >{{x.name}}</td>
+					<td class="th_width" style="text-align: left;">{{x.email}}</td>
+					<td class="th_width" style="font-size: 15px;text-align: left;">{{x.phone}}</td>
 					<td class="th_width" style="text-align: center;">
 						<a href="profile_page.html?id={{x.id}}" style="text-decoration: none; font-size: 15px; "> view details</a> 
 					</td>
 					<td class="th_width" style="font-size: 14px;">{{x.role}}</td>
-
+					<td class="th_width" >
+						<select style="outline: none;padding:2px 1px;" ng-model="x.account_status">
+							<option value="ACTIVE">ACTIVE</option>
+							<option value="BLOCKED">BLOCKED</option>
+							<option value="UNVERIFIED">UNVERIFIED</option>
+						</select>
+					</td>
+					<td>
+						<button ng-click="update_account_status(x)">Done</button>
+					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -89,19 +100,25 @@ th, td{
 </div>
 	
 <script>
-
-
 app.controller('myCtrl', function($scope,$http) {
+	$scope.self = $scope
 	s = $scope
 	$scope.l=[]
 	var url_params = new URLSearchParams((new URL(window.location.href)).search)
 	var role_variable=url_params.get("role")
 	// yha jo users ki table h suko hi backend se read krke yha bhej gya h or usi pr hi ng-repeat lgya gya h vo bi page open krne ke sath hi.
-	api($http,'/all_users', {"role":role_variable},function(backend_output) {
+	api($http,'/all_users', {"role":role_variable, },function(backend_output) {
 		$scope.l = backend_output
 		console.log(backend_output)
 	})
 
+	$scope.update_account_status=function(p){
+		console.log({"user_id":p.id, "account_status": p.account_status})
+		api($http, '/update_account_status',{"user_id":p.id, "account_status":p.account_status},function(backend_output){
+			console.log(11)
+
+		})
+	}
 
 });
 </script>

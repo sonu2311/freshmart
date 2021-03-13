@@ -163,7 +163,7 @@ body {
 				</div>
 			</div>
 		</div>
-		<div class="hsplit" id="add"> 
+<!-- 		<div class="hsplit" id="add"> 
 			<div class="col-sm-3" ></div>
 			<div class="col-xs-12 col-sm-6" >
 				<div class=" card_div"  >
@@ -190,12 +190,6 @@ body {
 								<input type="text" name="name" ng-model="price" class="input" >
 							</div>
 						</div>
-						<!-- <div class="margin-top-15">
-							<div class="font_size-18">Discount</div>
-							<div>
-								<input type="text" name="name" ng-model="discount" class="input">
-							</div>
-						</div> -->
 						<div class="margin-top-15">
 							<div class="font_size-18">Image</div>
 							<div>
@@ -214,7 +208,7 @@ body {
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 	</div>
 	
 <script>
@@ -243,11 +237,12 @@ app.controller('myCtrl', function($scope,$http) {
 
 
 	// yha se jo bi details gyi vo table me insert hone ke bad yha table jo retun mili h usi ko ng_repeat me use kiya gya h
-	$scope.save=function(){
-		api($http, '/add_product', { "name":$scope.name, "price":$scope.price,"image":$scope.image, "description":$scope.description }, function(backend_output){
-			$scope.list=backend_output
-		})
-	}
+	
+	// $scope.save=function(){
+	// 	api($http, '/add_product', { "name":$scope.name, "price":$scope.price,"image":$scope.image, "description":$scope.description }, function(backend_output){
+	// 		$scope.list=backend_output
+	// 	})
+	// }
 
 
 	$scope.edit=function(p) {

@@ -181,8 +181,15 @@ app.controller('myCtrl', function($scope,$http) {
 // products page me hm bina login kiye saman add ni kr skte isliye phle yha ye check krna h ki user ne login kiya h ki ni kiya age login kiya h to api work kre ni to alert aa jaye ki login ni h.
 	$scope.add_product_quantity=function(p) {
 		if(Is_login()){
-			p.product_quantity += 1
-			api($http, '/add_product_quantity',{"product_id": p.id, "product_quantity": p.product_quantity},function(backend_output){})	
+			var new_product_quantity = p.product_quantity+1
+			api($http, '/add_product_quantity',{"product_id": p.id, "product_quantity": new_product_quantity},function(backend_output){
+				console.log(backend_output)
+				if ('error' in backend_output) {
+					alert(backend_output.error)
+				} else {
+					p.product_quantity = new_product_quantity
+				}
+			})	
 		}
 		else{
 			alert("cart me add krne ke liye login krna hoga")

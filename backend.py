@@ -42,7 +42,7 @@ def sign_up(frontend_dict, session):
 		query2 = "insert into users (name, email, phone, password,role) values ({name}, {email}, {phone}, {password} ,{role}) "
 		db.writeQuery(query2, frontend_dict)
 		new_id = db.readQuery("select max(id) as new_id from users")[0]["new_id"]
-		session['login_key'] = {"id": new_id, "name": frontend_dict["name"]}
+		session['login_key'] = {"id": new_id,"role":frontend_dict["role"], "name": frontend_dict["name"]}
 	else:
 		output['error']="phle se email h"
 	return output
@@ -52,7 +52,7 @@ def sign_up(frontend_dict, session):
 def login(frontend_dict, session):
 	query_output = db.readQuery("select * from users where email={email} AND password={password}", frontend_dict)
 	if len(query_output) != 0:
-		session['login_key'] = {"id": query_output[0]['id'], "name": query_output[0]['name']}
+		session['login_key'] = {"id": query_output[0]['id'],"role":query_output[0]['role'], "name": query_output[0]['name']}
 		return {}
 	else:
 		return {"error": "Email or password is incorrect."}
@@ -66,16 +66,30 @@ def all_users(frontend_dict):
 
 #  jo bi details frontend se ayi h usko products table me insert krna h or usi table ko read krke return krna h
 @backend.api('/add_product')
-def add_product(frontend_dict):
-	query = "insert into products (name, price, image, description) values ({name}, {price}, {image},{description}) "
+def add_product(frontend_dict,session):
+	frontend_dict['farmer_id']=login_id(session)
+	query = "insert into products (name, price, image, description,farmer_id) values ({name}, {price}, {image},{description},{farmer_id}) "
 	db.writeQuery(query, frontend_dict)
-	return db.readQuery("select * from products order by id desc")
+
+	# return db.readQuery("select * from products order by id desc")
+
+
+@backend.api('/load_farmer_all_products')
+def load_farmer_all_products(frontend_dict,session):
+	frontend_dict['farmer_id']=login_id(session)
+	l=db.readQuery("select * from users where id={farmer_id}",frontend_dict)
+	print(l)
+	if l[0]["account_status"]=='ACTIVE':
+		return {"farmer_products_list":db.readQuery("select * from products where farmer_id= {farmer_id} order by id desc",frontend_dict)}
+	else:
+		return {"error":"Your account is not verified yet.."}
+	
 
 # yha jo item h usko edit(update)kiya gya h fir jo update table h usko read krke return kiya gya h.
 @backend.api('/product_update')
 def product_update(frontend_dict):
 	print(frontend_dict)
-	query="update products set name = {name}, price  = {price}, discount={discount}, image={image}, description={description} where id={id}"
+	query="update products set name = {name}, price  = {price}, image={image}, description={description} where id={id}"
 	db.writeQuery(query, frontend_dict)
 	return db.readQuery("select * from products order by id desc")
 
@@ -114,16 +128,28 @@ def add_product_quantity(frontend_dict, session):
 	print(session)
 	frontend_dict["user_id"] = login_id(session)
 	db.writeQuery("delete from cart where product_id={product_id} AND user_id = {user_id}",frontend_dict)
+	l1=db.readQuery("select products.farmer_id from cart left join products on cart.product_id=products.id WHERE cart.user_id = {user_id}",frontend_dict)
+	l2=db.readQuery("select * from products where id={product_id}", frontend_dict)
+
+	print(l1)
+	print(l2)
+	print(frontend_dict)
+
+	for i in l1:
+		if i['farmer_id'] != l2[0]['farmer_id']:
+			return {"error":"same farmer products ni h."}
+
 	if frontend_dict["product_quantity"] > 0:
 		query = "insert into cart (product_id ,product_quantity,user_id) values ({product_id}, {product_quantity},{user_id})"
 		db.writeQuery(query, frontend_dict)
+	return {}
 
 # cart.html ki api h
 
 @backend.api('/products_in_cart')
 def products_in_cart(frontend_dict, session):
 	frontend_dict["user_id"] = login_id(session)
-	query1=" select products.id, products.name, products.price, products.discount,products.image, cart.product_quantity , cart.product_quantity * products.price as subtotal from cart inner join products on cart.product_id=products.id where cart.user_id = {user_id}"
+	query1=" select products.id, products.name, products.price, products.discount,products.image, products.farmer_id, cart.product_quantity , cart.product_quantity * products.price as subtotal from cart inner join products on cart.product_id=products.id where cart.user_id = {user_id}"
 	query2="select sum(cart.product_quantity * products.price) as total_amount from cart inner join products on cart.product_id=products.id where cart.user_id = {user_id}"
 	query2_output = db.readQuery(query2 , frontend_dict)
 	total_amount = query2_output[0]["total_amount"]
@@ -137,14 +163,18 @@ def add_product_quantity_in_cart(frontend_dict,session):
 	add_product_quantity(frontend_dict,session)
 	return products_in_cart(frontend_dict, session)
 
-@backend.api('/pay_later_and_order')
-def pay_later_and_order(frontend_dict, session):
-	cart_info=products_in_cart({}, session);
-	query1="insert into orders(store_name , total_amount, ordered_at, expected_delivery_at, status, user_id, address_id, paid) values ('sonu store', {total_amount}, {ordered_at}, {expected_delivery_at}, 'ORDERED', {user_id}, {address_id},0)"
-	frontend_dict['total_amount'] = cart_info['total_amount']
+def checkout_now(frontend_dict, session, paid):
+	cart_info=products_in_cart({}, session)
+	if len(cart_info['total_list']) == 0:
+		return {"error": "Cart empty"}
+	query1="insert into orders(store_name , total_amount, ordered_at, expected_delivery_at, status, user_id, address_id, paid, farmer_id) values ('sonu store', {total_amount}, {ordered_at}, {expected_delivery_at}, 'ORDERED', {user_id}, {address_id},{paid}, {farmer_id})"
+	frontend_dict['paid'] = paid
+	frontend_dict['total_amount'] = cart_info["total_amount"]
+	frontend_dict['farmer_id'] = cart_info['total_list'][0]["farmer_id"]
 	frontend_dict['ordered_at'] = int(time.time())
 	frontend_dict['expected_delivery_at'] = frontend_dict['ordered_at'] + 48*3600
 	frontend_dict["user_id"] = session["login_key"]["id"]
+	frontend_dict["address_id"] = frontend_dict.get("address_id", 0)
 	db.writeQuery(query1, frontend_dict)
 
 	A="select max(id) As order_id from orders"
@@ -155,6 +185,12 @@ def pay_later_and_order(frontend_dict, session):
 		p = {"x" : B, "y": i["id"], "z": i["product_quantity"]}
 		db.writeQuery("insert into order_items (order_id , product_id, product_quantity) values({x}, {y}, {z})", p)
 	db.writeQuery("delete from cart")
+	return {}
+
+
+@backend.api('/pay_later_and_order')
+def pay_later_and_order(frontend_dict, session):
+	return checkout_now(frontend_dict, session, 0)
 
 
 @backend.api('/products_according_to_id')
@@ -196,21 +232,23 @@ def order_item(frontend_dict):
 
 @backend.api('/admin_all_orders')
 def admin_all_orders(frontend_dict):
-	query1="select orders.*,addresses.address from orders left join addresses on orders.address_id=addresses.id order by id desc"
+	query1="select orders.*,addresses.address,users.name AS farmer_name from orders left join addresses on orders.address_id=addresses.id left join users on  orders.farmer_id=users.id order by id desc"
 	l=db.readQuery( query1, frontend_dict)
+	query2="select id, name from users where users.role='DELIVERY_PERSON' AND account_status='ACTIVE' "
+	
 	for i in l:
 		preprocessOrderRow(i)
-	return l
+	return {"orders_details":l,"delivery_person_list": db.readQuery(query2)}
 
 @backend.api('/Status_save')
 def Status_save(frontend_dict):
 	db.writeQuery("UPDATE orders SET status = {status} WHERE id={order_id}", frontend_dict)
-	return admin_all_orders({})
+	# return admin_all_orders({})
 
 @backend.api('/get_user_detail')
 def get_user_detail(frontend_dict, session):
 	# frontend_dict["user_id"] = login_id(session)
-	l=db.readQuery("select id, name, phone, email from users where id ={user_ki_id}", frontend_dict)
+	l=db.readQuery("select id, name, phone, email, role,address from users where id ={user_ki_id}", frontend_dict)
 	if len(l)!=0:
 		l1=db.readQuery("select id, address from addresses where user_id={user_ki_id}", frontend_dict)
 		d = l[0]
@@ -223,7 +261,7 @@ def get_user_detail(frontend_dict, session):
 @backend.api('/update_user_details')
 def update_user_details(frontend_dict, session):
 	frontend_dict["user_id"] = login_id(session)
-	query="update users set name = {name}, phone  = {phone} where id={user_id}"
+	query="update users set name = {name}, phone  = {phone},address={address} where id={user_id}"
 	db.writeQuery(query, frontend_dict)
 	session["login_key"]["name"] = frontend_dict["name"]
 
@@ -274,22 +312,36 @@ def checkout_info(frontend_dict, session):
 @backend.api('/pay_online_and_order')
 def pay_later_and_order(frontend_dict, session):
 	cart_info=products_in_cart({}, session)
-	query1="insert into orders(store_name , total_amount, ordered_at, expected_delivery_at, status, user_id, address_id, paid) values ('sonu store', {total_amount}, {ordered_at}, {expected_delivery_at}, 'ORDERED', {user_id}, {address_id},{total_amount})"
-	frontend_dict['total_amount'] = cart_info['total_amount']
-	frontend_dict['ordered_at'] = int(time.time())
-	frontend_dict['expected_delivery_at'] = frontend_dict['ordered_at'] + 48*3600
-	frontend_dict["user_id"] = session["login_key"]["id"]
-	frontend_dict["address_id"] = frontend_dict.get("address_id", 0)
-	db.writeQuery(query1, frontend_dict)
+	return checkout_now(frontend_dict, session, cart_info['total_amount'])
 
-	A="select max(id) As order_id from orders"
-	B=db.readQuery(A)[0]['order_id']
-	print(B)
+@backend.api('/update_account_status')
+def update_account_status(frontend_dict, session):
+	db.writeQuery("update users set account_status = {account_status} where id={user_id}",frontend_dict)
+	print(frontend_dict)
 
-	for i in cart_info['total_list']:
-		p = {"x" : B, "y": i["id"], "z": i["product_quantity"]}
-		db.writeQuery("insert into order_items (order_id , product_id, product_quantity) values({x}, {y}, {z})", p)
-	db.writeQuery("delete from cart")
+
+@backend.api('/farmer_all_orders')
+def farmer_all_orders(frontend_dict, session):
+	frontend_dict['farmer_id']=login_id(session)
+	l=db.readQuery("select orders.*,addresses.address from orders  left join addresses on orders.address_id=addresses.id where farmer_id={farmer_id}",frontend_dict)
+	for i in l:
+		preprocessOrderRow(i)
+	return  l
+
+@backend.api('/assign_delivery_person')
+def assign_delivery_person(frontend_dict, session):
+	db.writeQuery("update orders set delivery_person_id={delivery_person_id} where id={order_id}",frontend_dict)
+
+@backend.api('/delivery_person_all_orders')
+def delivery_person_all_orders(frontend_dict, session):	
+	frontend_dict['delivery_person_id']=login_id(session)
+
+	query1="select orders.* ,users.name,farmers.name as farmers_name,farmers.address as farmer_address, addresses.address from orders left join users on orders.user_id = users.id left join addresses on orders.address_id=addresses.id left join users as farmers on orders.farmer_id= farmers.id where delivery_person_id={delivery_person_id} "
+
+	l=db.readQuery(query1, frontend_dict)
+	for i in l:
+		preprocessOrderRow(i)
+	return  l
 
 	
 backend.run(port=5502)

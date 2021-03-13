@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="main.css">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="main.js"></script>
+<style>
+	
+div.hsplit:after {
+content: "";big_div
+clear: both;
+display: table;
+}
+
+div.hsplit > div {
+	float: left;
+}
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+	<div ng-include='"header.html"' ></div>
+	<div class=" comman_hader_style " style="margin-top: 10px;" ng-if="error.length == 0" >Product Manegment Page</div>
+	<div ng-if="error.length == 0">
+		<a href="farmer_add_products_page.html">
+			<button  class="login_button add_new_product_button" style="outline: none;"> Add New Product
+			</button>
+		</a>
+	</div>
+	<div class="hsplit big_div" ng-if="error.length == 0">
+		<div ng-repeat="x in list " class="col-xs-12 col-sm-6 col-md-4 col-lg-3 box_sizing">
+			<div class="border" style=" border:solid red 1px;">
+				<div style="text-align: right; padding-right: 15px; padding-top:10px;">
+
+					<a href="farmer_add_products_page.html?product_id={{x.id}}">
+						<span class="material-icons" style="font-size: 17px; color:#337ab7;">
+							create
+						</span>
+					</a>
+				</div>
+				<a href="http://0.0.0.0:5502/single_product_page.html?product_id={{x.id}}">
+					<div style=" height: 80px; text-align: center; overflow: hidden; vertical-align: middle; white-space: nowrap; " >
+						<span style="vertical-align: middle;height: 100%; display: inline-block; visibility: hidden;" ></span>
+						<img style="max-height: 80px; max-width: 100%; vertical-align: middle" src="{{x.image}}" >
+					</div>
+				</a>
+				<div style="" class="product_detail_div " >
+					<div style="overflow: hidden;
+  						text-overflow: ellipsis; white-space: nowrap; ">
+							{{x.name}}
+						</div>
+					<div>id={{x.id}}</div>
+					<div>7</div>
+					<div>7</div>
+					<div>7</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div ng-if="error.length == 0 && list.length == 0" style="margin-top:100px; margin-left: 80px;">
+		<img style='max-height:400px; max-width: 80%;' src="images/search_no_result.png">
+	</div>
+	<div ng-if="error.length > 0" style=" text-align: center;margin-top: 200px; color:#337ab7; font-size: 25px; ">{{error}}</div>
+<script>
+app.controller('myCtrl', function($scope,$http) {
+	$scope.self = $scope
+	s = $scope
+	$scope.error = ""
+	$scope.list = []
+
+	// var url_params = new URLSearchParams((new URL(window.location.href)).search)
+	// $scope.sort_price = url_params.get("sort_price") || "Sort By Relevence"
+	// $scope.search_key = url_params.get("search_key") || ""
+	// $scope.page = parseInt(url_params.get("page") || '1')
+
+	// products or cart ki jo join table h vo yha return me milegi to vhi hme ng-repeat me use krni h.
+	// var url_params = new URLSearchParams((new URL(window.location.href)).search)
+	// $scope.search_key = url_params.get("search_key") || ""
+	
+
+	
+
+	$scope.load_farmer_all_products = function() {
+		api($http,'/load_farmer_all_products', {}, function(backend_output) {
+			// $scope.list = backend_output
+			if("error" in backend_output){
+				$scope.error = backend_output.error
+			}
+			else{
+				$scope.list = backend_output.farmer_products_list
+			}	
+		})
+		// 		$scope.list = backend_output
+		// 	console.log($scope.list)
+		// })
+	}
+	$scope.load_farmer_all_products()
+
+});
+</script>
+</body>
+</html>

@@ -1326,3 +1326,93 @@ th {
    vertical-align: middle;
 }
 
+.split_div{
+  width: 95%; margin:auto; margin-top:20px; margin-bottom:20px;
+}
+.card_div{
+  border:solid #CCC 1px;
+  border-radius: 3px;
+  box-shadow: 1px 2px 3px #ccc;
+  margin-bottom:20px; 
+  padding-top:5px;
+  box-sizing: border-box; 
+  padding-bottom:15px; 
+  padding-right:15px ; 
+  padding-left: 10px;
+  margin: 20px;
+}
+.input{
+  width:100%; 
+  outline: none;
+  border:solid #ccc 1px;border-radius: 3px;font-size: 14px;line-height: 1.42857143; width: 100%;box-sizing: border-box; padding: 5px 6px; 
+}
+.input:hover{
+   box-shadow: 2px 3px 5px #ccc;
+}
+.after_card_div{
+  border-radius: 3px; margin-top: 5px; padding-bottom: 8px; 
+}
+.comman_hader_style{
+  background-color: #fff; 
+  color:#337ab7; 
+  margin-top: 0px;
+  font-size: 28px;
+  font-weight: 400 
+  /*padding: 0px;*/
+  margin-bottom: 10px;
+  text-align: center; 
+  padding:9px 0px; 
+    
+}
+.font_size-15{
+  font-size: 15px;
+}
+.margin-top-15{
+  margin:15px 0px;
+}
+.clear_icon{
+  float:right; margin-left: 10px; font-size: 20px;margin-top:10px;
+}
+.edit-icon{
+  float:right;font-size: 20px; margin-top:10px; 
+}
+.edit-icon:hover{
+  cursor: pointer;
+}
+.edit_div{
+  border-radius: 3px; margin-top: 5px; padding-bottom: 8px;"
+}
+.margin-top-5{
+  margin-top: 5px;
+}
+.button_color{
+  background-color: #333;
+}
+
+body {
+  overflow-y: scroll;
+}
+.margin-top-25{
+  margin-top: 25px;
+}
+.add_new_product_button{
+  margin-left: 30px;
+  margin-bottom: 10px; 
+  /*margin-top: 5px; */
+  background-color: #2e6da4; 
+  font-size: 16px;
+}
+.pagination_button {
+  border: solid #2e6da4 1px; padding:2px 9px; border-radius: 2px;
+  outline: none;
+  margin: 2px;
+}
+.pagination_button:hover{
+  outline: none;
+}
+.pagination_previous_button{
+  border:solid #ccc 1px; 
+  outline: none;
+  width:100px; 
+  border-radius: 2px;  
+}
