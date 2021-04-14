@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
@@ -9,14 +9,23 @@
 <style>
 
 </style>
-<body ng-app="myApp" ng-controller="myCtrl">
+<body ng-controller="myCtrl">
     <div ng-include='"header.html"' ></div>
     
     <div style="font-size: 40px; margin-top: 100px;text-align: center;" >This is home page</div>
+
+    <input ng-model='y' >
+    <button ng-click='f()' >Button...</button>
+
 <script>
 
 app.controller('myCtrl', function($scope) {
    $scope.login_var=false
+   console.log($scope.messages)
+   $scope.y = "Mera nam sonu hai. Mai gadhi hun" 
+   $scope.f = function() {
+   		$scope.my_alert($scope.y)
+   }
 
 });
 </script>

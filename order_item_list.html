@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
@@ -22,7 +22,6 @@ td, th {
 td{
 	padding: 30px 10px;
 }
-/*tr:nth-child(odd){background-color: #f2f2f2}*/
 
 .cart_row {
 	border-bottom: solid #ddd 1px;
@@ -35,8 +34,6 @@ th {
   font-size: 15px;
   font-weight: 600;
   padding: 20px 5px;
-  /*border: solid black 1px;*/
-  /*box-sizing: border-box;*/
 }
 
 .th_image_width{
@@ -60,10 +57,7 @@ th {
 	width:80px;
 	
 }
-
-
 .cart_name_div{
-	/*border:solid black 1px; */
 	margin-top: 22px; padding-left: 105px; 
 	font-size: 22px;font-weight: 600;  
 }
@@ -80,7 +74,7 @@ th {
 }
 </style>
 </head>
-<body ng-app="myApp" ng-controller="myCtrl" >
+<body  ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
 
 	<div class="hsplit " style="margin-top:20px;" ng-if="error">
@@ -96,7 +90,7 @@ th {
     	<div class="col-md-2 col-sm-2" ></div>
 	 	<div class="col-md-8 col-sm-8 col-xs-12" style="color:#333;margin-bottom:25px;border-radius: 4px; box-shadow: 2px 2px 5px #888888;  margin-top:30px">
 	 		
-	 		<div style="border:solid #ccc 1px;" class="order_detail_div_navbar" > Super store-HSR Layout.1589</div>
+	 		<!-- <div style="border:solid #ccc 1px;" class="order_detail_div_navbar" > Super store-HSR Layout.1589</div> -->
 		    <table>
 				  <tr ng-repeat='x in l.order_item_list' class="cart_row" >
 				    <td class="th_add_quantity_width">

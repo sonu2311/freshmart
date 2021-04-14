@@ -107,20 +107,47 @@ var Login_Role=function(){
 
 var app = angular.module('myApp', [])
 
+app.controller('common_ctrl', function($scope, $timeout) {
+  var cleanup=function(){
+    var cleanup_list=[]
+    for (i in $scope.messages){
+      if ((new Date().getTime()) < $scope.messages[i]["deadline"]){
+
+        cleanup_list.push($scope.messages[i])
+      }
+    }
+    $scope.messages=cleanup_list
+  }
+  $scope.messages=[]
+  $scope.my_alert = function(y, timeout) {
+    timeout = timeout || 4000  // ms.
+    $scope.messages.push({"message":y, "deadline": new Date().getTime() + timeout})
+    $timeout(cleanup, timeout)
+  }
+
+})
+
+
+
 app.controller('ctrl_header', function($scope) {
   $scope.profile_name = Is_login() ? session.login_key.name : "Not login"
   $scope.is_login = Is_login()
   $scope.role = Login_Role()
+
+  $scope.header = $scope
 
   $scope.logout = function() {
     clear_session()
     window.location.href = "index.html"
   }
 
+  var url_params = new URLSearchParams((new URL(window.location.href)).search)
+  $scope.p = url_params.get("sort_price") || ""
+
   $scope.search_key = ""
   $scope.search=function(){
     console.log(3333)
-    window.location.href = "product_page.html?search_key=" + $scope.search_key
+    window.location.href = "product_page.html?search_key=" + $scope.search_key + "&sort_price="+$scope.p
   }
  
   $scope.open_menu=false
@@ -129,7 +156,5 @@ app.controller('ctrl_header', function($scope) {
     console.log(11)
     $scope.open_menu =!$scope.open_menu
   }
-
-
 
 })

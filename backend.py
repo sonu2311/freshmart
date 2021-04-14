@@ -2,7 +2,10 @@ from flask_lib import FlaskLib
 import database
 import time
 import os
+import urllib.request
 import math
+import csv
+import io
 
 
 backend = FlaskLib()
@@ -34,6 +37,7 @@ def login_id(session):
 
 @backend.api('/sign_up')
 def sign_up(frontend_dict, session):
+	time.sleep(2)
 	query1="select * from users where email={email}"
 	output={}
 	if('role' not in frontend_dict):
@@ -50,6 +54,7 @@ def sign_up(frontend_dict, session):
 # login_page ki api h
 @backend.api('/login')
 def login(frontend_dict, session):
+	time.sleep(2)
 	query_output = db.readQuery("select * from users where email={email} AND password={password}", frontend_dict)
 	if len(query_output) != 0:
 		session['login_key'] = {"id": query_output[0]['id'],"role":query_output[0]['role'], "name": query_output[0]['name']}
@@ -67,6 +72,7 @@ def all_users(frontend_dict):
 #  jo bi details frontend se ayi h usko products table me insert krna h or usi table ko read krke return krna h
 @backend.api('/add_product')
 def add_product(frontend_dict,session):
+	time.sleep(2)
 	frontend_dict['farmer_id']=login_id(session)
 	query = "insert into products (name, price, image, description,farmer_id) values ({name}, {price}, {image},{description},{farmer_id}) "
 	db.writeQuery(query, frontend_dict)
@@ -88,6 +94,7 @@ def load_farmer_all_products(frontend_dict,session):
 # yha jo item h usko edit(update)kiya gya h fir jo update table h usko read krke return kiya gya h.
 @backend.api('/product_update')
 def product_update(frontend_dict):
+	time.sleep(2)
 	print(frontend_dict)
 	query="update products set name = {name}, price  = {price}, image={image}, description={description} where id={id}"
 	db.writeQuery(query, frontend_dict)
@@ -99,11 +106,11 @@ def product_update(frontend_dict):
 @backend.api('/all_products')
 def all_products(frontend_dict, session):
 	print(frontend_dict)
-	one_page_num_products = 6
+	one_page_num_products = 8
 	frontend_dict["user_id"] = login_id(session)
 	frontend_dict["search_key"] = '%' + frontend_dict["search_key"] + '%'
 	frontend_dict["offset"] = (int(frontend_dict['page']) - 1)*one_page_num_products
-	query="select products.*, COALESCE(cart.product_quantity, 0) as product_quantity from products left join cart  on products.id=cart.product_id AND cart.user_id={user_id} WHERE name like {search_key} "
+	query="select products.*, COALESCE(cart.product_quantity, 0) as product_quantity from products left join cart  on products.id=cart.product_id AND cart.user_id={user_id} WHERE name like {search_key}"
 	if frontend_dict['sort_price'] == 'Price: High to Low':
 		query += " order by products.price desc"
 	elif frontend_dict['sort_price'] == 'Price: Low to High':
@@ -206,6 +213,7 @@ def preprocessOrderRow(row):
 	row['ordered_at_str'] = time.strftime('%Y-%m-%d %I:%M:%S %p', time.localtime(row['ordered_at']))
 	row['delivery_at_str'] = time.strftime('%Y-%m-%d %I:%M:%S %p', time.localtime(row['delivery_at']))
 	row['expected_delivery_at_str'] = time.strftime('%Y-%m-%d %I:%M:%S %p', time.localtime(row['expected_delivery_at']))
+	row['order_at_date_str']= time.strftime('%Y-%m-%d', time.localtime(row['ordered_at']))
 	row['status_display']=row['status'].title()
 	return row
 
@@ -242,6 +250,7 @@ def admin_all_orders(frontend_dict):
 
 @backend.api('/Status_save')
 def Status_save(frontend_dict):
+	time.sleep(2)
 	db.writeQuery("UPDATE orders SET status = {status} WHERE id={order_id}", frontend_dict)
 	# return admin_all_orders({})
 
@@ -323,7 +332,7 @@ def update_account_status(frontend_dict, session):
 @backend.api('/farmer_all_orders')
 def farmer_all_orders(frontend_dict, session):
 	frontend_dict['farmer_id']=login_id(session)
-	l=db.readQuery("select orders.*,addresses.address from orders  left join addresses on orders.address_id=addresses.id where farmer_id={farmer_id}",frontend_dict)
+	l=db.readQuery("select orders.*,addresses.address from orders  left join addresses on orders.address_id=addresses.id where farmer_id={farmer_id} order by orders.id desc",frontend_dict)
 	for i in l:
 		preprocessOrderRow(i)
 	return  l
@@ -331,6 +340,20 @@ def farmer_all_orders(frontend_dict, session):
 @backend.api('/assign_delivery_person')
 def assign_delivery_person(frontend_dict, session):
 	db.writeQuery("update orders set delivery_person_id={delivery_person_id} where id={order_id}",frontend_dict)
+
+@backend.api('/assign_delivery_person_now')
+def assign_delivery_person_now(frontend_dict, session):
+	frontend_dict["delivery_person_id"] = login_id(session)
+	db.writeQuery("update orders set delivery_person_id={delivery_person_id} where id={order_id}",frontend_dict)
+	return unallocated_orders(frontend_dict, session)
+
+def date_of_list(list_of_dic):
+	l1={}
+	for i in list_of_dic:
+		if i["order_at_date_str"] not in l1:
+			l1[i["order_at_date_str"]]=[]
+		l1[i["order_at_date_str"]].append(i)
+	return l1
 
 @backend.api('/delivery_person_all_orders')
 def delivery_person_all_orders(frontend_dict, session):	
@@ -341,7 +364,127 @@ def delivery_person_all_orders(frontend_dict, session):
 	l=db.readQuery(query1, frontend_dict)
 	for i in l:
 		preprocessOrderRow(i)
-	return  l
-
+	return date_of_list(l)
 	
+@backend.api('/delivery_person_status')
+def delivery_person_status(frontend_dict, session):
+	time.sleep(2)
+	if frontend_dict["status"]=="DELIVERED":
+		frontend_dict["x"]=time.time()
+	else:
+		frontend_dict["x"]=0
+		
+	db.writeQuery("UPDATE orders SET status = {status},delivery_at={x} WHERE id={order_id}", frontend_dict)
+
+@backend.api('/unallocated_orders')
+def unallocated_orders(frontend_dict, session):
+	frontend_dict["delivery_person_id"] = login_id(session)
+	# query1="select orders.*,addresses.address,users.name AS farmer_name from orders left join addresses on orders.address_id=addresses.id left join users on  orders.farmer_id=users.id order by id desc"
+
+	query1="select orders.*,users.address AS farmer_address,addresses.address AS user_address,users.name AS farmer_name from orders left join addresses on orders.address_id=addresses.id left join users on  orders.farmer_id=users.id where (orders.status='CONFIRMED' or orders.status='ORDERED') AND (delivery_person_id is null ) "
+
+	query2="select orders.*,users.address AS farmer_address,addresses.address AS user_address,users.name AS farmer_name from orders left join addresses on orders.address_id=addresses.id   left join users on  orders.farmer_id=users.id  where (orders.status='CONFIRMED' or orders.status='ORDERED') AND (delivery_person_id = {delivery_person_id}  ) "
+	l1=db.readQuery(query1)
+	l2=db.readQuery(query2, frontend_dict)
+
+	for i in l1:
+		preprocessOrderRow(i)
+	for i in l2:
+		preprocessOrderRow(i)
+
+	return {"unassigned_orders":l1,
+	       "my_assigned_orders":l2}
+
+
+@backend.api('/upload_image')
+def upload_image(frontend_dict, session):
+	v="data/image_"+str(int(time.time()))+"." + frontend_dict["filename"].split(".")[-1]
+	f = open(v , "wb")
+	print(len(frontend_dict["image_file_content"]))
+	r = urllib.request.urlopen(frontend_dict["image_file_content"])
+	f.write(r.file.read())
+	f.close()
+	return v
+
+#l=[["name","price","quantity"],["sonu",100,1000],["mohit",10,100],["soniya",20,402]]
+# l1=["name","price","quantity"]
+# l2=[["sonu",100,1000],["mohit",10,100],["soniya",20,402]]
+# result=[{"name":"sonu","price":100,"quantity":1000},
+# {"name":"mohit","price":10,"quantity":100},{"name":"soniya","price":20,"quantity":402}
+
+REQUIRED_FIELDS = ["name", "price", "image","description" ]
+
+def transform_csv_products(l):
+    l1=l[0]
+    l2=l[1:]
+    list3=[]
+    if REQUIRED_FIELDS != l1:
+        return {"error": "Invalid columns. Should be " + str(REQUIRED_FIELDS)}
+    for k in range(len(l2)):
+        i = l2[k]
+        if len(i) == 0:
+        	continue
+        if len(REQUIRED_FIELDS) != len(i):
+            return {"error": "Invalid row " + str(k+1) + ". Should match header columns. " + str(REQUIRED_FIELDS)}
+        d={}
+        for j in range(len(i)):
+            d[l1[j]]=i[j]
+        list3.append (d)            
+    return {"list": list3}
+
+@backend.api('/import_products')
+def import_products(frontend_dict, session):
+	r = urllib.request.urlopen(frontend_dict["file_content"])
+	x = list(csv.reader(r.file.read().decode('UTF-8').split("\n")))
+	print(x)
+	output = transform_csv_products(x)
+	if "error" in output:
+		return output
+	for i in output["list"]:
+		i['farmer_id']=login_id(session)
+		db.writeQuery("insert into products(name, price, image,description,farmer_id) values({name}, {price}, {image},{description},{farmer_id})",i)
+	return {}
+
+
+# output = [ ["name","price","quantity"],["sonu",100,1000],["mohit",10,100],["soniya",20,402]
+# input = [ {'name': 'sonu', 'price': 100, 'quantity': 1000}, {'name': 'mohit', 'price': 10, 'quantity': 100},
+# {'name': 'soniya', 'price': 20, 'quantity': 402} ]
+
+def transform_back_to_csv(l):
+    l1 = [REQUIRED_FIELDS]
+    for d in l:
+        l2 = []
+        for j in REQUIRED_FIELDS:
+            l2.append(d[j])
+        l1.append(l2)
+    return l1
+
+@backend.api('/export_products')
+def export_products(frontend_dict, session):
+	frontend_dict['farmer_id']=login_id(session)
+	l = db.readQuery("select * from products where farmer_id={farmer_id}",frontend_dict)
+	output = transform_back_to_csv(l)
+	file = io.StringIO()
+	writer = csv.writer(file, quoting=csv.QUOTE_NONNUMERIC)
+	writer.writerows(output)
+	return {"csv_content": file.getvalue()}
+
+
+@backend.api('/order_tracking_info')
+def order_tracking_info(frontend_dict, session):
+	frontend_dict['delivery_person_id']=login_id(session)
+
+	query="select orders.*, users.name AS farmer_name from orders left join users on users.id= farmer_id where orders.id={order_id}"
+
+	output= db.readQuery(query,frontend_dict)
+
+	print(output)
+	if len(output)==0:
+		return {"error":"order invalid"}
+	
+	else:
+		preprocessOrderRow(output[0])
+		return output[0]
+
 backend.run(port=5502)
+

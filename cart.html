@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
@@ -105,8 +105,11 @@ th {
 .checkout_button:hover{
     box-shadow: 2px 3px 5px #ccc;
 }
+button:disabled {
+  background: #ddd;
+}
 </style>
-<body ng-app="myApp" ng-controller="myCtrl">
+<body  ng-controller="myCtrl">
     <div ng-include='"header.html"' ></div>
     
 
@@ -201,7 +204,7 @@ app.controller('myCtrl', function($scope, $http) {
 			})
 		}
 		else{
-		alert("cart me add krne ke liye login krna hoga")
+		$scope.my_alert("cart me add krne ke liye login krna hoga")
 		}
 	}
 
@@ -216,11 +219,11 @@ app.controller('myCtrl', function($scope, $http) {
 	// $scope.checkout=function(){
 	// 	if(Is_login()){
 	// 		api($http, '/checkout', {},function(backend_output){
-	// 			alert("Checkout hoga gya hT")
+	// 			$scope.my_alert("Checkout hoga gya hT")
 	// 		})
 	// 	}
 	// 	else{
-	// 		alert("Checkout krne ke liye login krna hoga")
+	// 		$scope.my_alert("Checkout krne ke liye login krna hoga")
 	// 	}
 	// }
 		

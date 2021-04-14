@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -20,27 +20,24 @@ div.hsplit > div {
 	float: left;
 }
 .pagination_button {
-	border: solid #2e6da4 1px; padding:2px 9px; border-radius: 2px;
+	border: solid #ccc 1px; padding:2px 9px; border-radius: 2px;
 	outline: none;
 	margin: 2px;
 }
 .pagination_button:hover{
-	/*background-color: #ccc;*/
 	outline: none;
+	border-radius: 2px;
+	
 }
 .pagination_previous_button{
 	border:solid #ccc 1px; 
 	outline: none;
 	width:100px; 
-	/*padding-right:25px; 
-	padding-left:25px;
-	padding-top:2px; 
-	padding-bottom: 2px; */
 	border-radius: 2px;  
 }
 </style>
 </head>
-<body ng-app="myApp" ng-controller="myCtrl" >
+<body  ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
 	<div ng-if="list.length>0" style="margin-top:15px; margin-right: 23px;text-align: right;" >
 		
@@ -57,8 +54,8 @@ div.hsplit > div {
 			<div class="border" style="">
 				<a href="http://0.0.0.0:5502/single_product_page.html?product_id={{x.id}}">
 					<div style="height: 250px; text-align: center; overflow: hidden; vertical-align: middle; white-space: nowrap;" >
-						<span style="vertical-align: middle;height: 100%; display: inline-block; visibility: hidden;" ></span>
-						<img style="max-height: 250px; max-width: 100%; vertical-align: middle" src="{{x.image}}" >
+						<span style="vertical-align: middle;height: 100%; display: inline-block;visibility: hidden;" ></span>
+						<img style="max-height: 250px; max-width: 100%; vertical-align: middle" ng-src="{{x.image}}" >
 					</div>
 				</a>
 				<div  class="product_detail_div " >
@@ -71,7 +68,7 @@ div.hsplit > div {
 					<div class="hsplit" style="">
 						<div  class="price_in_product_detail" >
 							<span style="font-size: 15px;">₹</span> {{x.price}}</div>
-						<div class=" add_cart" style="float:right;" ng-if='x.product_quantity == 0'  ng-click="add_product_quantity(x)">Add To Cart</div>
+						<div class=" add_cart" style="float:right;" ng-if='x.product_quantity == 0' ng-click="add_product_quantity(x)">Add To Cart</div>
 
 						<div class="hsplit add_remove_comman_div" style="float:right; " ng-if="x.product_quantity > 0" >
 							<div >
@@ -112,7 +109,7 @@ div.hsplit > div {
 			<div style="display: inline-block;">
 				<div style="display: inline-block;" ng-repeat='x in page_number_list'>
 					<div>
-						<a style="outline: none;"  href="product_page.html?search_key={{search_key}}&sort_price={{sort_price}}&page={{x.page}}" ng-if="x.page!=0"><button class="pagination_button" ng-style='{"background-color": x.page == page ? "#2e6da4": "#ccc","color":x.page == page ?"#fff":"#222"}'>{{x.page}}</button>
+						<a style="outline: none;"  href="product_page.html?search_key={{search_key}}&sort_price={{sort_price}}&page={{x.page}}" ng-if="x.page!=0"><button class="pagination_button" ng-style='{"background-color": x.page == page ? "#2e6da4": "#ddd","color":x.page == page ?"#fff":"#222"}'>{{x.page}}</button>
 						</a>
 					</div>
 					<div ng-if="x.page==0" style="margin: 1px;">...</div>
@@ -164,7 +161,11 @@ app.controller('myCtrl', function($scope,$http) {
 	$scope.page = parseInt(url_params.get("page") || '1')
 	// products or cart ki jo join table h vo yha return me milegi to vhi hme ng-repeat me use krni h.
 	$scope.load_all_products = function() {
+		console.log($scope.page_loading)
+		console.log("Loading...")
 		api($http,'/all_products', {"search_key":$scope.search_key,"sort_price":$scope.sort_price, "page": $scope.page}, function(backend_output) {
+			console.log("Loaded...")
+			$scope.page_loading = false
 			$scope.list = backend_output.products_list
 			$scope.page_count=backend_output.num_page
 			console.log($scope.page_count)
@@ -185,14 +186,14 @@ app.controller('myCtrl', function($scope,$http) {
 			api($http, '/add_product_quantity',{"product_id": p.id, "product_quantity": new_product_quantity},function(backend_output){
 				console.log(backend_output)
 				if ('error' in backend_output) {
-					alert(backend_output.error)
+					$scope.my_alert(backend_output.error)
 				} else {
 					p.product_quantity = new_product_quantity
 				}
 			})	
 		}
 		else{
-			alert("cart me add krne ke liye login krna hoga")
+			$scope.my_alert("cart me add krne ke liye login krna hoga")
 		}	
 	}
 // isme bi same hi api use hogi kyuki quantitis hi update krni h.
@@ -207,10 +208,6 @@ app.controller('myCtrl', function($scope,$http) {
 	// 	$scope_pagination_number=n
 	// 	console.log($scope_pagination_number)
 	// }
-
-
-	
-
 });
 </script>
 </body>

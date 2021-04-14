@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
@@ -9,9 +9,12 @@
 <script src="main.js"></script>
 
 <style>
+button:disabled {
+  background: #ddd;
+}
 </style>
 </head>
-<body ng-app="myApp" ng-controller="myCtrl" >
+<body  ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
 	<div class="login_main_div sing_up_margin_top" style="margin-bottom: 25px;">
 		<div class="login_header">Sign up</div>
@@ -63,7 +66,8 @@
 			</label>
 		</div>
 		<div class="login_button_div" >
-			<button class="login_button" ng-click="sign_up()">Sign up</button>
+			<img src="https://i.gifer.com/ZZ5H.gif" style="width:15px; color:blue;margin: 2px;vertical-align: middle; " ng-if="is_sign_up_disabled==true">
+			<button class="login_button" ng-click="sign_up()" ng-disabled="is_sign_up_disabled">Sign up</button>
 		</div>
 	</div>
 <script>
@@ -76,12 +80,14 @@ app.controller('myCtrl', function($scope,$http) {
 	$scope.password = ""	
 
 	$scope.sign_up=function(){
+		$scope.is_sign_up_disabled=true
 		api($http,'/sign_up', {"name":$scope.name, "email":$scope.email,"phone":$scope.number,"password":$scope.password,"role":$scope.role},function(backend_output){
+			$scope.is_sign_up_disabled=false
 			if("error" in backend_output) {
-				alert(backend_output.error)
+				$scope.my_alert(backend_output.error)
 			}
 			else{
-				alert("Signup ho gya !")
+				$scope.my_alert("Signup ho gya !")
 				window.location.href = "product_page.html"
 			}
 		})

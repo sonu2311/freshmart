@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
@@ -67,7 +67,7 @@ div.hsplit > div {
 }
 </style>
 </head>
-<body ng-app="myApp" ng-controller="myCtrl" >
+<body  ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
 
   <div style="margin-top: 10px;">
@@ -156,7 +156,7 @@ app.controller('myCtrl', function($scope,$http) {
     })
     }
     else{
-    alert("cart me add krne ke liye login krna hoga")
+    $scope.my_alert("cart me add krne ke liye login krna hoga")
   }
   }
 

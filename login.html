@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
 <head>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -21,11 +21,13 @@ display: table;
 div.hsplit > div {
 	float: left;
 }
-
+button:disabled {
+  background: #ddd;
+}
 
 </style>
 </head>
-<body ng-app="myApp" ng-controller="myCtrl" >
+<body  ng-controller="myCtrl" >
 
 	<div ng-include='"header.html"' ></div>
 	
@@ -47,7 +49,8 @@ div.hsplit > div {
 			</div>
 		</div>
 		<div class="login_button_div btn btn-primary active">
-			<button class="login_button" ng-click=login()>Login</button>
+			<img src="https://i.gifer.com/ZZ5H.gif" style="width:15px; color:blue;margin: 2px;vertical-align: middle; " ng-if="is_login_disabled==true">
+			<button class="login_button" ng-click=login() ng-disabled="is_login_disabled">Login</button>
 		</div>
 	</div>
 <script>
@@ -57,12 +60,14 @@ app.controller('myCtrl', function($scope,$http) {
 	$scope.password="123"
 	
 	$scope.login=function(){
+		$scope.is_login_disabled=true
 		api($http, '/login', { "email":$scope.email, "password":$scope.password }, function(backend_output){
+			$scope.is_login_disabled=false
 			if("error" in backend_output){
-				alert(backend_output.error)
+				$scope.my_alert(backend_output.error)
 			}
 			else{
-				alert("Login ho gya !")
+				$scope.my_alert("Login ho gya !")
 				window.location.href = "product_page.html"
 			}
 		})

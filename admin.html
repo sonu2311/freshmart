@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
@@ -49,7 +49,7 @@ th, td{
 
 </style>
 </head>
-<body ng-app="myApp" ng-controller="myCtrl" >
+<body  ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
 
 <div class="hsplit" style="margin-top: 15px;padding:10px; ">
@@ -87,8 +87,6 @@ th, td{
 </div>
 	
 <script>
-
-
 app.controller('myCtrl', function($scope,$http) {
 });
 </script>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
@@ -16,7 +16,7 @@
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
 	font-weight: 500;
-	padding: 12px 0 12px 30px;
+	/*padding: 12px 0 12px 30px;*/
 	font-size: 12px;
 
 }
@@ -41,94 +41,95 @@
 }
 .view_item_link{
 	color: #337ab7;
+	text-decoration: none;
 }
 .view_item_link:hover{
 	text-decoration: underline;
 	/*font-size: 15px;*/
 }
+.save_button {
+	background: #337ab7;  border-radius: 2px; border:solid #337ab7 1px; ; outline: none; color: #fff; cursor: pointer; padding:2px 4px;
+}
+
+.save_button:disabled {
+  background: #ddd;
+  border:solid #ddd 1px;
+}
 
 </style>
 </head>
-<body ng-app="myApp" ng-controller="myCtrl" >
+<body  ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
 	<div class="proflie_page_right_div" style=" ">	
 		<div class="hsplit"   style=" padding:0px;margin-top:6px;">
 			<div class="col-md-2 col-sm-2" style=""></div>
-			<div class="col-md-8 col-sm-8 col-xs-12" style="">
+			<div class="col-md-8 col-sm-8 col-xs-12" style=" padding-bottom: 10px;">
 				<div style="font-size: 25px; font-weight: 300px; padding:15px 5px;">
 					Order Details
 				</div>
 				<hr>
-				<div  style=" color:#333;margin-bottom:25px;border-radius: 4px;  box-shadow: 2px 2px 5px #888888; margin-top:30px; box-sizing: border-box; "  ng-repeat="x in l">
-					{{x}}
-					<div class=" hsplit order_detail_div_navbar" ng-if="x.status!='DELIVERED'">
-						<div class="col-md-4 col-xs-4 col-sm-4 col-lg-4" style="box-sizing: border-box; "><b> 
-							Date :{{x.ordered_at_str}} </b>
-						</div>
-						<div class="col-md-4 col-xs-4 col-sm-4 col-lg-4" style="box-sizing: border-box;text-align: center;" >
-							<div style=""><b>{{x.store_name}} - <span style="font-size: 15px; vertical-align: middle;">₹</span> 	{{x.total_amount}}</b>
+				<!-- {{l}} -->
+				<div ng-repeat="(date,order_list) in l" style="margin-top:30px; box-sizing: border-box;margin-left:15px;margin-right:15px; ">
+					<span style="color:#337ab7;"><b>{{date}}</b></span>
+					<div  style=" color:#333;margin-bottom:25px;border-radius: 4px;  box-shadow: 2px 2px 5px #888888; margin-top:30px; box-sizing: border-box; "  ng-repeat="x in order_list">
+						<!-- {{x}} -->
+						<div class=" hsplit order_detail_div_navbar" style="">
+							<div class="col-md-4 col-xs-4 col-sm-4 col-lg-4" style="box-sizing: border-box; " ng-if="x.status!='DELIVERED'"><b> 
+								Ordered Date :{{x.ordered_at_str}} </b>
 							</div>
-							
-						</div>
-						<div class="col-md-4 col-xs-4 col-sm-4 col-lg-4 " style="box-sizing: border-box; padding-right: 15px;   text-align: right;"><b>Order-ID:{{x.id}}</b> </div>
-
-					</div>
-					
-					<!-- <div class="order_detail_div_navbar" ng-if="x.status=='DELIVERED'"><b>Date :
-						{{x.delivery_at_str}}</b> 
-					</div> -->
-					<!-- {{x}} -->
-					<div class="hsplit" style="padding:40px; box-sizing: border-box;">
-						<div class="col-md-8 col-xs-12 col-sm-8 col-lg-8" style="box-sizing: border-box; padding-bottom:15px;">
-							<div style="color:#337ab7; font-size: 18px; padding:7px 0px;" >Delivery Address :</div>
-							<div style="margin-left:2px;width:96%; color:#333;font-size:15px;line-height:20px;text-align:justify;text-justify: inter-word;">	{{x.address}}
+							<div class="col-md-4 col-xs-4 col-sm-4 col-lg-4" style="box-sizing: border-box; " ng-if="x.status=='DELIVERED'"><b>Delivery_Date :
+								{{x.delivery_at_str}}</b> 
+							</div>
+							<div class="col-md-4 col-xs-4 col-sm-4 col-lg-4" style="box-sizing: border-box;text-align: center;" >
+								<div><b>Order-ID:{{x.id}}</b> </div>
+							</div>
+							<div class="col-md-4 col-xs-4 col-sm-4 col-lg-4 " style="box-sizing: border-box; text-align: right;padding-right:20px;">
+								<a href="order_item_list.html?order_id={{x.id}}" style="" class="view_item_link">
+									<div style="box-sizing: border-box; text-align:right;">
+										<span style="">
+											ordered item 
+										</span>
+										<span class="material-icons" style="font-size:13px;">
+										arrow_forward_ios
+										</span>
+									</div>
+								</a>
 							</div>
 						</div>
-
-						<!-- <div class="col-md-4 col-xs-12 col-sm-2" style="font-size: 14px; padding-top: 0px;"> -->
-							<!-- <b>{{x.status_display}}</b> -->
-						<div class="col-md-4 col-xs-12 col-sm-4 col-lg-4 " style="box-sizing: border-box; padding:5px; ">
-							<div style=" box-sizing: border-box; ">
-								<div >
-									<a href="order_item_list.html?order_id={{x.id}}" style="" class="view_item_link">
-										<div class="hsplit">
-											<div style="width:100px;">
-												ordered item 
-											</div>
-											<div style="">
-												<span class="material-icons" style="font-size:13px;">
-												arrow_forward_ios
-												</span>
-											</div>
-										</div>
-									</a>
-								</div>	
-							</div>
-							<div style="box-sizing: border-box; padding-top: 40px;">
-								<div style="display: inline-block;">
-									<select style="outline: none;padding:2px 1px;" ng-model="x.status">
-										<option>ORDERED</option>
-										<option>CONFORMED</option>
-									</select>
-								</div>
-								<div style="display: inline-block; padding-left: 20px; ">
-									<button  style="background: #337ab7;  border-radius: 2px; border:solid #337ab7 1px; ; outline: none; color: #fff; cursor: pointer; padding:2px 4px;" ng-click="Status_save(x)">Save
-									</button>
+						
+						
+						<!-- {{x}} -->
+						<div style="padding:10px 30px; box-sizing:border-box;">
+							<div  style="box-sizing: border-box; padding-bottom:15px;">
+								<div style=" font-size: 15px; padding:7px 0px;" ><b>Pickup Address: </b></div>
+								<div style="margin-left:2px;width:96%; color:#333;font-size:15px;line-height:20px;text-align:justify;text-justify: inter-word;"><b>{{x.farmers_name}} - </b>{{x.farmer_address}}
 								</div>
 							</div>
-							<div style="padding: 0px 40px; padding-bottom:35px;">
-						Farmer Addres:  {{x.farmer_address}}
-					</div>
-							
+							<div style=" font-size: 15px; padding:7px 0px;">
+								<b>Delivery Address: </b>
+							</div>
+							<div style="margin-left:2px;width:96%; color:#333;font-size:15px;line-height:20px;text-align:justify;text-justify: inter-word;"><b>{{x.name}} - </b> {{x.address}}</div>
+								<div style="box-sizing: border-box; padding-top: 40px;">
+									<div style="display: inline-block;">
+										<select style="outline: none;padding:2px 1px;" ng-model="x.status">
+											<option>RECEIVED</option>
+											<option>PICKUP</option>
+											<option>DELIVERED</option>
+											<option>CANCELLED</option>
+										</select>
+									</div>
+									<div style="display: inline-block; padding-left: 20px; ">
+										<button class="save_button"  ng-click="Status_save(x)" ng-disabled="x.status_loading">Save
+										</button>
+									</div>
+								</div>
 						</div>
 					</div>
-				</div>
-
-
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 <script>
 app.controller('myCtrl', function($scope,$http) {
 	s = $scope
@@ -145,10 +146,14 @@ app.controller('myCtrl', function($scope,$http) {
 	// var url_params = new URLSearchParams((new URL(window.location.href)).search)
 	// var farmer_id=url_params.get("farmer_id")
 
-	// $scope.Status_save=function(p){
-	// 	api($http, '/Status_save', {"order_id":p.id, "status":p.status},function(backend_output){
-	// 	})
-	// }
+	$scope.Status_save=function(p){
+		p["status_loading"]=true
+		api($http, '/delivery_person_status', {"order_id":p.id, "status":p.status},function(backend_output){
+			p["status_loading"]=false
+			$scope.my_alert("saved")
+		})
+		
+	}
 
 });
 </script>

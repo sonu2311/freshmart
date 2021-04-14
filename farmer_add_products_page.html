@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
@@ -9,9 +9,12 @@
 <script src="load_store.js"></script>
 <script src="main.js"></script>
 <style>
+button:disabled {
+  background: #ddd;
+}
 </style>
 </head>
-<body ng-app="myApp" ng-controller="myCtrl" >
+<body  ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
 
 	<div class="col-sm-3" ></div>
@@ -39,9 +42,10 @@
 			</label>
 			<label>
 				<div class="margin-top-15" style="margin-left:20px; margin-right:20px;">
-					<div class="font_size-15">Image</div>
-					<div>
-						<input type="text" name="name" ng-model="image" class="input">
+					<!-- <div class="font_size-15">Image</div> -->
+					<div class="hsplit">
+						<div style="margin-right: 7px;width:60%;"><input type="text" placeholder="Image URL" name="name" ng-model="image" class="input"></div>
+						<div style="width:38%;"><input type="file" name="name" ng-model="image_file" id="image_file" class="input" onchange="angular.element(this).scope().upload_image()"></div>
 					</div>
 				</div>
 			</label>
@@ -54,11 +58,13 @@
 				</div>
 			</label>
 			<div class="login_button_div" style="margin-bottom: 30px;" ng-if="edit_page==false">
-				<button class="login_button button_color" ng-click="save()" style="background-color:#337ab7;" >Save</button>
+				<img src="https://i.gifer.com/ZZ5H.gif" style="width:15px; color:blue;margin: 2px;vertical-align: middle; " ng-if="loading==true">
+				<button class="login_button button_color" ng-click="save()" style="" ng-disabled="loading">Save</button>
 			</div>
 
 			<div style="margin-bottom: 30px;" class="login_button_div" ng-if="edit_page==true" >
-				<button class="login_button button_color" style="background-color:#337ab7;" ng-click="update()">update</button>
+				<img src="https://i.gifer.com/ZZ5H.gif" style="width:15px; color:blue;margin: 2px;vertical-align: middle; " ng-if="loading==true">
+				<button class="login_button button_color" style="" ng-click="update()" ng-disabled="loading">update</button>
 			</div>
 		</div>
 	</div>
@@ -97,7 +103,9 @@ app.controller('myCtrl', function($scope,$http) {
 
 
 	$scope.save=function(){
+		$scope.loading=true
 		api($http, '/add_product', { "name":$scope.name, "price":$scope.price,"image":$scope.image, "description":$scope.description }, function(backend_output){
+			$scope.loading=false
 			window.location.href = "farmer_all_products.html"
 		})
 	}
@@ -105,10 +113,29 @@ app.controller('myCtrl', function($scope,$http) {
 	
 
 	$scope.update=function(n){
+		$scope.loading=true
 		api($http, '/product_update',{"name":$scope.name, "price":$scope.price,"image":$scope.image, "description":$scope.description, "id": product_id}, function(backend_output){
+			$scope.loading=false
 			$scope.list=backend_output
 			window.location.href = "farmer_all_products.html"	
 		});
+	}
+
+	$scope.upload_image=function(){
+		var file = document.getElementById('image_file').files[0]
+		console.log(file)
+		var reader = new FileReader()
+		reader.readAsDataURL(file)
+		reader.onload = function() {
+			var image_content = reader.result
+			api($http, '/upload_image',{
+					"image_file_content": image_content,
+					"filename": file.name}, function(backend_output){
+				$scope.image = backend_output
+				console.log(backend_output)
+			});
+		}
+
 	}
 
 });

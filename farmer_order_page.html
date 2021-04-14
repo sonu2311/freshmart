@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
@@ -47,30 +47,37 @@
 	/*font-size: 15px;*/
 }
 
+.save_button {
+	background: #337ab7;  border-radius: 2px; border:solid #337ab7 1px; ; outline: none; color: #fff; cursor: pointer; padding:2px 4px;
+}
+
+.save_button:disabled {
+  background: #ddd;
+  border:solid #ddd 1px;
+}
+
 </style>
 </head>
-<body ng-app="myApp" ng-controller="myCtrl" >
+<body  ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
 	<div class="proflie_page_right_div" style=" ">	
-		<div class="hsplit"   style=" padding:0px;margin-top:6px;">
+		<div class="hsplit"   style=" padding:2px;margin-top:6px;">
 			<div class="col-md-2 col-sm-2" style=""></div>
 			<div class="col-md-8 col-sm-8 col-xs-12" style="">
 				<div style="font-size: 25px; font-weight: 300px; padding:15px 5px;">
 					Order Details
 				</div>
 				<hr>
-				<div  style=" color:#333;margin-bottom:25px;border-radius: 4px;  box-shadow: 2px 2px 5px #888888; margin-top:30px; box-sizing: border-box; "  ng-repeat="x in l">
-					<div class=" hsplit order_detail_div_navbar" ng-if="x.status!='DELIVERED'">
+				<div  style=" color:#333;margin-bottom:25px;border-radius: 4px;  box-shadow: 2px 2px 5px #888888; margin-top:30px; box-sizing: border-box;margin-right: 7px; margin-left: 7px;"  ng-repeat="x in l">
+					<div class=" hsplit order_detail_div_navbar" style="" ng-if="x.status!='DELIVERED'">
 						<div class="col-md-4 col-xs-4 col-sm-4 col-lg-4" style="box-sizing: border-box; "><b> 
 							Date :{{x.ordered_at_str}} </b>
 						</div>
 						<div class="col-md-4 col-xs-4 col-sm-4 col-lg-4" style="box-sizing: border-box;text-align: center;" >
-							<div style=""><b>{{x.store_name}} - <span style="font-size: 15px; vertical-align: middle;">₹</span> 	{{x.total_amount}}</b>
-							</div>
-							
+							<div style=""><b>{{x.store_name}} - <span style="font-size: 15px; vertical-align: middle;">₹</span>{{x.total_amount}}</b>
+							</div>	
 						</div>
 						<div class="col-md-4 col-xs-4 col-sm-4 col-lg-4 " style="box-sizing: border-box; padding-right: 15px;   text-align: right;"><b>Order-ID:{{x.id}}</b> </div>
-
 					</div>
 					
 					<!-- <div class="order_detail_div_navbar" ng-if="x.status=='DELIVERED'"><b>Date :
@@ -83,10 +90,9 @@
 							<div style="margin-left:2px;width:96%; color:#333;font-size:15px;line-height:20px;text-align:justify;text-justify: inter-word;">	{{x.address}}
 							</div>
 						</div>
-
 						<!-- <div class="col-md-4 col-xs-12 col-sm-2" style="font-size: 14px; padding-top: 0px;"> -->
 							<!-- <b>{{x.status_display}}</b> -->
-						<div class="col-md-4 col-xs-12 col-sm-4 col-lg-4 " style="box-sizing: border-box; padding:5px; ">
+						<div class="col-md-12 col-xs-12 col-sm-12 col-lg-4 " style="box-sizing: border-box; padding:5px; ">
 							<div style=" box-sizing: border-box; ">
 								<div >
 									<a href="order_item_list.html?order_id={{x.id}}" style="" class="view_item_link">
@@ -111,7 +117,7 @@
 									</select>
 								</div>
 								<div style="display: inline-block; padding-left: 20px; ">
-									<button  style="background: #337ab7;  border-radius: 2px; border:solid #337ab7 1px; ; outline: none; color: #fff; cursor: pointer; padding:2px 4px;" ng-click="Status_save(x)">Save
+									<button class="save_button" ng-click="Status_save(x)" ng-disabled="x.status_loading">Save
 									</button>
 								</div>
 							</div>
@@ -126,11 +132,7 @@
 			</div>
 		</div>
 	</div>
-	
-
 <script>
-
-
 
 app.controller('myCtrl', function($scope,$http) {
 
@@ -156,7 +158,9 @@ app.controller('myCtrl', function($scope,$http) {
 	var farmer_id=url_params.get("farmer_id")
 
 	$scope.Status_save=function(p){
+		p["status_loading"]=true
 		api($http, '/Status_save', {"order_id":p.id, "status":p.status},function(backend_output){
+			p["status_loading"]=false
 		})
 	}
 

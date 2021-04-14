@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="main.css">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="main.js"></script>
+<style>
+
+
+td{
+  font-size: 12px;
+}
+.th_price_width{
+  width:120px;
+  
+}
+.td_price_width{
+  width:420px;
+  
+}
+.cart_row {
+  border-bottom: solid #ddd 1px;
+}
+
+.button-small {
+    padding: .10rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+.button-small:hover{
+	background-color: #2d6a9f;
+	box-shadow:2px 3px 5px #ccc;
+
+}
+
+</style>
+</head>
+<body  ng-controller="myCtrl" >
+	<div ng-include='"header.html"' ></div>
+	<div>
+		<!-- {{unassigned_orders}} -->
+		<!-- {{my_assigned_orders}} -->
+		<div style=" margin-top:20px; margin-bottom: 10px;"><div style="margin-left: 10px; font-size:22px; color:#2d6a9f;">My assigned Orders</div></div>
+		<div style="border-top:solid #ccc 1px; "></div>
+		<table >
+		  	<tr>
+			  	<th class="th_price_width" >Id</th>
+			    <th class="th_price_width" >Farmer Name</th>
+			    <th class="th_price_width">Order at</th>
+			    <th class="td_price_width" style="">Farmer Address</th>
+			    <th class="td_price_width" style="">User Address</th>
+			    <th class="th_price_width">status</th> 
+		  	</tr>
+		  	<tr class="cart_row" ng-repeat="x in my_assigned_orders" >
+		    	<td class="th_price_width" style="">{{x.id}}</td>
+		    	<td class="th_price_width" ><a href="profile_page.html?id={{x.farmer_id}}" style="text-decoration: none;">{{x.farmer_name}}</a></td>
+				<td class="th_price_width">{{x.ordered_at_str}}</td>
+				<td class="td_price_width" style=" text-align: justify; text-justify: inter-word;line-height:20px; ">{{x.farmer_address}}</td>
+				<td class="td_price_width" style="  text-align: justify; text-justify: inter-word;line-height:20px;">{{x.user_address}}</td>
+				<td class="th_price_width">-</td>
+		  	</tr>
+		</table>
+
+		<div style=" margin-top:170px; margin-bottom: 20px;"><div style="margin-left: 30px; font-size:22px; color:#2d6a9f;">Unassigned Orders</div></div>
+		<div style="border-top:solid #ccc 1px; "></div>
+		<table>
+		  	<tr>
+			  	<th class="th_price_width" style="">Id</th>
+			    <th class="th_price_width">Farmer Name</th>
+			    <th class="th_price_width">Order at</th>
+			    <th class="td_price_width" style="">Farmer Address</th>
+			    <th class="td_price_width" style="">User Address</th>
+			    <th class="th_price_width">Status</th>
+			    <!-- <th></th>  -->  
+		  </tr>
+		  <tr class="cart_row" ng-repeat="x in unassigned_orders" >
+		    	<td class="th_price_width" style=" ">{{x.id}}</td>
+		    	<td class="th_price_width" style=""><a href="profile_page.html?id={{x.farmer_id}}" style="text-decoration: none;">{{x.farmer_name}}</a></td>
+				<td class="th_price_width" style="">{{x.ordered_at_str}}</td>
+				<td class="td_price_width" style=" text-align: justify; text-justify: inter-word;line-height:20px;">{{x.farmer_address}}</td>
+				<td class="td_price_width" style=" text-align: justify; text-justify: inter-word;line-height:20px;">{{x.user_address}}</td>
+				<td>
+					<button class="button-small" ng-click="assign_delivery_person_now(x)" >Assigned</button>
+				</td>
+		  </tr>
+		</table>
+	</div>
+<script>
+app.controller('myCtrl', function($scope,$http) {
+	$scope.self = $scope
+	s = $scope
+	api($http,'/unallocated_orders', {},function(backend_output){
+				$scope.unassigned_orders= backend_output.unassigned_orders
+				$scope.my_assigned_orders=backend_output.my_assigned_orders
+				console.log($scope.unassigned_orders)
+				console.log($scope.my_assigned_orders)
+				// $scope.total_amount=backend_output.total_amount
+	})
+
+	$scope.assign_delivery_person_now=function(a) {
+		api($http, '/assign_delivery_person_now',{"order_id":a.id},function(backend_output){
+			console.log(backend_output)
+				$scope.unassigned_orders= backend_output.unassigned_orders
+				$scope.my_assigned_orders=backend_output.my_assigned_orders
+				console.log($scope.unassigned_orders)
+				console.log($scope.my_assigned_orders)
+		});
+	}
+	
+});
+</script>
+</body>
+</html>

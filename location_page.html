@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="main.css">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="main.js"></script>
+<style>
+.order_information_card{
+	border-bottom:solid #ccc 1px; border-radius: 2px; height:90px;background-color: #fff; padding:30px 10px;
+}
+</style>
+</head>
+<body  ng-controller="myCtrl" >
+	<div ng-include='"header.html"'></div>
+	<div class="hsplit" style="padding-top:10px">
+		<div style="padding: 0px; " class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3889.115978453157!2d77.64322794975837!3d12.900263219886842!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae14a25dd27053%3A0x820b7da4e5b5cb7e!2sArun%20Auto%20Zone!5e0!3m2!1sen!2sin!4v1616755378014!5m2!1sen!2sin" width="856" height="500" style="border:0; " allowfullscreen="" loading="lazy"></iframe>
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style=" box-sizing: border-box;padding: 15px 20px; background-color: #eee;">
+			<div style=" border-radius: 2px; margin:5px 0px; height:100px;background-color: #ffffff;padding:10px;">
+				<!-- {{l}} -->
+				<div style="font-size: 12px; color:#888;padding:5px 0px;">Order-id - {{l.id}}</div>
+				<div style="font-weight:600;padding:5px 0px; ">{{l.farmer_name}}</div>
+				<div class="hsplit" style="font-size: 12px; color:#888;padding:2px 0px;">
+					<div style="">{{l.ordered_at_str}}</div>
+					<!-- <div style="margin:0px 4px;">|</div>
+					<div>item</div> -->
+					<div style="margin:0px 4px;">|</div>
+					<div>Rs.( {{l.total_amount}} )</div>
+				</div>
+			</div>
+			<div class="order_information_card" >
+				<div style=" font-size: 13px; font-weight: 600;">Order Recived</div>
+				<!-- <div>ng if</div> -->
+			</div>
+			<div class="order_information_card" >
+				<div style=" font-size: 13px; " ng-style='{"font-weight":(d.status == "CONFIRMED" || d.status == "PICKUP"||d.status == "DELIVERED") ? 600: 400}' >Confirmed</div>
+			</div>
+			<div class="order_information_card" >
+				<div style=" font-size: 13px;" ng-style='{"font-weight":(d.status == "PICKUP" ||d.status == "DELIVERED")? 600: 400}' >Picked Up</div>
+			</div> 
+			<div class="order_information_card" >
+				<div style=" font-size: 13px;" ng-style='{"font-weight":(d.status == "DELIVERED") ? 600: 400}' >Delivered</div>
+			</div> 
+		</div>
+	</div>
+<script>
+app.controller('myCtrl', function($scope,$http) {
+	$scope.self = $scope
+
+	// $scope.d={"status":"CONFIRMED"}
+
+	var url_params = new URLSearchParams((new URL(window.location.href)).search)
+	var order_id=url_params.get("order_id")
+
+	api($http, '/order_tracking_info', {"order_id":order_id},function(backend_output){
+		if ("error" in backend_output){
+			$scope.my_alert("backend_output.error")
+		}
+		else{
+			$scope.l= backend_output
+			console.log($scope.l)
+		}		
+	})
+});
+</script>
+</body>
+</html>

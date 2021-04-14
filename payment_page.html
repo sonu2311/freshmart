@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
@@ -11,8 +11,13 @@
 .cart_image{
 	height: 40px;
 	text-align: left
+}
+
+button:disabled {
+  background: #ddd;
+}
 </style>
-<body ng-app="myApp" ng-controller="myCtrl">
+<body  ng-controller="myCtrl">
 
 	<div>
 		<div ng-include='"header.html"' ></div>
@@ -40,11 +45,14 @@
 						<span style="padding-left: 15px; font-size: 15px; color:#2e6da4; ">Pay Case On Delivery</span>
 					</label>
 					<div style="margin-top: 15px; padding-left:5px;" ng-if="cod==false">
-						<a href="fake_payment_gateway.html"><button class="login_button"> pay ( {{cart_items.total_amount}} Rs. )</button></a>
+						<a href="fake_payment_gateway.html">
+							<button class="login_button"> pay ( {{cart_items.total_amount}} Rs. )</button>
+						</a>
 					</div>
 
 					<div style="margin-top: 15px; padding-left:5px;" ng-if="cod==true">
-						<button class="login_button" ng-click="pay_later_and_order()"> Pay later & order</button>
+						<img src="https://i.gifer.com/ZZ5H.gif" style="width:15px; color:blue;margin: 2px;vertical-align: middle; " ng-if="loading_payment_in_Case==true">
+						<button class="login_button" ng-click="pay_later_and_order()" ng-disabled="loading_payment_in_Case"> Pay later & order</button>
 					</div>
 				</div>
 			</div>
@@ -91,12 +99,15 @@ app.controller('myCtrl', function($scope, $http) {
 	}
 
 	$scope.pay_later_and_order=function(){
+		$scope.loading_payment_in_Case=true
 		console.log("$scope.address_choice = ", $scope.address_choice)
 		if ($scope.address_choice == undefined) {
-			alert("Address not chosen.")
+			$scope.loading_payment_in_Case=false
+			$scope.my_alert("Address not chosen.")
 		} else {
 			api($http, '/pay_later_and_order', {"address_id": $scope.address_choice}, function(backend_output){
-				alert("Checkout hoga gya hT")
+				$scope.loading_payment_in_Case=false
+				$scope.my_alert("Checkout hoga gya hT")
 				window.location.href = "order.html"
 			})
 		}

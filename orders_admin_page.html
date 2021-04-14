@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
@@ -92,7 +92,7 @@ th {
 }
 </style>
 </head>
-<body ng-app="myApp" ng-controller="myCtrl" >
+<body  ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
 
 	<div style=" padding:2px 0px; " >
@@ -129,7 +129,6 @@ th {
 					<td>{{x.expected_delivery_at_str}}</td>
 
 					<td> <span style="font-size: 13px;">₹</span> {{x.total_amount}}</td>
-
 					<td>
 						<a href="order_item_list.html?order_id={{x.id}}" style="text-decoration: none;">
 						view items
@@ -153,13 +152,8 @@ th {
 		</div>
 	</div>
 <script>
-
-
-
-app.controller('myCtrl', function($scope,$http) {
-
+app.controller('myCtrl',function($scope,$http) {
 	s = $scope
-
 	api($http, '/admin_all_orders', {},function(backend_output){
 				$scope.l= backend_output.orders_details
 				$scope.delivery_person=backend_output.delivery_person_list

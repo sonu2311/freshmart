@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="main.css">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="main.js"></script>
+<style>
+</style>
+</head>
+<body  ng-controller="myCtrl" >
+	<div ng-include='"header.html"'></div>
+	<div style="margin-top: 6px; padding:100px 0px;">
+		<div class="hsplit" style=" vertical-align: middle; ">
+			<div class="col-lg-2 col-md-0 col-sm-1 col-xs-0" style="box-sizing: border-box; "></div>
+			<div class="col-lg-4 col-md-5 col-sm-5 col-xs-12"  style="box-sizing: border-box; padding:0px; " >
+				<div style="box-sizing: border-box; padding-top: 30px; padding-bottom: 30px; padding-left: 20px; padding-right: 10px;border-radius: 3px; margin:10px;border:solid #ddd 1px;box-shadow: 1px 1px 3px #888888;">
+					<div>Import Items</div>
+					<div style="margin-top: 10px;">
+						<input type="file" id="csv_file" name="name"class="input" style=";margin-right: 10px; margin-bottom: 10px;">
+						<button ng-click='import_csv()' class="login_button" style="outline: none"outline: none>Import All Products</button>
+					</div>
+					<div style="font-size: 12px; color:#666; margin-top: 5px;">(data formate check kro)</div>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-5 col-sm-6 col-xs-12"  style="box-sizing: border-box; padding:0px; ">
+				<div style="box-sizing: border-box; padding-top: 30px; padding-bottom: 30px; padding-left: 20px; padding-right: 10px;border-radius: 3px; margin:10px;border:solid #ddd 1px;box-shadow: 1px 1px 3px #888888; height: 200px;">
+					<div style="">Export Items</div>
+						<div style="margin-top: 10px;">
+							<button  class="login_button" style="outline: none" ng-click="export_products()">Export All Products</button>
+						</div>
+				</div>
+			</div>
+			<div class="col-lg-2 col-md-0 col-sm-0 col-xs-0" style="box-sizing: border-box;"></div>
+		</div>
+	</div>
+<script>
+app.controller('myCtrl', function($scope,$http) {
+	$scope.self = $scope
+	s = $scope
+
+	$scope.import_csv = function() {
+		var file = document.getElementById('csv_file').files[0]
+		console.log(file)
+		var reader = new FileReader()
+		reader.readAsDataURL(file)
+		reader.onload = function() {
+			var content = reader.result
+			api($http, '/import_products',{
+					"file_content": content,
+					"filename": file.name}, function(backend_output){
+				console.log(backend_output)
+				if ("error" in backend_output){
+					$scope.my_alert(backend_output.error)
+				}
+				else{
+					$scope.my_alert("successfully Imported.")
+				}
+			});
+		}
+	}
+
+	$scope.export_products = function(){
+		api($http, '/export_products',{}, function(backend_output){
+			var encodedUri = 'data:text/csv;charset=utf-8,' + encodeURI(backend_output.csv_content);
+			var link = document.createElement("a");
+			console.log(encodedUri)
+			link.setAttribute("href", encodedUri);
+			link.setAttribute("download", "my_data.csv");
+			document.body.appendChild(link); // Required for FF
+			link.click();
+				// console.log(backend_output)
+		});
+	}
+
+});
+</script>
+</body>
+</html>

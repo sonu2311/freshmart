@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
 <head>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
@@ -77,10 +77,18 @@ div.hsplit > div {
 	box-shadow: 1px 1px 2px 1px #ccc;
 }
 
-
+button:disabled {
+  background: #ddd;
+}
+.latitude{
+	outline: none; margin: 5px 4px; padding:5px;border:solid #ccc 1px;border-radius: 3px; width:197px; color:#333;
+}
+.latitude:hover{
+	box-shadow: 1px 1px 2px 1px #ccc;
+}
 </style>
 </head>
-<body ng-app="myApp" ng-controller="myCtrl" >
+<body  ng-controller="myCtrl" >
 	<div ng-include='"header.html"' ></div>
 	<div class="scroll_in_profile_page hide-xs hide-sm show-md hide-md" style="border:solid #ccc 1px;" ng-if="allow_edit">
 		<div  style="width: 170px; margin-top: 6px;">
@@ -98,9 +106,8 @@ div.hsplit > div {
 	<div class="hsplit bigest_div" style="margin-top: 10px;">
 		<div class="col-lg-2 col-sm-2 col-xs-1" ></div>
 		<div class="proflie_page_right_div col-lg-8 col-sm-8 col-xs-10"style="box-sizing: border-box; ">	
-			<div style="margin-top: 30px; margin-bottom: 30px;" >
-				Currently Login  = {{login_details}}
-				<br>user_info = {{user_info}}
+			<div style="margin-top: 20px; margin-bottom: 20px;" >
+			
 			</div>
 			<div id="account" class=" "style="color:#333;margin-bottom:25px;border-radius: 4px; padding: 20px; box-shadow: 2px 2px 5px #888888; background-color:#fff; ">
 				<div style="">
@@ -128,16 +135,21 @@ div.hsplit > div {
 							</span>
 							<input type="text" name="" ng-model="user_info.phone" class="email_contact_input">
 						</div>
-						<div style="padding: 7px; margin-bottom:10px;" ng-if="user_info.role=='FARMER'">
+						<div style="padding: 7px; margin-bottom:10px; box-sizing: border-box; " ng-if="user_info.role=='FARMER'">
 							<span class="material-icons" style="color:#ccc; font-size: 20px;  margin-right: 5px; vertical-align: top;">
 							home
 							</span>
 							<textarea rows="4" placeholder="address.." style="vertical-align: middle; resize: none;" class="email_contact_input" ng-model="user_info.address"></textarea>
+							<div style=" margin:10px 2px;padding: 5px 25px;">
+								<input class="latitude" ng-model="latitude" type="text" placeholder="latitude..." >
+								<input class="latitude" ng-model="longitude" type="text" placeholder="longitude..." >
+							</div>
 						</div>
 					</div>
 				</div>
 				<div class="login_button_div btn btn-primary active" style="text-align: left; margin-top:20px; padding-left: 32px;" ng-if="allow_edit">
-					<button class="login_button" ng-click="user_new_details_save_button()">Save</button>
+					<img src="https://i.gifer.com/ZZ5H.gif" style="width:15px; color:blue;margin: 2px;vertical-align: middle;" ng-if="new_details==true">
+					<button class="login_button" ng-click="user_new_details_save_button()" ng-disabled="new_details">Save</button>
 				</div>
 			</div>
 			 
@@ -172,13 +184,15 @@ div.hsplit > div {
 					</div>
 				</div>
 				<div class="login_button_div btn btn-primary active" style="text-align: left; margin-top:20px; padding-left: 5px;">
-					<button class="login_button" ng-click="update_password()">Update Password</button>
+					<img src="https://i.gifer.com/ZZ5H.gif" style="width:15px; color:blue;margin: 2px;vertical-align: middle;" ng-if="loading_update_password==true">
+					<button class="login_button" ng-click="update_password()" ng-disabled="loading_update_password">Update Password</button>
 				</div>
 			</div>
 
 			<div id="address" class=" "style=" color:#333;margin-bottom:25px;border-radius: 4px; padding-bottom: 20px; box-shadow: 2px 2px 5px #888888; margin-top: 45px;" ng-if="user_info.role=='USER'">
 				<div style=" ">
 					<div style="padding:20px;" ng-click="add_address()" ng-if="allow_edit" >
+						<img src="https://i.gifer.com/ZZ5H.gif" style="width:15px; color:blue;margin: 2px;vertical-align: middle; " ng-if="loading_new_address==true">
 						<span class="material-icons" style="font-size:18px; margin-right:10px;vertical-align: middle; color:#337ab7; cursor: pointer;">
 						add_circle_outline
 						</span>
@@ -188,7 +202,7 @@ div.hsplit > div {
 						<div style="width:calc(100% - 140px); margin-right: 20px; text-align: justify;text-justify: inter-word;">
 							<textarea rows="4" style="outline: none; resize: none;  padding:10px; line-height: 20px; background-color:#eee;border: solid #eee 1px; width: 100%;" ng-model="self.new_address"></textarea>
 						</div>
-						<div style="margin-right:10px; margin-left: 10px; font-size: 14px; color:#666; cursor: pointer; color:#337ab7;" ng-click="new_address_save_button()"> Add
+						<div style="margin-right:10px; margin-left: 10px; font-size: 14px; color:#666; cursor: pointer; color:#337ab7;" ng-click="new_address_save_button()" > Add
 						</div>
 						<div style="margin-right: 10px; margin-left: 10px;font-size: 14px; color:#666;cursor: pointer; color:#337ab7;" ng-click='cancel_add_new_address()' >Cancel
 						</div>
@@ -204,7 +218,7 @@ div.hsplit > div {
 							<span style="vertical-align: middle;font-size: 14px; font-weight: 600;"> Home</span>
 						</div>
 						<div class="hsplit" style="margin-top:5px; margin-bottom:10px; margin-left:55px; font-size: 14px; font-weight:500; line-height:20px;" >
-							<div style="width:calc(100% - 140px); margin-right: 20px; text-align: justify;text-justify: inter-word; min-height: 1px;">
+							<div style="width:calc(100% - 140px); margin-right: 20px; text-align: justify;text-justify: inter-word; min-height:1px;">
 								<div ng-if='!x.show_textarea' >{{x.address}}</div>
 								<textarea ng-if='x.show_textarea' rows="4" style="outline: none; resize: none;  padding:10px; line-height: 20px; background-color:#eee;border: solid #eee 1px; width: 100%;" ng-model="x.address"></textarea>
 							</div>
@@ -212,7 +226,7 @@ div.hsplit > div {
 							</div>
 							<div ng-if='!x.show_textarea && allow_edit' style="margin-right: 10px; margin-left: 10px;font-size: 14px; color:#666;cursor: pointer; color:#337ab7;" ng-click="address_delete_button(x)">Delete
 							</div>
-							<div ng-if='x.show_textarea' style="margin-right:10px; margin-left: 10px; font-size: 14px; color:#666; cursor: pointer; color:#337ab7;" ng-click="address_update_save_button(x)"> Save
+							<div ng-if='x.show_textarea' style="margin-right:10px; margin-left: 10px; font-size: 14px; color:#666; cursor: pointer; color:#337ab7;" ng-click="address_update_save_button(x)" > Save
 							</div>
 							<div ng-if='x.show_textarea' style="margin-right:10px; margin-left: 10px; font-size: 14px; color:#666; cursor: pointer; color:#337ab7;" ng-click="cancel(x)"> Cancel
 							</div>
@@ -274,7 +288,7 @@ app.controller('myCtrl', function($scope,$http) {
 
 	api($http,'/get_user_detail', {"user_ki_id": $scope.variable_user_id},function(backend_output) {
 		if("error" in backend_output){
-			alert(backend_output.error)
+			$scope.my_alert(backend_output.error)
 		}
 		else{
 			$scope.user_info = backend_output
@@ -282,41 +296,54 @@ app.controller('myCtrl', function($scope,$http) {
 	})
 
 	$scope.user_new_details_save_button=function() {
+		$scope.new_details=true
 		api($http, '/update_user_details', $scope.user_info, function(backend_output){
-			alert("Saved.")
+			$scope.new_details=false
+			$scope.my_alert("Saved.")
+			
 		});
 	}
 
 	$scope.new_address_save_button=function(){
 		console.log("$scope.new_address = ",$scope.new_address)
+		$scope.loading_new_address=true
 		api($http, '/add_address',{"address":$scope.new_address}, function(backend_output){
 			$scope.user_info.address_list=backend_output
 			$scope.add_address_show_textarea = false
 			$scope.new_address = ""
-			alert("Saved.")
+			$scope.loading_new_address=false
+			$scope.my_alert("Saved.")
 		})
 	}
 	$scope.address_update_save_button=function(x) {
-		api($http, '/update_address',{"address": x.address, "address_id": x.id}, function(backend_output){
+		$scope.loading_new_address=true
+		api($http, '/update_address',{"address": x.address, "address_id": x.id}, function(backend_output){	
 			x.show_textarea = false
-			alert("Saved.")
+			$scope.loading_new_address=false
+			$scope.my_alert("Saved.")
 		})
 	}
 
 	$scope.address_delete_button=function(x) {
+		$scope.loading_new_address=true
 		api($http, '/delete_address',{"address_id": x.id}, function(backend_output){
 			$scope.user_info.address_list=backend_output
-			alert("Delete.")
+			$scope.loading_new_address=false
+			$scope.my_alert("Delete.")
 		})
 	}
 
 	$scope.update_password=function(){
+		$scope.loading_update_password=true
 		api($http, '/update_password', {"old_password":$scope.old_password, "new_password":$scope.new_password, "repeat_password":$scope.repeat_password},function(backend_output) {
 			if("error" in backend_output){
-				alert(backend_output.error)
+				
+				$scope.my_alert(backend_output.error)
+				$scope.loading_update_password=false
 			}
 			else{
-				alert("update password")
+				$scope.loading_update_password=false
+				$scope.my_alert("update password")
 			}
 		})
 	}
