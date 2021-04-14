@@ -160,6 +160,7 @@ app.controller('myCtrl', function($scope,$http) {
 	$scope.search_key = url_params.get("search_key") || ""
 	$scope.page = parseInt(url_params.get("page") || '1')
 	// products or cart ki jo join table h vo yha return me milegi to vhi hme ng-repeat me use krni h.
+	$scope.page_loading = true
 	$scope.load_all_products = function() {
 		console.log($scope.page_loading)
 		console.log("Loading...")

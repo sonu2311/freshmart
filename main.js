@@ -108,6 +108,7 @@ var Login_Role=function(){
 var app = angular.module('myApp', [])
 
 app.controller('common_ctrl', function($scope, $timeout) {
+  // $scope.page_loading = true
   var cleanup=function(){
     var cleanup_list=[]
     for (i in $scope.messages){

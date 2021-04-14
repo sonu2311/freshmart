@@ -1,11 +1,13 @@
 from flask import Flask, request, send_from_directory
 import json
 import inspect
+import threading
 
 class FlaskLib:
 	def __init__(self):
 		self.app = Flask(__name__)
 		self.name_counter = 0
+		self.mutex = threading.Lock()
 		self.serve_directory()
 		@self.app.after_request
 		def add_header(r):
@@ -16,7 +18,7 @@ class FlaskLib:
 		    return r
 
 	def run(self, port):
-		self.app.run(host='0.0.0.0', port=port, debug=True, threaded=False)
+		self.app.run(host='0.0.0.0', port=port, debug=True, threaded=True)
 
 	def api(self, route):
 		def decorator(f):
@@ -27,7 +29,11 @@ class FlaskLib:
 				else:
 					request_input = request.json or url_args
 				session = request_input.get("session", {})
-				data = f(*([request_input, session][:len(inspect.signature(f).parameters)]))
+				self.mutex.acquire()
+				try:
+					data = f(*([request_input, session][:len(inspect.signature(f).parameters)]))
+				finally:
+					self.mutex.release()
 				return json.dumps({"data": data, "session": session})
 			g.__name__ = "api_" + str(self.name_counter)
 			self.name_counter += 1

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="common_ctrl" >
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="main.css">
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="main.js"></script>
+<style>
+	
+div.hsplit:after {
+content: "";big_div
+clear: both;
+display: table;
+}
+
+div.hsplit > div {
+	float: left;
+}
+
+</style>
+</head>
+<body  ng-controller="myCtrl" >
+	<div ng-include='"header.html"' ></div>
+
+	<div style="margin-top: 100px;" >
+		AA
+	</div>
+
+<script>
+app.controller('myCtrl', function($scope,$http) {
+	$scope.self = $scope
+	s = $scope
+
+
+
+	// $scope.page_loading = false
+
+	api($http,'/api_c', {"search_key": 11}, function(backend_output) {
+		console.log("Loaded...")
+		$scope.page_loading = false
+		console.log(backend_output)
+	})
+
+});
+</script>
+</body>
+</html>

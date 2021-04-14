@@ -100,11 +100,17 @@ def product_update(frontend_dict):
 	db.writeQuery(query, frontend_dict)
 	return db.readQuery("select * from products order by id desc")
 
-# poducts_page.html ki api h
+@backend.api('/api_c')
+def api_c(frontend_dict, session):
+	time.sleep(3)
+	return ["11", 33, 55]
 
+
+# poducts_page.html ki api h
 # product and admin1ki commen api h jisme products table ko or cart table ko join kiya hua h jisme products ki full details h or cart me se products quantities kia table bnai h jisko yha read kiya gya h
 @backend.api('/all_products')
 def all_products(frontend_dict, session):
+	time.sleep(2)
 	print(frontend_dict)
 	one_page_num_products = 8
 	frontend_dict["user_id"] = login_id(session)
